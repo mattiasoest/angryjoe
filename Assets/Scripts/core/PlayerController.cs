@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    private const int DEFAULT_JUMPS = 3;
+
     public Animator animator;
     public float speed;
     public Transform feetCollider;
@@ -17,15 +19,12 @@ public class PlayerController : MonoBehaviour {
     private Vector2 velVector = new Vector2();
     private bool isGrounded;
     private float counter;
-    private bool isJumping = false;
-    private int jumps = 2;
+    private bool isJumping;
+    private int jumps = 3;
     private bool isDoubleJumpPlaying;
  
     void Start() {
         rb = GetComponent<Rigidbody2D>();
-        //feetCollider = GetComponent<CircleCollider2D>();
-        StageController.Instance.Test("hejsan");
-        StageController.Instance.Test("whatsappp");
     }
 
     // Update is called once per frame
@@ -41,9 +40,9 @@ public class PlayerController : MonoBehaviour {
 
         if ((jumps > 0 || isGrounded) && Input.GetKeyDown(KeyCode.Space)) {
             if (isGrounded) {
-                jumps = 2;
+                jumps = DEFAULT_JUMPS;
             }
-            if (jumps < 2) {
+            if (jumps < DEFAULT_JUMPS) {
                 isDoubleJumpPlaying = true;
                 animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
                 animator.SetTrigger("doubleJump");
