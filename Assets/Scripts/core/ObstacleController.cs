@@ -39,11 +39,11 @@ public class ObstacleController : MonoBehaviour
 	}
 
     private float generateRandomYpos() {
-        return Random.Range(-6f, 4.4f);
+        return Random.Range(-4.7f, 5.2f);
     }
 
     private void generatePosition() {
-        posVector.x = 1.7f;
+        posVector.x = 2.1f;
         posVector.y = generateRandomYpos();
         body.transform.position = posVector;
     }
