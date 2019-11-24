@@ -22,11 +22,6 @@ public class PlayerController : MonoBehaviour {
     private bool isJumping;
     private int jumps = 3;
     private bool isDoubleJumpPlaying;
-    //private bool applyDownbForce;
-
-    void Start() {
-        rb = GetComponent<Rigidbody2D>();
-    }
 
     public void ResetJumpTrigger() {
         isDoubleJumpPlaying = false;
@@ -34,10 +29,11 @@ public class PlayerController : MonoBehaviour {
         animator.ResetTrigger("doubleJump");
     }
 
-    private void FixedUpdate() {
+    void Start() {
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Update() {
+    void Update() {
         isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
 
         if ((jumps > 0 || isGrounded) && Input.GetKeyDown(KeyCode.Space)) {
@@ -48,7 +44,7 @@ public class PlayerController : MonoBehaviour {
                 isDoubleJumpPlaying = true;
                 animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
                 animator.SetTrigger("doubleJump");
-                
+
             }
             jumps--;
             rb.velocity = Vector2.up * jumpForce;
@@ -57,7 +53,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         if (Input.GetKey(KeyCode.Space) && isJumping) {
-            if (counter  > 0f) {
+            if (counter > 0f) {
                 rb.velocity = Vector2.up * jumpForce;
                 counter -= Time.deltaTime;
             } else {
@@ -65,7 +61,6 @@ public class PlayerController : MonoBehaviour {
             }
         } else if (Input.GetKey(KeyCode.DownArrow) && !isGrounded) {
             rb.velocity += Vector2.down * downForce * Time.deltaTime;
-            //applyDownbForce = true;
             if (rb.velocity.y <= -23) {
                 velVector.y = -23;
                 rb.velocity = velVector;
@@ -79,4 +74,14 @@ public class PlayerController : MonoBehaviour {
 
         animator.SetBool("isGrounded", isGrounded);
     }
+
+
+    void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.tag == "Obstacle") {
+            //collision.gameObject.SendMessage("ApplyDamage", 10);
+            print("collided");
+        }
+    }
+
+    //private void FixedUpdate() {}
 }

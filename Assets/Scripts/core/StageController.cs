@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StageController : Singleton<StageController> {
+
+    private enum GAME_STATE { PLAYING, MENU };
     // Start is called before the first frame update
     void Start() {
 

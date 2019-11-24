@@ -7,13 +7,10 @@ public class ObstacleController : MonoBehaviour
 	private Rigidbody2D body;
 	private Vector2 posVector = new Vector2();
     private Vector2 camPos;
-    private Random rand = new Random();
 
     public float speedEffect;
 
-	void Start()
-	{
-        //imageWidth = GetComponentInChildren<SpriteRenderer>().bounds.size.x;
+	void Start() {
         camPos = Camera.main.ViewportToWorldPoint(new Vector2(-0.15f, 0.5f));
         body = GetComponent<Rigidbody2D>();
 		body.velocity = new Vector2(speedEffect, 0);
@@ -22,10 +19,7 @@ public class ObstacleController : MonoBehaviour
     }
 
 
-	void Update()
-	{
-
-	}
+	void Update(){ }
 
 	private void FixedUpdate()
 	{
