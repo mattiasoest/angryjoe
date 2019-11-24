@@ -16,7 +16,7 @@ public class ObstacleController : MonoBehaviour
 		body.velocity = new Vector2(speedEffect, 0);
         generatePosition();
 
-    }
+       }
 
 
 	void Update(){ }
@@ -26,6 +26,7 @@ public class ObstacleController : MonoBehaviour
 
 		if (body.transform.position.x <= camPos.x)
 		{
+            StageController.instance.Test("new pos!!!");
             generatePosition();
 		}
 

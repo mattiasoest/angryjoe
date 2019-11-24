@@ -2,9 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageController : Singleton<StageController> {
+public class StageController : MonoBehaviour {
 
+    public static StageController instance;
+    public GameObject obstacleFab;
     private enum GAME_STATE { PLAYING, MENU };
+
+    private List<GameObject> obstaclePool;
+
+    private void Awake() {
+        instance = this;
+    }
     // Start is called before the first frame update
     void Start() {
 
