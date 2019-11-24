@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour {
     private int jumps = 3;
     private bool isDoubleJumpPlaying;
     //private bool applyDownbForce;
- 
+
     void Start() {
         rb = GetComponent<Rigidbody2D>();
     }
@@ -66,8 +66,8 @@ public class PlayerController : MonoBehaviour {
         } else if (Input.GetKey(KeyCode.DownArrow) && !isGrounded) {
             rb.velocity += Vector2.down * downForce * Time.deltaTime;
             //applyDownbForce = true;
-            if (rb.velocity.y <= -18f) {
-                velVector.y = -18f;
+            if (rb.velocity.y <= -23) {
+                velVector.y = -23;
                 rb.velocity = velVector;
             }
 
