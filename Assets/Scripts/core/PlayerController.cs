@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     public Transform feetCollider;
     public float checkRaduis;
     public float jumpForce;
+    public float downForce;
     public LayerMask whatIsGround;
     public float jumpTime;
 
@@ -61,6 +62,11 @@ public class PlayerController : MonoBehaviour {
             } else {
                 isJumping = false;
             }
+        }
+
+        if (Input.GetKey(KeyCode.DownArrow) && !isGrounded) {
+            print("DOWN");
+            rb.velocity += Vector2.down * downForce * Time.deltaTime;
         }
 
         if (Input.GetKeyUp(KeyCode.Space)) {
