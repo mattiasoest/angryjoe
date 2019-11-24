@@ -10,42 +10,30 @@ public class Obstacle : MonoBehaviour
 
     public float speedEffect;
 
-    public void init() {
+    public void Init(float yPosition) {
+        body = GetComponent<Rigidbody2D>();
         body.velocity = new Vector2(speedEffect, 0);
-        generatePosition();
+        GeneratePosition(yPosition);
     }
 
 	void Start() {
         camPos = Camera.main.ViewportToWorldPoint(new Vector2(-0.15f, 0.5f));
-        body = GetComponent<Rigidbody2D>();
-		body.velocity = new Vector2(speedEffect, 0);
-        generatePosition();
        }
 
 
 	void Update(){ }
 
-	private void FixedUpdate()
-	{
+	private void FixedUpdate() {
 
-		if (body.transform.position.x <= camPos.x)
-		{
-            //generatePosition();
+		if (body.transform.position.x <= camPos.x) {
             GameEventManager.instance.ObstacleRecycle(this);
-
 		}
-
-
 	}
 
-    private float generateRandomYpos() {
-        return Random.Range(-4.7f, 5.2f);
-    }
-
-    private void generatePosition() {
+    private void GeneratePosition(float yPosition) {
         posVector.x = 2.1f;
         //posVector.y = body.position.y;
-        posVector.y = generateRandomYpos();
+        posVector.y = yPosition;
         body.transform.position = posVector;
     }
 }

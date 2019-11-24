@@ -65,8 +65,8 @@ public class PlayerController : MonoBehaviour {
             }
         } else if (Input.GetKey(KeyCode.DownArrow) && !isGrounded) {
             rb.velocity += Vector2.down * downForce * Time.deltaTime;
-            if (rb.velocity.y <= -23) {
-                velVector.y = -23;
+            if (rb.velocity.y <= -30) {
+                velVector.y = -30;
                 rb.velocity = velVector;
             }
 

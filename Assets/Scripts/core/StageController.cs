@@ -14,6 +14,9 @@ public class StageController : MonoBehaviour {
 
     private float spawnTimer = DEFAULT_SPAWN_TIME;
 
+    private float lastYpos;
+    private bool lastLowPos;
+
 
     private void Awake() {
         instance = this;
@@ -32,9 +35,12 @@ public class StageController : MonoBehaviour {
             if (obstaclePool.Count > 0) {
                 Obstacle pooled = obstaclePool.Pop();
                 pooled.gameObject.SetActive(true);
-                pooled.init();
+                float randomY = GenerateRandomYpos();
+                pooled.Init(randomY);
             } else {
-                Instantiate(obstacleFab);
+                GameObject obs = Instantiate(obstacleFab);
+                float randomY = GenerateRandomYpos();
+                obs.GetComponent<Obstacle>().Init(randomY);
             }
             spawnTimer = DEFAULT_SPAWN_TIME;
         }
@@ -44,5 +50,27 @@ public class StageController : MonoBehaviour {
     private void OnObstacleRecycle(Obstacle obs) {
         obs.gameObject.SetActive(false);
         obstaclePool.Push(obs);
+    }
+
+    private float GenerateRandomYpos() {
+        float randomY = Random.Range(-5.05f, 5.2f);
+        if (lastYpos > 4f && randomY > 4f) {
+            print("Adjusted Y POS!!!");
+            randomY -= Random.Range(1f, 2.5f);
+        } else if (randomY < -1.9f && randomY > -5.05f) {
+            // Dont have 2 low points in a row
+            if (lastLowPos) {
+                print("Not Allowed!!!! genereated new higher pos!");
+                randomY = Random.Range(-1.8f, 5.2f);
+                lastLowPos = false;
+            } else {
+                print("LOW VAL ADJUSTED");
+                // Set lowest point
+                lastLowPos = true;
+                randomY = -5.05f;
+            }
+        }
+        lastYpos = randomY;
+        return randomY;
     }
 }

@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 246a97261d9ca476381c3e42118dad39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleFab: {fileID: 5924935200501268447, guid: 3686d0a6bb5c9468e9faa44fc7256c14,
+  obstacleFab: {fileID: 5592761225635396130, guid: 3686d0a6bb5c9468e9faa44fc7256c14,
     type: 3}
 --- !u!20 &519420031
 Camera:
@@ -1375,12 +1375,12 @@ MonoBehaviour:
   speed: 5
   feetCollider: {fileID: 472947253}
   checkRaduis: 0
-  jumpForce: 8.2
-  downForce: 70
+  jumpForce: 10
+  downForce: 100
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
-  jumpTime: 0.3
+  jumpTime: 0.5
   upperCollider: {fileID: 1786152020}
 --- !u!61 &1786152020
 BoxCollider2D:
