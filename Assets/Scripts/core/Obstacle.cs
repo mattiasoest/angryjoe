@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstacleController : MonoBehaviour
+public class Obstacle : MonoBehaviour
 {
 	private Rigidbody2D body;
 	private Vector2 posVector = new Vector2();
@@ -10,12 +10,16 @@ public class ObstacleController : MonoBehaviour
 
     public float speedEffect;
 
+    public void init() {
+        body.velocity = new Vector2(speedEffect, 0);
+        generatePosition();
+    }
+
 	void Start() {
         camPos = Camera.main.ViewportToWorldPoint(new Vector2(-0.15f, 0.5f));
         body = GetComponent<Rigidbody2D>();
 		body.velocity = new Vector2(speedEffect, 0);
         generatePosition();
-
        }
 
 
@@ -26,8 +30,9 @@ public class ObstacleController : MonoBehaviour
 
 		if (body.transform.position.x <= camPos.x)
 		{
-            StageController.instance.Test("new pos!!!");
-            generatePosition();
+            //generatePosition();
+            GameEventManager.instance.ObstacleRecycle(this);
+
 		}
 
 
