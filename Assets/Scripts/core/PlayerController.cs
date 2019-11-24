@@ -16,24 +16,25 @@ public class PlayerController : MonoBehaviour {
     public float jumpTime;
 
     private Rigidbody2D rb;
-    private float moveInput;
     private Vector2 velVector = new Vector2();
     private bool isGrounded;
     private float counter;
     private bool isJumping;
     private int jumps = 3;
     private bool isDoubleJumpPlaying;
+    //private bool applyDownbForce;
  
     void Start() {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void FixedUpdate() {
-        moveInput = Input.GetAxisRaw("Horizontal");
-        velVector.x = moveInput * speed;
-        velVector.y = rb.velocity.y;
-        rb.velocity = velVector;
+    public void ResetJumpTrigger() {
+        isDoubleJumpPlaying = false;
+        animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
+        animator.ResetTrigger("doubleJump");
+    }
+
+    private void FixedUpdate() {
     }
 
     private void Update() {
@@ -62,11 +63,14 @@ public class PlayerController : MonoBehaviour {
             } else {
                 isJumping = false;
             }
-        }
-
-        if (Input.GetKey(KeyCode.DownArrow) && !isGrounded) {
-            print("DOWN");
+        } else if (Input.GetKey(KeyCode.DownArrow) && !isGrounded) {
             rb.velocity += Vector2.down * downForce * Time.deltaTime;
+            //applyDownbForce = true;
+            if (rb.velocity.y <= -18f) {
+                velVector.y = -18f;
+                rb.velocity = velVector;
+            }
+
         }
 
         if (Input.GetKeyUp(KeyCode.Space)) {
@@ -74,12 +78,5 @@ public class PlayerController : MonoBehaviour {
         }
 
         animator.SetBool("isGrounded", isGrounded);
-
-    }
-
-    public void ResetJumpTrigger() {
-        isDoubleJumpPlaying = false;
-        animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
-        animator.ResetTrigger("doubleJump");
     }
 }
