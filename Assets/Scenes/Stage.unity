@@ -543,10 +543,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6848fb13d90b64f6badade9d7768cb3b, type: 3}
   - {fileID: 21300000, guid: d45f19099308f44d59c30a30754c4fec, type: 3}
   - {fileID: 21300000, guid: 352699ccd75af47368b0ec7434f3d82c, type: 3}
-  - {fileID: 21300000, guid: 5d082f74c819b4861ab270730daf1d3e, type: 3}
+  - {fileID: 21300000, guid: 81c0050c86a3a4c4eb9d87c36b0ba164, type: 3}
   - {fileID: 21300000, guid: 791e2d24ff5fb429da085d9ce2d1ef81, type: 3}
   - {fileID: 21300000, guid: f978b64e1177c4eb8881b89584f671f7, type: 3}
-  - {fileID: 21300000, guid: 81c0050c86a3a4c4eb9d87c36b0ba164, type: 3}
+  - {fileID: 21300000, guid: 5d082f74c819b4861ab270730daf1d3e, type: 3}
   obstacleFab: {fileID: 5592761225635396130, guid: 3686d0a6bb5c9468e9faa44fc7256c14,
     type: 3}
 --- !u!20 &519420031
@@ -734,7 +734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4adf19b6e62843b5ad22eca35ac5a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedEffect: -4.5
+  speedEffect: -4.6
 --- !u!1 &1063036655
 GameObject:
   m_ObjectHideFlags: 0
@@ -983,7 +983,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4adf19b6e62843b5ad22eca35ac5a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedEffect: -4.5
+  speedEffect: -4.6
 --- !u!212 &1550750304
 SpriteRenderer:
   m_ObjectHideFlags: 0

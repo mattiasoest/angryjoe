@@ -8,7 +8,9 @@ public class StageController : MonoBehaviour {
     public static StageController instance;
     public GameObject obstacleFab;
 
-    private static float DEFAULT_SPAWN_TIME = 1.5f;
+    private const float DEFAULT_SPAWN_TIME = 1.45f;
+    private const float LOWER_OBSTACLE_BOUND = -5.2f;
+    private const float UPPER_OBSTACLE_BOUND = 4f;
 
     private enum GAME_STATE { PLAYING, MENU };
 
@@ -19,9 +21,19 @@ public class StageController : MonoBehaviour {
     private float lastYpos;
     private bool lastLowPos;
 
+    private int normalRandomCount = 0;
+
+    private int lastRandomSpriteIndex = -1;
+
 
     public Sprite getRandomObstacleSprite() {
-        return obsSprites[Random.Range(0, 7)];
+        int randomIndex = Random.Range(0, 7);
+
+        // Do one more random just in case
+        if (randomIndex == lastRandomSpriteIndex) {
+            randomIndex = Random.Range(0, 7);
+        }
+        return obsSprites[randomIndex];
     }
 
 
@@ -60,22 +72,32 @@ public class StageController : MonoBehaviour {
     }
 
     private float GenerateRandomYpos() {
-        float randomY = Random.Range(-5.05f, 5.2f);
-        if (lastYpos > 4f && randomY > 4f) {
-            print("Adjusted Y POS!!!");
-            randomY -= Random.Range(1f, 2.5f);
-        } else if (randomY < -1.9f && randomY > -5.05f) {
+        float randomY = Random.Range(LOWER_OBSTACLE_BOUND, UPPER_OBSTACLE_BOUND);
+        normalRandomCount++;
+        if (lastYpos > 3.3f && randomY > 3.3f) {
+            normalRandomCount = 0;
+            lastLowPos = true;
+            randomY = LOWER_OBSTACLE_BOUND;
+            //randomY -= Random.Range(1.5f, 3.5f);
+        } else if (randomY < -1.94f && randomY > LOWER_OBSTACLE_BOUND) {
+            normalRandomCount = 0;
             // Dont have 2 low points in a row
             if (lastLowPos) {
-                print("Not Allowed!!!! genereated new higher pos!");
-                randomY = Random.Range(-1.8f, 5.2f);
+                randomY = Random.Range(-1.85f, 5.2f);
                 lastLowPos = false;
             } else {
-                print("LOW VAL ADJUSTED");
                 // Set lowest point
                 lastLowPos = true;
-                randomY = -5.05f;
+                randomY = LOWER_OBSTACLE_BOUND;
             }
+        }
+
+        if (normalRandomCount > 2) {
+            normalRandomCount = 0;
+            // Set lowest point or highest point
+            randomY = Random.Range(0f, 1f) > 0.5f ? LOWER_OBSTACLE_BOUND : UPPER_OBSTACLE_BOUND;
+
+            lastLowPos = randomY.Equals(LOWER_OBSTACLE_BOUND);
         }
         lastYpos = randomY;
         return randomY;
