@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StageController : MonoBehaviour {
+    public Sprite[] obsSprites;
+
     public static StageController instance;
     public GameObject obstacleFab;
 
@@ -16,6 +18,11 @@ public class StageController : MonoBehaviour {
 
     private float lastYpos;
     private bool lastLowPos;
+
+
+    public Sprite getRandomObstacleSprite() {
+        return obsSprites[Random.Range(0, 7)];
+    }
 
 
     private void Awake() {

@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
-{
-	private Rigidbody2D body;
+public class Obstacle : MonoBehaviour {
+    public SpriteRenderer topRenderer, bottomRenderer;
+    private Rigidbody2D body;
 	private Vector2 posVector = new Vector2();
     private Vector2 camPos;
 
     public float speedEffect;
 
     public void Init(float yPosition) {
+        topRenderer.sprite = StageController.instance.getRandomObstacleSprite();
+        bottomRenderer.sprite = StageController.instance.getRandomObstacleSprite();
         body = GetComponent<Rigidbody2D>();
         body.velocity = new Vector2(speedEffect, 0);
         GeneratePosition(yPosition);
