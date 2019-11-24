@@ -14,10 +14,12 @@ public class PlayerController : MonoBehaviour {
     public float downForce;
     public LayerMask whatIsGround;
     public float jumpTime;
+    public BoxCollider2D upperCollider;
 
     private Rigidbody2D rb;
     private Vector2 velVector = new Vector2();
     private bool isGrounded;
+    private bool isSliding;
     private float counter;
     private bool isJumping;
     private int jumps = 3;
@@ -37,6 +39,8 @@ public class PlayerController : MonoBehaviour {
         isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
 
         if ((jumps > 0 || isGrounded) && Input.GetKeyDown(KeyCode.Space)) {
+
+            resetSliding();
             if (isGrounded) {
                 jumps = DEFAULT_JUMPS;
             }
@@ -66,10 +70,18 @@ public class PlayerController : MonoBehaviour {
                 rb.velocity = velVector;
             }
 
+        } else if (Input.GetKey(KeyCode.DownArrow) && isGrounded && !isSliding) {
+            isSliding = true;
+            animator.SetBool("isSliding", true);
+            upperCollider.enabled = false;
         }
 
         if (Input.GetKeyUp(KeyCode.Space)) {
             isJumping = false;
+        }
+
+        if (Input.GetKeyUp(KeyCode.DownArrow)) {
+            resetSliding();
         }
 
         animator.SetBool("isGrounded", isGrounded);
@@ -81,6 +93,12 @@ public class PlayerController : MonoBehaviour {
             //collision.gameObject.SendMessage("ApplyDamage", 10);
             print("collided");
         }
+    }
+
+    private void resetSliding() {
+        isSliding = false;
+        upperCollider.enabled = true;
+        animator.SetBool("isSliding", false);
     }
 
     //private void FixedUpdate() {}

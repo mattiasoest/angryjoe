@@ -38,6 +38,7 @@ public class ObstacleController : MonoBehaviour
 
     private void generatePosition() {
         posVector.x = 2.1f;
+        //posVector.y = body.position.y;
         posVector.y = generateRandomYpos();
         body.transform.position = posVector;
     }
