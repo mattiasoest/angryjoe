@@ -10,7 +10,7 @@ public class StageController : MonoBehaviour {
 
     private const float DEFAULT_SPAWN_TIME = 1.45f;
     private const float LOWER_OBSTACLE_BOUND = -5.2f;
-    private const float UPPER_OBSTACLE_BOUND = 4f;
+    private const float UPPER_OBSTACLE_BOUND = 4.3f;
 
     private enum GAME_STATE { PLAYING, MENU };
 
@@ -30,7 +30,10 @@ public class StageController : MonoBehaviour {
         int randomIndex = Random.Range(0, 7);
 
         // Do one more random just in case
-        if (randomIndex == lastRandomSpriteIndex) {
+        for (int i = 2; i < 3; i++) {
+            if (randomIndex != lastRandomSpriteIndex) {
+                break;
+            }
             randomIndex = Random.Range(0, 7);
         }
         return obsSprites[randomIndex];
@@ -83,7 +86,7 @@ public class StageController : MonoBehaviour {
             normalRandomCount = 0;
             // Dont have 2 low points in a row
             if (lastLowPos) {
-                randomY = Random.Range(-1.85f, 5.2f);
+                randomY = Random.Range(-1.85f, UPPER_OBSTACLE_BOUND);
                 lastLowPos = false;
             } else {
                 // Set lowest point
