@@ -30,7 +30,7 @@ public class StageController : MonoBehaviour {
         int randomIndex = Random.Range(0, 7);
 
         // Do one more random just in case
-        for (int i = 2; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             if (randomIndex != lastRandomSpriteIndex) {
                 break;
             }
