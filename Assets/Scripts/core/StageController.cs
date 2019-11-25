@@ -7,19 +7,20 @@ public class StageController : MonoBehaviour {
 
     public static StageController instance;
     public GameObject obstacleFab;
-
+    public bool isPlayerAlive = true;
     private const float DEFAULT_SPAWN_TIME = 1.45f;
     private const float LOWER_OBSTACLE_BOUND = -5.2f;
     private const float UPPER_OBSTACLE_BOUND = 4.3f;
 
     private enum GAME_STATE { PLAYING, MENU };
 
-    private Stack<Obstacle> obstaclePool = new Stack<Obstacle>();
+    private readonly Stack<Obstacle> obstaclePool = new Stack<Obstacle>();
 
     private float spawnTimer = DEFAULT_SPAWN_TIME;
 
     private float lastYpos;
     private bool lastLowPos;
+    
 
     private int normalRandomCount = 0;
 
@@ -47,31 +48,38 @@ public class StageController : MonoBehaviour {
     void Start() {
         // Subscribe to the list of events
         GameEventManager.instance.onObstacleRecycle += OnObstacleRecycle;
+        GameEventManager.instance.onPlayerdied += OnPlayerDied;
     }
 
     // Update is called once per frame
     void Update() {
-        spawnTimer -= Time.deltaTime;
+        if (isPlayerAlive) {
+            spawnTimer -= Time.deltaTime;
 
-        if (spawnTimer < 0) {
-            if (obstaclePool.Count > 0) {
-                Obstacle pooled = obstaclePool.Pop();
-                pooled.gameObject.SetActive(true);
-                float randomY = GenerateRandomYpos();
-                pooled.Init(randomY);
-            } else {
-                GameObject obs = Instantiate(obstacleFab);
-                float randomY = GenerateRandomYpos();
-                obs.GetComponent<Obstacle>().Init(randomY);
+            if (spawnTimer < 0) {
+                if (obstaclePool.Count > 0) {
+                    Obstacle pooled = obstaclePool.Pop();
+                    pooled.gameObject.SetActive(true);
+                    float randomY = GenerateRandomYpos();
+                    pooled.Init(randomY);
+                } else {
+                    GameObject obs = Instantiate(obstacleFab);
+                    float randomY = GenerateRandomYpos();
+                    obs.GetComponent<Obstacle>().Init(randomY);
+                }
+                spawnTimer = DEFAULT_SPAWN_TIME;
             }
-            spawnTimer = DEFAULT_SPAWN_TIME;
         }
-
     }
 
     private void OnObstacleRecycle(Obstacle obs) {
         obs.gameObject.SetActive(false);
         obstaclePool.Push(obs);
+    }
+
+    private void OnPlayerDied() {
+        print("player died from stage");
+        isPlayerAlive = false;
     }
 
     private float GenerateRandomYpos() {

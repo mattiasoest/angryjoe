@@ -20,16 +20,23 @@ public class Obstacle : MonoBehaviour {
 
 	void Start() {
         camPos = Camera.main.ViewportToWorldPoint(new Vector2(-0.15f, 0.5f));
-       }
+        GameEventManager.instance.onPlayerdied += StopMovement;
+    }
+
+    private void StopMovement() {
+        body.velocity = new Vector2(0, 0);
+    }
 
 
-	void Update(){ }
+
+    void Update() {
+        if (body.transform.position.x <= camPos.x) {
+            GameEventManager.instance.ObstacleRecycle(this);
+        }
+    }
 
 	private void FixedUpdate() {
 
-		if (body.transform.position.x <= camPos.x) {
-            GameEventManager.instance.ObstacleRecycle(this);
-		}
 	}
 
     private void GeneratePosition(float yPosition) {

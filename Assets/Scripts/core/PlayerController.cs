@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     private const int DEFAULT_JUMPS = 3;
+    private const int DIED_FORCE = 2;
 
     public Animator animator;
     public float speed;
@@ -91,7 +92,10 @@ public class PlayerController : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.tag == "Obstacle") {
             //collision.gameObject.SendMessage("ApplyDamage", 10);
-            print("collided");
+            //animator.SetBool("isAlive", true);
+            //rb.velocity = Vector2.up * DIED_FORCE;
+            animator.SetTrigger("diedTrigger");
+            GameEventManager.instance.OnPlayerDied();
         }
     }
 

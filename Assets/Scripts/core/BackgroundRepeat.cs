@@ -14,21 +14,22 @@ public class BackgroundRepeat : MonoBehaviour {
         body.velocity = new Vector2(speedEffect, 0);
         posVector.x = body.transform.position.x;
         posVector.y = body.transform.position.y;
+        GameEventManager.instance.onPlayerdied += StopRepeat;
 
     }
 
+
+    private void StopRepeat() {
+        body.velocity = new Vector2(0, 0);
+    }
 
     void Update() {
-
-    }
-
-    private void FixedUpdate() {
-
-        if (body.transform.position.x <= -imageWidth) {
+        if (StageController.instance.isPlayerAlive && body.transform.position.x <= -imageWidth) {
             posVector.x = transform.position.x + imageWidth * 2f;
             body.transform.position = posVector;
         }
+    }
 
-
+    private void FixedUpdate() {
     }
 }

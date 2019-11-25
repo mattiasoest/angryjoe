@@ -22,10 +22,9 @@ public class GameEventManager : MonoBehaviour {
             onObstacleRecycle(obstacle);
         }
     }
-    //public event Action onObstacleRecycle;
-    //public void ObstacleRecycle() {
-    //    if (onObstacleRecycle != null) {
-    //        onObstacleRecycle();
-    //    }
-    //}
+
+    public event Action onPlayerdied;
+    public void OnPlayerDied() {
+        onPlayerdied();
+    }
 }
