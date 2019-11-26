@@ -12,7 +12,8 @@ public class StageController : MonoBehaviour {
     private const float LOWER_OBSTACLE_BOUND = -5.2f;
     private const float UPPER_OBSTACLE_BOUND = 4.3f;
 
-    private enum GAME_STATE { PLAYING, MENU };
+    private enum GAME_STATE { GAMEPLAY, MENU };
+    private GAME_STATE currentState = GAME_STATE.MENU;
 
     private readonly Stack<Obstacle> obstaclePool = new Stack<Obstacle>();
 
@@ -22,7 +23,7 @@ public class StageController : MonoBehaviour {
     private bool lastLowPos;
     
 
-    private int normalRandomCount = 0;
+    private int normalRandomCount;
 
     private int lastRandomSpriteIndex = -1;
 
@@ -37,6 +38,7 @@ public class StageController : MonoBehaviour {
             }
             randomIndex = Random.Range(0, 7);
         }
+        lastRandomSpriteIndex = randomIndex;
         return obsSprites[randomIndex];
     }
 
@@ -48,27 +50,41 @@ public class StageController : MonoBehaviour {
     void Start() {
         // Subscribe to the list of events
         GameEventManager.instance.onObstacleRecycle += OnObstacleRecycle;
-        GameEventManager.instance.onPlayerdied += OnPlayerDied;
+        GameEventManager.instance.onPlayerDied += OnPlayerDied;
     }
 
     // Update is called once per frame
     void Update() {
-        if (isPlayerAlive) {
-            spawnTimer -= Time.deltaTime;
-
-            if (spawnTimer < 0) {
-                if (obstaclePool.Count > 0) {
-                    Obstacle pooled = obstaclePool.Pop();
-                    pooled.gameObject.SetActive(true);
-                    float randomY = GenerateRandomYpos();
-                    pooled.Init(randomY);
-                } else {
-                    GameObject obs = Instantiate(obstacleFab);
-                    float randomY = GenerateRandomYpos();
-                    obs.GetComponent<Obstacle>().Init(randomY);
+        switch (currentState) {
+            case GAME_STATE.MENU:
+                if (Input.GetKey(KeyCode.Space)) {
+                    isPlayerAlive = true;
+                    Debug.Log("=== GAMEPLAY ===");
+                    currentState = GAME_STATE.GAMEPLAY;
                 }
-                spawnTimer = DEFAULT_SPAWN_TIME;
-            }
+                break;
+            case GAME_STATE.GAMEPLAY:
+                if (isPlayerAlive) {
+                    spawnTimer -= Time.deltaTime;
+
+                    if (spawnTimer < 0) {
+                        if (obstaclePool.Count > 0) {
+                            Obstacle pooled = obstaclePool.Pop();
+                            pooled.gameObject.SetActive(true);
+                            float randomY = GenerateRandomYpos();
+                            pooled.Init(randomY);
+                        } else {
+                            GameObject obs = Instantiate(obstacleFab);
+                            float randomY = GenerateRandomYpos();
+                            obs.GetComponent<Obstacle>().Init(randomY);
+                        }
+                        spawnTimer = DEFAULT_SPAWN_TIME;
+                    }
+                }
+                break;
+            default:
+                throw new System.Exception("Invalid state");
+
         }
     }
 
@@ -78,12 +94,23 @@ public class StageController : MonoBehaviour {
     }
 
     private void OnPlayerDied() {
-        print("player died from stage");
-        isPlayerAlive = false;
+        if (isPlayerAlive) {
+            isPlayerAlive = false;
+            StartCoroutine(ResetGame());
+        }
+    }
+
+    private IEnumerator ResetGame() {
+        yield return new WaitForSeconds(3);
+        isPlayerAlive = true;
+        spawnTimer = DEFAULT_SPAWN_TIME;
+        GameEventManager.instance.OnReset();
+        Debug.Log("=== MAIN MENU ===");
+        currentState = GAME_STATE.MENU;
     }
 
     private float GenerateRandomYpos() {
-        float randomY = Random.Range(LOWER_OBSTACLE_BOUND, UPPER_OBSTACLE_BOUND);
+        float randomY = UnityEngine.Random.Range(LOWER_OBSTACLE_BOUND, UPPER_OBSTACLE_BOUND);
         normalRandomCount++;
         if (lastYpos > 3.3f && randomY > 3.3f) {
             normalRandomCount = 0;

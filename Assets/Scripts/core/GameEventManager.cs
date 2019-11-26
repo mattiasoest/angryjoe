@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 
 public class GameEventManager : MonoBehaviour {
@@ -15,6 +14,16 @@ public class GameEventManager : MonoBehaviour {
 
     }
 
+    public event Action onPlayerDied;
+    public void OnPlayerDied() {
+        onPlayerDied();
+    }
+
+
+    public event Action onReset;
+    public void OnReset() {
+        onReset();
+    }
 
     public event Action<Obstacle> onObstacleRecycle;
     public void ObstacleRecycle(Obstacle obstacle) {
@@ -23,8 +32,4 @@ public class GameEventManager : MonoBehaviour {
         }
     }
 
-    public event Action onPlayerdied;
-    public void OnPlayerDied() {
-        onPlayerdied();
-    }
 }

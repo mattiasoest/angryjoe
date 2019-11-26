@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Obstacle : MonoBehaviour {
     public SpriteRenderer topRenderer, bottomRenderer;
     private Rigidbody2D body;
-	private Vector2 posVector = new Vector2();
+	private Vector2 posVector;
     private Vector2 camPos;
 
     public float speedEffect;
@@ -20,14 +18,9 @@ public class Obstacle : MonoBehaviour {
 
 	void Start() {
         camPos = Camera.main.ViewportToWorldPoint(new Vector2(-0.15f, 0.5f));
-        GameEventManager.instance.onPlayerdied += StopMovement;
+        GameEventManager.instance.onPlayerDied += StopMovement;
+        GameEventManager.instance.onReset += OnReset;
     }
-
-    private void StopMovement() {
-        body.velocity = new Vector2(0, 0);
-    }
-
-
 
     void Update() {
         if (body.transform.position.x <= camPos.x) {
@@ -35,13 +28,16 @@ public class Obstacle : MonoBehaviour {
         }
     }
 
-	private void FixedUpdate() {
+    private void StopMovement() {
+        body.velocity = new Vector2(0, 0);
+    }
 
-	}
+    private void OnReset() {
+        GameEventManager.instance.ObstacleRecycle(this);
+    }
 
     private void GeneratePosition(float yPosition) {
         posVector.x = 2.1f;
-        //posVector.y = body.position.y;
         posVector.y = yPosition;
         body.transform.position = posVector;
     }

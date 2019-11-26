@@ -34,63 +34,67 @@ public class PlayerController : MonoBehaviour {
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
+        GameEventManager.instance.onReset += OnReset;
     }
 
     void Update() {
-        isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
+        if (StageController.instance.isPlayerAlive) {
 
-        if ((jumps > 0 || isGrounded) && Input.GetKeyDown(KeyCode.Space)) {
+            isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
 
-            resetSliding();
-            if (isGrounded) {
-                jumps = DEFAULT_JUMPS;
-            }
-            if (jumps < DEFAULT_JUMPS) {
-                isDoubleJumpPlaying = true;
-                animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
-                animator.SetTrigger("doubleJump");
+            if ((jumps > 0 || isGrounded) && Input.GetKeyDown(KeyCode.Space)) {
 
-            }
-            jumps--;
-            rb.velocity = Vector2.up * jumpForce;
-            counter = jumpTime;
-            isJumping = true;
-        }
+                ResetSliding();
+                if (isGrounded) {
+                    jumps = DEFAULT_JUMPS;
+                }
+                if (jumps < DEFAULT_JUMPS) {
+                    isDoubleJumpPlaying = true;
+                    animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
+                    animator.SetTrigger("doubleJump");
 
-        if (Input.GetKey(KeyCode.Space) && isJumping) {
-            if (counter > 0f) {
+                }
+                jumps--;
                 rb.velocity = Vector2.up * jumpForce;
-                counter -= Time.deltaTime;
-            } else {
+                counter = jumpTime;
+                isJumping = true;
+            }
+
+            if (Input.GetKey(KeyCode.Space) && isJumping) {
+                if (counter > 0f) {
+                    rb.velocity = Vector2.up * jumpForce;
+                    counter -= Time.deltaTime;
+                } else {
+                    isJumping = false;
+                }
+            } else if (Input.GetKey(KeyCode.DownArrow) && !isGrounded) {
+                rb.velocity += Vector2.down * downForce * Time.deltaTime;
+                if (rb.velocity.y <= -30) {
+                    velVector.y = -30;
+                    rb.velocity = velVector;
+                }
+
+            } else if (Input.GetKey(KeyCode.DownArrow) && isGrounded && !isSliding) {
+                isSliding = true;
+                animator.SetBool("isSliding", true);
+                upperCollider.enabled = false;
+            }
+
+            if (Input.GetKeyUp(KeyCode.Space)) {
                 isJumping = false;
             }
-        } else if (Input.GetKey(KeyCode.DownArrow) && !isGrounded) {
-            rb.velocity += Vector2.down * downForce * Time.deltaTime;
-            if (rb.velocity.y <= -30) {
-                velVector.y = -30;
-                rb.velocity = velVector;
+
+            if (Input.GetKeyUp(KeyCode.DownArrow)) {
+                ResetSliding();
             }
 
-        } else if (Input.GetKey(KeyCode.DownArrow) && isGrounded && !isSliding) {
-            isSliding = true;
-            animator.SetBool("isSliding", true);
-            upperCollider.enabled = false;
+            animator.SetBool("isGrounded", isGrounded);
         }
-
-        if (Input.GetKeyUp(KeyCode.Space)) {
-            isJumping = false;
-        }
-
-        if (Input.GetKeyUp(KeyCode.DownArrow)) {
-            resetSliding();
-        }
-
-        animator.SetBool("isGrounded", isGrounded);
     }
 
 
     void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.tag == "Obstacle") {
+        if (collision.gameObject.tag == "Obstacle" && StageController.instance.isPlayerAlive) {
             //collision.gameObject.SendMessage("ApplyDamage", 10);
             //animator.SetBool("isAlive", true);
             //rb.velocity = Vector2.up * DIED_FORCE;
@@ -99,7 +103,11 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void resetSliding() {
+    private void OnReset() {
+        animator.SetTrigger("resetTrigger");
+    }
+
+    private void ResetSliding() {
         isSliding = false;
         upperCollider.enabled = true;
         animator.SetBool("isSliding", false);
