@@ -61,6 +61,9 @@ public class Player : MonoBehaviour {
                 rb.velocity = Vector2.up * jumpForce;
                 counter = jumpTime;
                 isJumping = true;
+
+                //AudioManager.instance.Play("jump2");
+                AudioManager.instance.PlayJump();
             }
 
             if (Input.GetKey(KeyCode.Space) && isJumping) {
@@ -78,9 +81,14 @@ public class Player : MonoBehaviour {
                 }
 
             } else if (Input.GetKey(KeyCode.DownArrow) && isGrounded && !isSliding) {
+                //AudioManager.instance.PlaySlide();
                 isSliding = true;
                 animator.SetBool("isSliding", true);
                 upperCollider.enabled = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.DownArrow)) {
+                AudioManager.instance.PlayDownForce();
             }
 
             if (Input.GetKeyUp(KeyCode.Space)) {

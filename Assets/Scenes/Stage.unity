@@ -686,9 +686,9 @@ GameObject:
   m_Component:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
-  - component: {fileID: 519420029}
   - component: {fileID: 519420030}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420029}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1924,6 +1924,85 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2074939523
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2074939525}
+  - component: {fileID: 2074939524}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2074939524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074939523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe661e6721149464c9f18d9b21491870, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: e209f1fd8e1e5423786416bea5cf9d98, type: 3}
+    name: death0
+    volume: 0.4
+    pitch: 1
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 66fec3134dc17424c902e45a514f6603, type: 3}
+    name: death1
+    volume: 0.2
+    pitch: 1
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 1a68415af1e7e4bc39d2e514c7e88a74, type: 3}
+    name: jump0
+    volume: 0.4
+    pitch: 1
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 393a4c7dfa4a74c409fff86ef93a8eba, type: 3}
+    name: jump1
+    volume: 1
+    pitch: 1
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 5939923b2ddfe4744b438f6afc7b92fd, type: 3}
+    name: start0
+    volume: 0.5
+    pitch: 1
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 859c2f5928a0247d5ada6fea720b5077, type: 3}
+    name: start1
+    volume: 0.8
+    pitch: 1
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: daa374375d2a5426fa96889439f6cc2c, type: 3}
+    name: slide0
+    volume: 0.6
+    pitch: 1
+--- !u!4 &2074939525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074939523}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.16, y: -1.6899999, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2095709669
 GameObject:

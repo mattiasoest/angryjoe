@@ -31,14 +31,14 @@ public class StageController : MonoBehaviour {
 
 
     public Sprite getRandomObstacleSprite() {
-        int randomIndex = Random.Range(0, 7);
+        int randomIndex = Random.Range(0, 8);
 
         // Do one more random just in case
         for (int i = 0; i < 3; i++) {
             if (randomIndex != lastRandomSpriteIndex) {
                 break;
             }
-            randomIndex = Random.Range(0, 7);
+            randomIndex = Random.Range(0, 8);
         }
         lastRandomSpriteIndex = randomIndex;
         return obsSprites[randomIndex];
@@ -98,12 +98,17 @@ public class StageController : MonoBehaviour {
     }
 
     private void OnPlayerDied() {
+        AudioManager.instance.PlayDeath();
         jumpLabel.enabled = false;
         StartCoroutine(ResetGame());
     }
 
     private IEnumerator ResetGame() {
         yield return new WaitForSeconds(3);
+        // Only play it in some cases
+        if (Random.Range(0, 1f) > 0.65f) {
+            AudioManager.instance.PlayStartGame();
+        }
         spawnTimer = DEFAULT_SPAWN_TIME;
         GameEventManager.instance.OnReset();
         Debug.Log("=== MAIN MENU ===");
@@ -111,7 +116,7 @@ public class StageController : MonoBehaviour {
     }
 
     private float GenerateRandomYpos() {
-        float randomY = UnityEngine.Random.Range(LOWER_OBSTACLE_BOUND, UPPER_OBSTACLE_BOUND);
+        float randomY = Random.Range(LOWER_OBSTACLE_BOUND, UPPER_OBSTACLE_BOUND);
         normalRandomCount++;
         if (lastYpos > 3.3f && randomY > 3.3f) {
             normalRandomCount = 0;
