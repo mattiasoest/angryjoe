@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageController : MonoBehaviour {
-    public Sprite[] obsSprites;
-
     public static StageController instance;
+    public Player player;
+    public Sprite[] obsSprites;
+    public Text jumpLabel;
     public GameObject obstacleFab;
-    public bool isPlayerAlive = true;
+
     private const float DEFAULT_SPAWN_TIME = 1.45f;
     private const float LOWER_OBSTACLE_BOUND = -5.2f;
     private const float UPPER_OBSTACLE_BOUND = 4.3f;
@@ -58,13 +60,12 @@ public class StageController : MonoBehaviour {
         switch (currentState) {
             case GAME_STATE.MENU:
                 if (Input.GetKey(KeyCode.Space)) {
-                    isPlayerAlive = true;
                     Debug.Log("=== GAMEPLAY ===");
                     currentState = GAME_STATE.GAMEPLAY;
                 }
                 break;
             case GAME_STATE.GAMEPLAY:
-                if (isPlayerAlive) {
+                if (player.isAlive) {
                     spawnTimer -= Time.deltaTime;
 
                     if (spawnTimer < 0) {
@@ -94,15 +95,11 @@ public class StageController : MonoBehaviour {
     }
 
     private void OnPlayerDied() {
-        if (isPlayerAlive) {
-            isPlayerAlive = false;
-            StartCoroutine(ResetGame());
-        }
+        StartCoroutine(ResetGame());
     }
 
     private IEnumerator ResetGame() {
         yield return new WaitForSeconds(3);
-        isPlayerAlive = true;
         spawnTimer = DEFAULT_SPAWN_TIME;
         GameEventManager.instance.OnReset();
         Debug.Log("=== MAIN MENU ===");

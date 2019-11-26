@@ -30,7 +30,7 @@ public class BackgroundRepeat : MonoBehaviour {
     }
 
     void Update() {
-        if (StageController.instance.isPlayerAlive && body.transform.position.x <= -imageWidth) {
+        if (body.transform.position.x <= -imageWidth) {
             posVector.x = transform.position.x + imageWidth * 2f;
             body.transform.position = posVector;
         }

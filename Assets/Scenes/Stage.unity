@@ -725,6 +725,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 791e2d24ff5fb429da085d9ce2d1ef81, type: 3}
   - {fileID: 21300000, guid: f978b64e1177c4eb8881b89584f671f7, type: 3}
   - {fileID: 21300000, guid: 5d082f74c819b4861ab270730daf1d3e, type: 3}
+  jumpLabel: {fileID: 2095709671}
   obstacleFab: {fileID: 5592761225635396130, guid: 3686d0a6bb5c9468e9faa44fc7256c14,
     type: 3}
   isPlayerAlive: 1
@@ -1964,7 +1965,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095709669}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 

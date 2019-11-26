@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class Player : MonoBehaviour {
 
     private const int DEFAULT_JUMPS = 3;
     private const int DIED_FORCE = 2;
@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour {
     public float jumpTime;
     public BoxCollider2D upperCollider;
 
+    public bool isAlive = true;
+
     private Rigidbody2D rb;
     private Vector2 velVector = new Vector2();
     private bool isGrounded;
@@ -25,6 +27,8 @@ public class PlayerController : MonoBehaviour {
     private bool isJumping;
     private int jumps = 3;
     private bool isDoubleJumpPlaying;
+
+
 
     public void ResetJumpTrigger() {
         isDoubleJumpPlaying = false;
@@ -38,7 +42,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        if (StageController.instance.isPlayerAlive) {
+        if (isAlive) {
 
             isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
 
@@ -94,7 +98,8 @@ public class PlayerController : MonoBehaviour {
 
 
     void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.tag == "Obstacle" && StageController.instance.isPlayerAlive) {
+        if (collision.gameObject.tag == "Obstacle" && isAlive) {
+            isAlive = false;
             //collision.gameObject.SendMessage("ApplyDamage", 10);
             //animator.SetBool("isAlive", true);
             //rb.velocity = Vector2.up * DIED_FORCE;
@@ -104,6 +109,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnReset() {
+        isAlive = true;
         animator.SetTrigger("resetTrigger");
     }
 
