@@ -66,8 +66,12 @@ public class StageController : MonoBehaviour {
                 break;
             case GAME_STATE.GAMEPLAY:
                 if (player.isAlive) {
-                    spawnTimer -= Time.deltaTime;
+                    jumpLabel.enabled = !player.isGrounded;
+                    if (player.isJumping) {
+                        jumpLabel.text = player.jumps.ToString();
+                    }
 
+                    spawnTimer -= Time.deltaTime;
                     if (spawnTimer < 0) {
                         if (obstaclePool.Count > 0) {
                             Obstacle pooled = obstaclePool.Pop();
@@ -85,7 +89,6 @@ public class StageController : MonoBehaviour {
                 break;
             default:
                 throw new System.Exception("Invalid state");
-
         }
     }
 
@@ -95,6 +98,7 @@ public class StageController : MonoBehaviour {
     }
 
     private void OnPlayerDied() {
+        jumpLabel.enabled = false;
         StartCoroutine(ResetGame());
     }
 

@@ -716,6 +716,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 246a97261d9ca476381c3e42118dad39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1786152019}
   obsSprites:
   - {fileID: 21300000, guid: fc3e31f42190143c5a03f5e284c49221, type: 3}
   - {fileID: 21300000, guid: 6848fb13d90b64f6badade9d7768cb3b, type: 3}
@@ -728,7 +729,6 @@ MonoBehaviour:
   jumpLabel: {fileID: 2095709671}
   obstacleFab: {fileID: 5592761225635396130, guid: 3686d0a6bb5c9468e9faa44fc7256c14,
     type: 3}
-  isPlayerAlive: 1
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1518,7 +1518,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1786152013}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.57, y: -2.05, z: 10}
+  m_LocalPosition: {x: -2.57, y: -2.38, z: 10}
   m_LocalScale: {x: 0.14, y: 0.14, z: 0.14}
   m_Children:
   - {fileID: 472947253}
@@ -1627,6 +1627,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1786152015}
+  jumps: 3
+  isJumping: 0
+  isGrounded: 0
   speed: 5
   feetCollider: {fileID: 472947253}
   checkRaduis: 0
@@ -1637,6 +1640,7 @@ MonoBehaviour:
     m_Bits: 256
   jumpTime: 0.5
   upperCollider: {fileID: 1786152020}
+  isAlive: 1
 --- !u!61 &1786152020
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1955,7 +1959,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 79}
   m_SizeDelta: {x: 160, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2095709671
@@ -1965,20 +1969,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095709669}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0.54606354, b: 0.9150943, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 60
+    m_FontSize: 90
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
@@ -1989,7 +1993,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: 2
 --- !u!222 &2095709672
 CanvasRenderer:
   m_ObjectHideFlags: 0

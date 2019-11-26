@@ -8,6 +8,9 @@ public class Player : MonoBehaviour {
     private const int DIED_FORCE = 2;
 
     public Animator animator;
+    public int jumps = 3;
+    public bool isJumping;
+    public bool isGrounded;
     public float speed;
     public Transform feetCollider;
     public float checkRaduis;
@@ -21,13 +24,9 @@ public class Player : MonoBehaviour {
 
     private Rigidbody2D rb;
     private Vector2 velVector = new Vector2();
-    private bool isGrounded;
     private bool isSliding;
     private float counter;
-    private bool isJumping;
-    private int jumps = 3;
     private bool isDoubleJumpPlaying;
-
 
 
     public void ResetJumpTrigger() {
