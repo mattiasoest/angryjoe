@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static StageController;
 
 public class Player : MonoBehaviour {
 
@@ -41,9 +42,8 @@ public class Player : MonoBehaviour {
     }
 
     void Update() {
-        if (isAlive) {
-
-            isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
+        isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
+        if (isAlive && StageController.instance.currentState == GAME_STATE.GAMEPLAY) {
 
             if ((jumps > 0 || isGrounded) && Input.GetKeyDown(KeyCode.Space)) {
 
@@ -99,8 +99,8 @@ public class Player : MonoBehaviour {
                 ResetSliding();
             }
 
-            animator.SetBool("isGrounded", isGrounded);
         }
+        animator.SetBool("isGrounded", isGrounded);
     }
 
 

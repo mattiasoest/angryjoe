@@ -36,8 +36,9 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void PlayStartGame() {
-        string index = Random.Range(0, 2).ToString();
-        Play($"start{index}");
+        //string index = Random.Range(0, 2).ToString();
+        //Play($"start{index}");
+        Play("start0");
     }
 
     private void Play(string clipName) {

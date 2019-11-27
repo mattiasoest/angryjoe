@@ -9,13 +9,15 @@ public class StageController : MonoBehaviour {
     public Sprite[] obsSprites;
     public Text jumpLabel;
     public GameObject obstacleFab;
+    public GameObject mainMenu;
 
     private const float DEFAULT_SPAWN_TIME = 1.45f;
     private const float LOWER_OBSTACLE_BOUND = -5.2f;
     private const float UPPER_OBSTACLE_BOUND = 4.3f;
 
-    private enum GAME_STATE { GAMEPLAY, MENU };
-    private GAME_STATE currentState = GAME_STATE.MENU;
+    public enum GAME_STATE { GAMEPLAY, MENU };
+
+    public GAME_STATE currentState = GAME_STATE.MENU;
 
     private readonly Stack<Obstacle> obstaclePool = new Stack<Obstacle>();
 
@@ -28,6 +30,18 @@ public class StageController : MonoBehaviour {
     private int normalRandomCount;
 
     private int lastRandomSpriteIndex = -1;
+
+    //MENU HANDLING
+
+    public void PlayButtonCB() {
+        mainMenu.SetActive(false);
+        // Only play it in some cases
+        if (Random.Range(0, 1f) > 0.65f) {
+            AudioManager.instance.PlayStartGame();
+        }
+        Debug.Log("=== GAMEPLAY ===");
+        currentState = GAME_STATE.GAMEPLAY;
+    }
 
 
     public Sprite GetRandomObstacleSprite() {
@@ -59,10 +73,6 @@ public class StageController : MonoBehaviour {
     void Update() {
         switch (currentState) {
             case GAME_STATE.MENU:
-                if (Input.GetKey(KeyCode.Space)) {
-                    Debug.Log("=== GAMEPLAY ===");
-                    currentState = GAME_STATE.GAMEPLAY;
-                }
                 break;
             case GAME_STATE.GAMEPLAY:
                 if (player.isAlive) {
@@ -98,21 +108,18 @@ public class StageController : MonoBehaviour {
     }
 
     private void OnPlayerDied() {
+        Debug.Log("=== MAIN MENU ===");
+        currentState = GAME_STATE.MENU;
         AudioManager.instance.PlayDeath();
         jumpLabel.enabled = false;
         StartCoroutine(ResetGame());
     }
 
     private IEnumerator ResetGame() {
-        yield return new WaitForSeconds(3);
-        // Only play it in some cases
-        if (Random.Range(0, 1f) > 0.65f) {
-            AudioManager.instance.PlayStartGame();
-        }
-        spawnTimer = DEFAULT_SPAWN_TIME;
+        yield return new WaitForSeconds(1.5f);
         GameEventManager.instance.OnReset();
-        Debug.Log("=== MAIN MENU ===");
-        currentState = GAME_STATE.MENU;
+        spawnTimer = DEFAULT_SPAWN_TIME;
+        mainMenu.SetActive(true);
     }
 
     private float GenerateRandomYpos() {
