@@ -8,13 +8,16 @@ public class Obstacle : MonoBehaviour {
 	private Vector2 posVector;
     private Vector2 camPos;
 
+    public int point = 1;
+
     public void Init(float yPosition) {
         topRenderer.sprite = StageController.instance.GetRandomObstacleSprite();
         bottomRenderer.sprite = StageController.instance.GetRandomObstacleSprite();
         body = GetComponent<Rigidbody2D>();
         body.velocity = new Vector2(speedEffect, 0);
         GeneratePosition(yPosition);
-    }
+        point = 1;
+}
 
 	void Start() {
         camPos = Camera.main.ViewportToWorldPoint(new Vector2(-0.15f, 0.5f));

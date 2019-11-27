@@ -28,7 +28,7 @@ public class Player : MonoBehaviour {
     private bool isSliding;
     private float counter;
     private bool isDoubleJumpPlaying;
-
+    private float scoreTimer = 0.9f;
 
     public void ResetJumpTrigger() {
         isDoubleJumpPlaying = false;
@@ -99,6 +99,7 @@ public class Player : MonoBehaviour {
                 ResetSliding();
             }
 
+            scoreTimer -= Time.deltaTime;
         }
         animator.SetBool("isGrounded", isGrounded);
     }
@@ -113,7 +114,9 @@ public class Player : MonoBehaviour {
                 //rb.velocity = Vector2.up * DIED_FORCE;
                 animator.SetTrigger("diedTrigger");
                 GameEventManager.instance.OnPlayerDied();
-            } else if (collision.gameObject.tag == "ScoreTrigger") {
+            } else if (collision.gameObject.tag == "ScoreTrigger" && scoreTimer < 0) {
+                // Just use the timer to avoid both player colliders getting a point
+                scoreTimer = 0.9f;
                 StageController.instance.UpdateScore();
             }
         }
@@ -121,6 +124,7 @@ public class Player : MonoBehaviour {
 
     private void OnReset() {
         isAlive = true;
+        scoreTimer = 0.9f;
         animator.SetTrigger("resetTrigger");
     }
 

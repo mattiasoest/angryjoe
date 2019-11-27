@@ -129,6 +129,7 @@ public class StageController : MonoBehaviour {
         GameEventManager.instance.OnReset();
         spawnTimer = DEFAULT_SPAWN_TIME;
         score = 0;
+        scoreLabel.text = $"Score: {score}";
         scoreLabel.enabled = false;
         mainMenu.SetActive(true);
     }
