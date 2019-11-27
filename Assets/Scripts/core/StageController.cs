@@ -8,16 +8,20 @@ public class StageController : MonoBehaviour {
     public Player player;
     public Sprite[] obsSprites;
     public Text jumpLabel;
+    public Text scoreLabel;
     public GameObject obstacleFab;
     public GameObject mainMenu;
+
+    [HideInInspector]
+    public int score;
+    [HideInInspector]
+    public enum GAME_STATE { GAMEPLAY, MENU };
+    [HideInInspector]
+    public GAME_STATE currentState = GAME_STATE.MENU;
 
     private const float DEFAULT_SPAWN_TIME = 1.45f;
     private const float LOWER_OBSTACLE_BOUND = -5.2f;
     private const float UPPER_OBSTACLE_BOUND = 4.3f;
-
-    public enum GAME_STATE { GAMEPLAY, MENU };
-
-    public GAME_STATE currentState = GAME_STATE.MENU;
 
     private readonly Stack<Obstacle> obstaclePool = new Stack<Obstacle>();
 
@@ -25,7 +29,6 @@ public class StageController : MonoBehaviour {
 
     private float lastYpos;
     private bool lastLowPos;
-    
 
     private int normalRandomCount;
 
@@ -35,6 +38,7 @@ public class StageController : MonoBehaviour {
 
     public void PlayButtonCB() {
         mainMenu.SetActive(false);
+        scoreLabel.enabled = true;
         // Only play it in some cases
         if (Random.Range(0, 1f) > 0.65f) {
             AudioManager.instance.PlayStartGame();
@@ -56,6 +60,11 @@ public class StageController : MonoBehaviour {
         }
         lastRandomSpriteIndex = randomIndex;
         return obsSprites[randomIndex];
+    }
+
+    public void UpdateScore() {
+        score++;
+        scoreLabel.text = $"Score: {score}";
     }
 
 
@@ -119,6 +128,8 @@ public class StageController : MonoBehaviour {
         yield return new WaitForSeconds(1.5f);
         GameEventManager.instance.OnReset();
         spawnTimer = DEFAULT_SPAWN_TIME;
+        score = 0;
+        scoreLabel.enabled = false;
         mainMenu.SetActive(true);
     }
 

@@ -105,13 +105,17 @@ public class Player : MonoBehaviour {
 
 
     void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.tag == "Obstacle" && isAlive) {
-            isAlive = false;
-            //collision.gameObject.SendMessage("ApplyDamage", 10);
-            //animator.SetBool("isAlive", true);
-            //rb.velocity = Vector2.up * DIED_FORCE;
-            animator.SetTrigger("diedTrigger");
-            GameEventManager.instance.OnPlayerDied();
+        if (isAlive) {
+            if (collision.gameObject.tag == "Obstacle") {
+                isAlive = false;
+                //collision.gameObject.SendMessage("ApplyDamage", 10);
+                //animator.SetBool("isAlive", true);
+                //rb.velocity = Vector2.up * DIED_FORCE;
+                animator.SetTrigger("diedTrigger");
+                GameEventManager.instance.OnPlayerDied();
+            } else if (collision.gameObject.tag == "ScoreTrigger") {
+                StageController.instance.UpdateScore();
+            }
         }
     }
 
