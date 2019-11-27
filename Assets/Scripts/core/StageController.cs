@@ -19,7 +19,7 @@ public class StageController : MonoBehaviour {
     [HideInInspector]
     public GAME_STATE currentState = GAME_STATE.MENU;
 
-    private const float DEFAULT_SPAWN_TIME = 1.45f;
+    private const float DEFAULT_SPAWN_TIME = 1.37f;
     private const float LOWER_OBSTACLE_BOUND = -5.2f;
     private const float UPPER_OBSTACLE_BOUND = 4.3f;
 
