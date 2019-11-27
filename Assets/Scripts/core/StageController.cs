@@ -30,7 +30,7 @@ public class StageController : MonoBehaviour {
     private int lastRandomSpriteIndex = -1;
 
 
-    public Sprite getRandomObstacleSprite() {
+    public Sprite GetRandomObstacleSprite() {
         int randomIndex = Random.Range(0, 8);
 
         // Do one more random just in case

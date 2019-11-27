@@ -2,15 +2,15 @@
 
 public class Obstacle : MonoBehaviour {
     public SpriteRenderer topRenderer, bottomRenderer;
+    public float speedEffect;
+
     private Rigidbody2D body;
 	private Vector2 posVector;
     private Vector2 camPos;
 
-    public float speedEffect;
-
     public void Init(float yPosition) {
-        topRenderer.sprite = StageController.instance.getRandomObstacleSprite();
-        bottomRenderer.sprite = StageController.instance.getRandomObstacleSprite();
+        topRenderer.sprite = StageController.instance.GetRandomObstacleSprite();
+        bottomRenderer.sprite = StageController.instance.GetRandomObstacleSprite();
         body = GetComponent<Rigidbody2D>();
         body.velocity = new Vector2(speedEffect, 0);
         GeneratePosition(yPosition);

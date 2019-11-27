@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BackgroundRepeat : MonoBehaviour {
+    public float speedEffect;
+
     private float imageWidth;
     private Rigidbody2D body;
     private Vector2 posVector = new Vector2();
     private Vector2 velVector;
-    public float speedEffect;
+    
 
     void Start() {
         imageWidth = GetComponent<SpriteRenderer>().bounds.size.x;
@@ -34,9 +34,5 @@ public class BackgroundRepeat : MonoBehaviour {
             posVector.x = transform.position.x + imageWidth * 2f;
             body.transform.position = posVector;
         }
-    }
-
-
-    private void FixedUpdate() {
     }
 }
