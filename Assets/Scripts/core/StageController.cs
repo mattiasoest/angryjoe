@@ -63,6 +63,7 @@ public class StageController : MonoBehaviour {
     }
 
     public void UpdateScore() {
+        AudioManager.instance.PlayScore();
         score++;
         scoreLabel.text = $"Score: {score}";
     }

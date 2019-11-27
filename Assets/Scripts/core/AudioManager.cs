@@ -35,6 +35,10 @@ public class AudioManager : MonoBehaviour {
         Play($"death{index}");
     }
 
+    public void PlayScore() {
+        Play("score0");
+    }
+
     public void PlayStartGame() {
         //string index = Random.Range(0, 2).ToString();
         //Play($"start{index}");

@@ -2393,6 +2393,11 @@ MonoBehaviour:
     name: slide0
     volume: 0.6
     pitch: 1
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 0e65d2b8f43924d80851be51537c792d, type: 3}
+    name: score0
+    volume: 0.68
+    pitch: 1
 --- !u!4 &2074939525
 Transform:
   m_ObjectHideFlags: 0
