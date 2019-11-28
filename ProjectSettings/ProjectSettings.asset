@@ -613,10 +613,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: 5ce8dce1-02ea-4301-b6df-455220af64a3
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: angryjoe
+  organizationId: 41aaa4b-2a49-4ccf-9835-2cd2428fcadf
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
