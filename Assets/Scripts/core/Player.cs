@@ -123,6 +123,7 @@ public class Player : MonoBehaviour {
     }
 
     private void OnReset() {
+        ResetSliding();
         isAlive = true;
         scoreTimer = 0.9f;
         animator.SetTrigger("resetTrigger");
