@@ -19,7 +19,7 @@ public class StageController : MonoBehaviour {
     [HideInInspector]
     public GAME_STATE currentState = GAME_STATE.MENU;
 
-    private const float DEFAULT_SPAWN_TIME = 1.37f;
+    private const float DEFAULT_SPAWN_TIME = 1.25f;
     private const float LOWER_OBSTACLE_BOUND = -5.2f;
     private const float UPPER_OBSTACLE_BOUND = 4.3f;
 
@@ -74,6 +74,7 @@ public class StageController : MonoBehaviour {
     }
     // Start is called before the first frame update
     void Start() {
+        CameraSetup();
         // Subscribe to the list of events
         GameEventManager.instance.onObstacleRecycle += OnObstacleRecycle;
         GameEventManager.instance.onPlayerDied += OnPlayerDied;
@@ -166,5 +167,16 @@ public class StageController : MonoBehaviour {
         }
         lastYpos = randomY;
         return randomY;
+    }
+
+    private void CameraSetup() {
+        //float cameraHeight = 8; //800 / 100
+        float cameraWidth = 4.8f; //800 / 100
+        float desiredAspect = 0.75f; // 480/800
+        float ratio = desiredAspect / Camera.main.aspect;
+        Camera.main.orthographicSize = cameraWidth * ratio;
+
+        //float defaultWidth = Camera.main.orthographicSize * Camera.main.aspect;
+        //Camera.main.orthographicSize = defaultWidth / Camera.main.aspect;
     }
 }

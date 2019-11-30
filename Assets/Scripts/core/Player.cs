@@ -47,7 +47,7 @@ public class Player : MonoBehaviour {
     void Update() {
         isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
         if (isAlive && StageController.instance.currentState == GAME_STATE.GAMEPLAY) {
-            TouchInput();
+            KeyBoardInput();
         }
         scoreTimer -= Time.deltaTime;
         animator.SetBool("isGrounded", isGrounded);

@@ -40,7 +40,7 @@ public class Obstacle : MonoBehaviour {
     }
 
     private void GeneratePosition(float yPosition) {
-        posVector.x = 2.1f;
+        posVector.x = 4.25f;
         posVector.y = yPosition;
         body.transform.position = posVector;
     }
