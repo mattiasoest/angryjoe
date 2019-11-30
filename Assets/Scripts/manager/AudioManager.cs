@@ -31,8 +31,9 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void PlayDeath() {
-        string index = Random.Range(0, 2).ToString();
-        Play($"death{index}");
+        //string index = Random.Range(0, 2).ToString();
+        //Play($"death{index}");
+        Play("death0");
     }
 
     public void PlayScore() {
@@ -40,9 +41,11 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void PlayStartGame() {
-        //string index = Random.Range(0, 2).ToString();
-        //Play($"start{index}");
         Play("start0");
+    }
+
+    public void PlayHit() {
+        Play("hit0");
     }
 
     private void Play(string clipName) {

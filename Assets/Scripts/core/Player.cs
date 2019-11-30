@@ -66,6 +66,7 @@ public class Player : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D collision) {
         if (isAlive) {
             if (collision.gameObject.tag == "Obstacle") {
+                AudioManager.instance.PlayHit();
                 isAlive = false;
                 //collision.gameObject.SendMessage("ApplyDamage", 10);
                 //animator.SetBool("isAlive", true);
