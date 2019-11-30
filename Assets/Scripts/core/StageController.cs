@@ -127,7 +127,7 @@ public class StageController : MonoBehaviour {
 
     private IEnumerator ResetGame() {
         yield return new WaitForSeconds(1.5f);
-        AdManager.instance.PlayVideoAd();
+        //AdManager.instance.PlayVideoAd();
         GameEventManager.instance.OnReset();
         spawnTimer = DEFAULT_SPAWN_TIME;
         score = 0;
