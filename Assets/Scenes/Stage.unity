@@ -2174,10 +2174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0044b6db1e48e46e1b4742a59e4eb0a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1786152015}
-  jumps: 3
-  isJumping: 0
-  isGrounded: 0
   speed: 5
   feetCollider: {fileID: 472947253}
   checkRaduis: 0
@@ -2187,6 +2183,10 @@ MonoBehaviour:
   jumpTime: 0.5
   upperCollider: {fileID: 1786152020}
   isAlive: 1
+  animator: {fileID: 1786152015}
+  jumps: 3
+  isJumping: 0
+  isGrounded: 0
 --- !u!61 &1786152020
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2200,7 +2200,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.8}
+  m_Offset: {x: 0, y: 0.7}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2211,7 +2211,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.3, y: 6}
+  m_Size: {x: 2.4, y: 5.8}
   m_EdgeRadius: 0
 --- !u!61 &1786152021
 BoxCollider2D:
@@ -2237,7 +2237,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 2}
+  m_Size: {x: 2.4, y: 2}
   m_EdgeRadius: 0
 --- !u!1 &1797121724
 GameObject:
