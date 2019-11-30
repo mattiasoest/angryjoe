@@ -30,8 +30,8 @@ public class Player : MonoBehaviour {
     private float jumpYScreenPos = -2.9f;
     private float jumpForce = 10f;
     private float downForce = 100f;
-    private float jumpForceTouch = 8f;
-    private float downForceTouch = 80f;
+    private float jumpForceTouch = 10f;
+    private float downForceTouch = 100f;
 
     public void ResetJumpTrigger() {
         isDoubleJumpPlaying = false;
