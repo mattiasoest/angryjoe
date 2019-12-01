@@ -26,8 +26,8 @@ public class PlayfabManager : MonoBehaviour {
 
     public void Start() {
         #if UNITY_EDITOR
-                Debug.Log("Unity Editor");
-        debug = true;
+            Debug.Log("Unity Editor");
+            debug = true;
         #endif
         if (string.IsNullOrWhiteSpace(PlayFabSettings.TitleId)) {
             PlayFabSettings.TitleId = "5B418";
@@ -122,8 +122,8 @@ public class PlayfabManager : MonoBehaviour {
                 } else {
                     hasUsername = true;
                     playerName = username;
-                    //nameText.enabled = true;
-                    //nameText.text = $"Logged in as: {playerName}";
+                    nameText.enabled = true;
+                    nameText.text = $"Logged in as: {playerName}";
                 }
             }, error => {
                 Debug.LogError(error.GenerateErrorReport());
