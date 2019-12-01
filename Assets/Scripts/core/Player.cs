@@ -33,9 +33,7 @@ public class Player : MonoBehaviour {
     private float scoreTimer = 0.9f;
     private float jumpYScreenPos = -2.9f;
     private float jumpForce = 10f;
-    private float downForce = 100f;
-    private float jumpForceTouch = 10f;
-    private float downForceTouch = 100f;
+    private float downForce = 125f;
 
     public void ResetJumpTrigger() {
         isDoubleJumpPlaying = false;
@@ -96,7 +94,7 @@ public class Player : MonoBehaviour {
 
             }
             jumps--;
-            rb.velocity = Vector2.up * jumpForceTouch;
+            rb.velocity = Vector2.up * jumpForce;
             counter = jumpTime;
             isJumping = true;
 
@@ -106,13 +104,13 @@ public class Player : MonoBehaviour {
 
         if (Input.GetMouseButton(0) && pointerPos.y > jumpYScreenPos && isJumping) {
             if (counter > 0f) {
-                rb.velocity = Vector2.up * jumpForceTouch;
+                rb.velocity = Vector2.up * jumpForce;
                 counter -= Time.deltaTime;
             } else {
                 isJumping = false;
             }
         } else if (Input.GetMouseButton(0) && pointerPos.y <= jumpYScreenPos && !isGrounded) {
-            rb.velocity += Vector2.down * downForceTouch * Time.deltaTime;
+            rb.velocity += Vector2.down * downForce * Time.deltaTime;
             if (rb.velocity.y <= -30) {
                 velVector.y = -30;
                 rb.velocity = velVector;
