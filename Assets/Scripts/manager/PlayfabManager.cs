@@ -4,7 +4,9 @@ using PlayFab.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayfabManager {
+public class PlayfabManager : MonoBehaviour {
+
+    public static PlayfabManager instance;
 
     public Text nameText;
 
@@ -18,24 +20,14 @@ public class PlayfabManager {
 
     private bool debug;
 
-    private static PlayfabManager instance;
-
-    private PlayfabManager() {
+    public void Awake() {
+        instance = this;
     }
 
-    public static PlayfabManager Instance {
-        get {
-            if (instance == null) {
-                instance = new PlayfabManager();
-            }
-            return instance;
-        }
-    }
-
-    public void Login() {
+    public void Start() {
         #if UNITY_EDITOR
-            Debug.Log("Unity Editor");
-            debug = true;
+                Debug.Log("Unity Editor");
+        debug = true;
         #endif
         if (string.IsNullOrWhiteSpace(PlayFabSettings.TitleId)) {
             PlayFabSettings.TitleId = "5B418";
@@ -85,7 +77,6 @@ public class PlayfabManager {
     }
 
     private void PlayfabLogin() {
-        Debug.Log("Logged in!");
         if (!debug) {
             #if UNITY_ANDROID
                 LoginWithAndroidDeviceIDRequest requestAndroid = new LoginWithAndroidDeviceIDRequest
