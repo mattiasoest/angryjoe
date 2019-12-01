@@ -122,8 +122,8 @@ public class PlayfabManager : MonoBehaviour {
                 } else {
                     hasUsername = true;
                     playerName = username;
-                    nameText.enabled = true;
-                    nameText.text = $"Logged in as: {playerName}";
+                    //nameText.enabled = true;
+                    //nameText.text = $"Logged in as: {playerName}";
                 }
             }, error => {
                 Debug.LogError(error.GenerateErrorReport());
