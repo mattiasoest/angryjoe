@@ -11,6 +11,7 @@ public class StageController : MonoBehaviour {
     public Text scoreLabel;
     public GameObject obstacleFab;
     public GameObject mainMenu;
+    public GameObject userNamerPopup;
 
     [HideInInspector]
     public int score;
@@ -138,10 +139,18 @@ public class StageController : MonoBehaviour {
     }
 
     private void OnPlayerDied() {
-        Debug.Log("=== MAIN MENU ===");
-        currentState = GAME_STATE.MENU;
         AudioManager.instance.PlayDeath();
         jumpLabel.enabled = false;
+        if (string.IsNullOrWhiteSpace(PlayfabManager.instance.playerName)) {
+            userNamerPopup.SetActive(true);
+        } else {
+            ActivateMainMenu();
+        }
+    }
+
+    private void ActivateMainMenu() {
+        Debug.Log("=== MAIN MENU ===");
+        currentState = GAME_STATE.MENU;
         StartCoroutine(ResetGame());
     }
 
