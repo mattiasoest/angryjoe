@@ -25,6 +25,15 @@ public class PlayfabManager : MonoBehaviour {
         });
     }
 
+    public void SetDisplayName(string name) {
+        UpdateUserTitleDisplayNameRequest req = new UpdateUserTitleDisplayNameRequest { DisplayName = name };
+        PlayFabClientAPI.UpdateUserTitleDisplayName(req, result => {
+            Debug.Log($"Name updated to -> {name}");
+        }, error => {
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
+
     public void GetLeaderboard() {
         GetLeaderboardRequest requestLeaderBoard = new GetLeaderboardRequest {
             StartPosition = 0,
