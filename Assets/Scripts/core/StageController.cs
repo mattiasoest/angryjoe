@@ -71,6 +71,25 @@ public class StageController : MonoBehaviour {
 
     private void Awake() {
         instance = this;
+
+        #if UNITY_EDITOR
+            Debug.Log("Unity Editor");
+        #endif
+
+        #if UNITY_IOS
+            Debug.Log("Iphone");
+        #endif
+
+        #if UNITY_ANDROID
+            Debug.Log("Android");
+        #endif
+        #if UNITY_STANDALONE_OSX
+        Debug.Log("Stand Alone OSX");
+        #endif
+
+        #if UNITY_STANDALONE_WIN
+            Debug.Log("Stand Alone Windows");
+        #endif
     }
     // Start is called before the first frame update
     void Start() {
@@ -127,6 +146,7 @@ public class StageController : MonoBehaviour {
     }
 
     private IEnumerator ResetGame() {
+        PlayfabManager.instance.SendHighScore(score);
         yield return new WaitForSeconds(1.5f);
         //AdManager.instance.PlayVideoAd();
         GameEventManager.instance.OnReset();
