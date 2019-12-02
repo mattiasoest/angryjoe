@@ -14,7 +14,7 @@ public class StageController : MonoBehaviour {
     public GameObject obstacleFab;
     public GameObject mainMenu;
     public GameObject userNamerPopup;
-    public GameObject leaderboardMainPanel;
+    public LeaderboardUI leaderboardUI;
 
     [HideInInspector]
     public int score;
@@ -52,7 +52,8 @@ public class StageController : MonoBehaviour {
     }
 
     public void LeaderBoardButton() {
-        leaderboardMainPanel.SetActive(true);
+        leaderboardUI.gameObject.SetActive(true);
+        leaderboardUI.RefreshLeaderboard();
     }
 
 

@@ -2571,7 +2571,7 @@ MonoBehaviour:
     type: 3}
   mainMenu: {fileID: 821671170}
   userNamerPopup: {fileID: 1729883636}
-  leaderboardMainPanel: {fileID: 1651176989}
+  leaderboardUI: {fileID: 1651176993}
   score: 0
   currentState: 1
 --- !u!4 &1013062055
@@ -4321,7 +4321,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1635889203
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4355,7 +4355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 0.23137255}
+  m_Color: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

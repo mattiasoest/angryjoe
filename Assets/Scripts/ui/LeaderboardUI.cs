@@ -30,10 +30,27 @@ public class LeaderboardUI : MonoBehaviour {
         }
     }
 
-    void Awake() {
+    public void RefreshLeaderboard() {
         LoadingUI.instance.gameObject.SetActive(true);
-        PopuplateEntries(PlayfabManager.instance.SCORE_GLOBAL);
-        prevToggleName = GLOBAL_NAME;
+        if (entryPool.Count == 0) {
+            //First time, populate with the global
+            PopuplateEntries(PlayfabManager.instance.SCORE_GLOBAL);
+            prevToggleName = GLOBAL_NAME;
+        } else {
+            switch (currentSelected.name) {
+                case GLOBAL_NAME:
+                    PopuplateEntries(PlayfabManager.instance.SCORE_GLOBAL);
+                    prevToggleName = GLOBAL_NAME;
+                    break;
+                case WEEKLY_NAME:
+                    PopuplateEntries(PlayfabManager.instance.SCORE_WEEKLY);
+                    prevToggleName = WEEKLY_NAME;
+                    break;
+                default:
+                    throw new Exception($"Invalid toogle name {currentSelected.name}");
+            }
+        }
+
     }
 
     public void CloseButton() {
@@ -48,19 +65,6 @@ public class LeaderboardUI : MonoBehaviour {
     public void SelectToggle(int id) {
         Toggle[] toggles = toggleGroup.GetComponentsInChildren<Toggle>();
         toggles[id].isOn = true;
-    }
-
-    public void Toggle() {
-        switch (currentSelected.name) {
-            case GLOBAL_NAME:
-                Debug.Log("global");
-                break;
-            case WEEKLY_NAME:
-                Debug.Log("weekly");
-                break;
-            default:
-                throw new Exception($"Invalid toogle name {currentSelected.name}");
-        }
     }
 
     public void GlobalToggle() {
@@ -93,7 +97,6 @@ public class LeaderboardUI : MonoBehaviour {
     }
 
     private void RecycleEntries() {
-        Debug.Log("==== RECYCLE ENTRIES ====");
         while (activeEntries.Count > 0) {
             LeaderboardEntryUI entry = activeEntries.Pop();
             entry.gameObject.SetActive(false);
