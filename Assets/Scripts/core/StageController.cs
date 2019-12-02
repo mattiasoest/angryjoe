@@ -9,6 +9,7 @@ public class StageController : MonoBehaviour {
     public Sprite[] obsSprites;
     public Text jumpLabel;
     public Text scoreLabel;
+    public GameObject dynamicTopBlocker;
     public GameObject obstacleFab;
     public GameObject mainMenu;
     public GameObject userNamerPopup;
@@ -100,6 +101,7 @@ public class StageController : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         CameraSetup();
+        AdjustDynamicTopCollider();
         // Subscribe to the list of events
         GameEventManager.instance.onObstacleRecycle += OnObstacleRecycle;
         GameEventManager.instance.onPlayerDied += OnPlayerDied;
@@ -212,5 +214,13 @@ public class StageController : MonoBehaviour {
 
         //float defaultWidth = Camera.main.orthographicSize * Camera.main.aspect;
         //Camera.main.orthographicSize = defaultWidth / Camera.main.aspect;
+    }
+
+
+    // Used to have an extra top blocker for ppl witb basically squared screens
+    private void AdjustDynamicTopCollider() {
+        Vector3 cameraPosition = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight + 5, 0));
+        Vector2 newPos = new Vector3(0f, cameraPosition.y, 0);
+        dynamicTopBlocker.transform.position = newPos;
     }
 }
