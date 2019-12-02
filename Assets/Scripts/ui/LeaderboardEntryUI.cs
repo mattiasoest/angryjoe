@@ -16,7 +16,6 @@ public class LeaderboardEntryUI : MonoBehaviour {
     public void Init(int placement, string name, int highscore) {
         switch (placement) {
             case 1:
-                Debug.Log("ONE");
                 trophy.color = new Color32(255, 228, 35, 255);
                 break;
             case 2:

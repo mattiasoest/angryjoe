@@ -49,13 +49,14 @@ public class PlayfabManager : MonoBehaviour {
     }
 
     public void GetLeaderboard(string leaderboardId, Action<GetLeaderboardResult> onSucess, Action<PlayFabError> onError) {
-        if (!leaderboardId.Equals(SCORE_GLOBAL) && !leaderboardId.Equals(SCORE_WEEKLY)) {
+        if (leaderboardId != SCORE_GLOBAL && leaderboardId != SCORE_WEEKLY) {
             throw new Exception($"Invalid leaderboard: {leaderboardId}");
         }
+
         GetLeaderboardRequest requestLeaderBoard = new GetLeaderboardRequest {
             StartPosition = 0,
             StatisticName = leaderboardId,
-            MaxResultsCount = leaderboardId == SCORE_GLOBAL ? 30 : 15
+            MaxResultsCount = leaderboardId == SCORE_GLOBAL ? 50 : 20
         };
 
         PlayFabClientAPI.GetLeaderboard(requestLeaderBoard, result => {
@@ -126,8 +127,10 @@ public class PlayfabManager : MonoBehaviour {
                     nameText.enabled = true;
                     nameText.text = $"Logged in as: {playerName}";
                 }
+                LoadingUI.instance.gameObject.SetActive(false);
             }, error => {
                 Debug.LogError(error.GenerateErrorReport());
+                LoadingUI.instance.gameObject.SetActive(false);
             });
         }
     }
@@ -142,9 +145,12 @@ public class PlayfabManager : MonoBehaviour {
             nameText.enabled = true;
             nameText.text = $"Logged in as: {playerName}";
         }
+
+        LoadingUI.instance.gameObject.SetActive(false);
     }
 
     private void OnLoginMobileFailure(PlayFabError error) {
+        LoadingUI.instance.gameObject.SetActive(false);
         Debug.LogError(error.GenerateErrorReport());
     }
 
