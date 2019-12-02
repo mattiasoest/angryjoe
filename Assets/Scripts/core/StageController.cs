@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using PlayFab.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -162,7 +163,15 @@ public class StageController : MonoBehaviour {
     }
 
     private IEnumerator ResetGame() {
-        PlayfabManager.instance.SendHighScore(score);
+        PlayfabManager.instance.SendHighScore(score, result => {
+            JsonObject jsonResult = (JsonObject)result.FunctionResult;
+            object messageValue;
+            jsonResult.TryGetValue("messageValue", out messageValue); // note how "messageValue" directly corresponds to the JSON values set in Cloud Script
+            Debug.Log((string)messageValue);
+        }, error => {
+            // TODO Retry?
+            Debug.Log(error.GenerateErrorReport());
+        });
         yield return new WaitForSeconds(1.5f);
         //AdManager.instance.PlayVideoAd();
         GameEventManager.instance.OnReset();

@@ -1,14 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using System;
+using PlayFab.ClientModels;
 
 public class LeaderboardUI : MonoBehaviour {
 
     public GameObject leaderBoardEntry;
     public ToggleGroup toggleGroup;
+    public GameObject noEntriesText;
+    public GameObject contentContainer;
+
 
     private const string WEEKLY_NAME = "ToggleWeekly";
     private const string GLOBAL_NAME = "ToggleGlobal";
@@ -21,6 +23,22 @@ public class LeaderboardUI : MonoBehaviour {
         get {
             return toggleGroup.ActiveToggles().FirstOrDefault();
         }
+    }
+
+    void Awake() {
+        PlayfabManager.instance.GetLeaderboard(PlayfabManager.instance.SCORE_GLOBAL,
+            result => {
+
+                int placement = 1;
+                foreach (PlayerLeaderboardEntry player in result.Leaderboard) {
+                    Debug.Log($"Name: {player.DisplayName} Score: {player.StatValue}");
+                    GameObject newEntry = Instantiate(leaderBoardEntry, contentContainer.transform);
+                    newEntry.GetComponent<LeaderboardEntryUI>().Init(placement, player.DisplayName, player.StatValue);
+                    placement++;
+                }
+            }, error => {
+                noEntriesText.SetActive(true);
+            }); 
     }
 
     void Start() {

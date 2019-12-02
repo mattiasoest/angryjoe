@@ -1,6 +1,6 @@
-﻿using PlayFab;
+﻿using System;
+using PlayFab;
 using PlayFab.ClientModels;
-using PlayFab.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +16,10 @@ public class PlayfabManager : MonoBehaviour {
     [HideInInspector]
     public bool hasUsername;
 
-    private const string SCORE_STATISTIC = "highscore";
+    [HideInInspector]
+    public readonly string SCORE_GLOBAL = "highscore";
+    [HideInInspector]
+    public readonly string SCORE_WEEKLY = "highscore_weekly";
 
     private bool debug;
 
@@ -25,10 +28,10 @@ public class PlayfabManager : MonoBehaviour {
     }
 
     public void Start() {
-        #if UNITY_EDITOR
-            Debug.Log("Unity Editor");
-            debug = true;
-        #endif
+#if UNITY_EDITOR
+        Debug.Log("Unity Editor");
+        debug = true;
+#endif
         if (string.IsNullOrWhiteSpace(PlayFabSettings.TitleId)) {
             PlayFabSettings.TitleId = "5B418";
         }
@@ -45,53 +48,51 @@ public class PlayfabManager : MonoBehaviour {
         });
     }
 
-    public void GetLeaderboard() {
+    public void GetLeaderboard(string leaderboardId, Action<GetLeaderboardResult> onSucess, Action<PlayFabError> onError) {
+        if (!leaderboardId.Equals(SCORE_GLOBAL) && !leaderboardId.Equals(SCORE_WEEKLY)) {
+            throw new Exception($"Invalid leaderboard: {leaderboardId}");
+        }
         GetLeaderboardRequest requestLeaderBoard = new GetLeaderboardRequest {
             StartPosition = 0,
-            StatisticName = SCORE_STATISTIC,
-            MaxResultsCount = 15
+            StatisticName = leaderboardId,
+            MaxResultsCount = leaderboardId == SCORE_GLOBAL ? 30 : 15
         };
 
         PlayFabClientAPI.GetLeaderboard(requestLeaderBoard, result => {
-            foreach (PlayerLeaderboardEntry player in result.Leaderboard) {
-                Debug.Log($"Name: {player.DisplayName} Score: {player.StatValue}");
-            }
+            onSucess(result);
         }, error => {
-            Debug.Log(error.GenerateErrorReport());
+            onError(error);
         });
     }
 
-    public void SendHighScore(int score) {
+    public void SendHighScore(int score, Action<ExecuteCloudScriptResult> onSucess, Action<PlayFabError> onError) {
         PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest() {
             FunctionName = "sendHighScore",
             FunctionParameter = new { score },
             GeneratePlayStreamEvent = true,
         }, result => {
-            JsonObject jsonResult = (JsonObject)result.FunctionResult;
-            object messageValue;
-            jsonResult.TryGetValue("messageValue", out messageValue); // note how "messageValue" directly corresponds to the JSON values set in Cloud Script
-            Debug.Log((string)messageValue);
+            onSucess(result);
         }, error => {
-            Debug.Log(error.GenerateErrorReport());
+            onError(error);
         });
     }
 
     private void PlayfabLogin() {
         if (!debug) {
-            #if UNITY_ANDROID
-                LoginWithAndroidDeviceIDRequest requestAndroid = new LoginWithAndroidDeviceIDRequest
-                { AndroidDeviceId = GetMobileId(),
-                    CreateAccount = true,
-                    InfoRequestParameters = new GetPlayerCombinedInfoRequestParams() {
-                        GetPlayerProfile = true,
-                        ProfileConstraints = new PlayerProfileViewConstraints() {
-                            ShowDisplayName = true,
-                        }
+#if UNITY_ANDROID
+            LoginWithAndroidDeviceIDRequest requestAndroid = new LoginWithAndroidDeviceIDRequest {
+                AndroidDeviceId = GetMobileId(),
+                CreateAccount = true,
+                InfoRequestParameters = new GetPlayerCombinedInfoRequestParams() {
+                    GetPlayerProfile = true,
+                    ProfileConstraints = new PlayerProfileViewConstraints() {
+                        ShowDisplayName = true,
                     }
-                };
-                PlayFabClientAPI.LoginWithAndroidDeviceID(requestAndroid, OnLoginMobileSuccess, OnLoginMobileFailure);
-            #endif
-            #if UNITY_IOS
+                }
+            };
+            PlayFabClientAPI.LoginWithAndroidDeviceID(requestAndroid, OnLoginMobileSuccess, OnLoginMobileFailure);
+#endif
+#if UNITY_IOS
             LoginWithIOSDeviceIDRequest requestIOS = new LoginWithIOSDeviceIDRequest {
             DeviceId = ReturnMobileID(),
             CreateAccount = true,
@@ -103,7 +104,7 @@ public class PlayfabManager : MonoBehaviour {
             }
             };
             PlayFabClientAPI.LoginWithIOSDeviceID(requestIOS, OnLoginMobileSuccess, OnLoginMobileFailure);
-        #endif
+#endif
         } else {
             LoginWithCustomIDRequest request = new LoginWithCustomIDRequest {
                 CustomId = "GettingStartedGuide",
