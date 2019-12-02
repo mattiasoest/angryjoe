@@ -7,11 +7,15 @@ using System;
 
 public class LeaderboardUI : MonoBehaviour {
 
+    public GameObject leaderBoardEntry;
+    public ToggleGroup toggleGroup;
+
     private const string WEEKLY_NAME = "ToggleWeekly";
     private const string GLOBAL_NAME = "ToggleGlobal";
 
 
-    public ToggleGroup toggleGroup;
+    private string prevToggleName;
+    
 
     public Toggle currentSelected {
         get {
@@ -48,5 +52,24 @@ public class LeaderboardUI : MonoBehaviour {
             default:
                 throw new Exception($"Invalid toogle name {currentSelected.name}");
         }
+    }
+
+    public void GlobalToggle() {
+        if (prevToggleName == GLOBAL_NAME) {
+            //Dont refresh leaderboard
+            return;
+        }
+        Debug.Log("global");
+        prevToggleName = GLOBAL_NAME;
+    }
+
+
+    public void WeeklyToggle() {
+        if (prevToggleName == WEEKLY_NAME) {
+            //Dont refresh leaderboard
+            return;
+        }
+        Debug.Log("weekly");
+        prevToggleName = WEEKLY_NAME;
     }
 }
