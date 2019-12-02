@@ -12,6 +12,7 @@ public class StageController : MonoBehaviour {
     public GameObject obstacleFab;
     public GameObject mainMenu;
     public GameObject userNamerPopup;
+    public GameObject leaderboardMainPanel;
 
     [HideInInspector]
     public int score;
@@ -37,7 +38,7 @@ public class StageController : MonoBehaviour {
 
     //MENU HANDLING
 
-    public void PlayButtonCB() {
+    public void PlayButton() {
         mainMenu.SetActive(false);
         scoreLabel.enabled = true;
         // Only play it in some cases
@@ -46,6 +47,10 @@ public class StageController : MonoBehaviour {
         }
         Debug.Log("=== GAMEPLAY ===");
         currentState = GAME_STATE.GAMEPLAY;
+    }
+
+    public void LeaderBoardButton() {
+        leaderboardMainPanel.SetActive(true);
     }
 
 
