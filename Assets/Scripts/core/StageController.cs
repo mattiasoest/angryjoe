@@ -94,6 +94,7 @@ public class StageController : MonoBehaviour {
         GameEventManager.instance.onPlayerDied += OnPlayerDied;
         GameEventManager.instance.onContinueGame += OnContinueGame;
         GameEventManager.instance.onFinishGame += OnFinishGame;
+        GameEventManager.instance.onUsernameUIClose += OnUsernameUIClose;
     }
 
     // Update is called once per frame
@@ -146,6 +147,14 @@ public class StageController : MonoBehaviour {
 
     private void OnContinueGame() {
         // TODO!!
+    }
+
+    private void OnUsernameUIClose() {
+        // If its called from the game
+        if (currentState == GAME_STATE.GAMEPLAY) {
+            // No delay if we're coming from a popup
+            ActivateMainMenu(0f);
+        }
     }
 
     private void OnFinishGame() {

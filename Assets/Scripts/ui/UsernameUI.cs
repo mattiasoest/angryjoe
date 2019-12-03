@@ -12,7 +12,8 @@ public class UsernameUI : MonoBehaviour {
     public void CloseButton() {
         invalidText.enabled = false;
         gameObject.SetActive(false);
-        GameEventManager.instance.OnFinishGame();
+        inputField.text = "";
+        GameEventManager.instance.OnUsernameUIClose();
     }
 
     public void ConfirmButton() {
@@ -29,9 +30,7 @@ public class UsernameUI : MonoBehaviour {
 
             PlayfabManager.instance.SetDisplayName(newName,
             result => {
-                invalidText.enabled = false;
-                gameObject.SetActive(false);
-                GameEventManager.instance.OnFinishGame();
+                CloseButton();
             }, error => {
                 invalidText.text = "Failed to update!";
                 invalidText.enabled = true;
