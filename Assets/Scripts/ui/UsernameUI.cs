@@ -16,6 +16,7 @@ public class UsernameUI : MonoBehaviour {
     }
 
     public void ConfirmButton() {
+        LoadingUI.instance.gameObject.SetActive(true);
         Debug.Log("Confirm");
         string newName = inputField.text.Trim();
         newName = regex.Replace(newName, @" ");

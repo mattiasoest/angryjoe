@@ -47,9 +47,11 @@ public class PlayfabManager : MonoBehaviour {
             playerName = name;
             nameText.enabled = true;
             nameText.text = $"Logged in as: {playerName}";
+            LoadingUI.instance.gameObject.SetActive(false);
             onSucess(result);
         }, error => {
             Debug.LogError(error.GenerateErrorReport());
+            LoadingUI.instance.gameObject.SetActive(false);
             onError(error);
         });
     }
