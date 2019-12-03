@@ -40,6 +40,7 @@ public class PlayfabManager : MonoBehaviour {
     }
 
     public void SetDisplayName(string name, Action<UpdateUserTitleDisplayNameResult> onSucess, Action<PlayFabError> onError) {
+        LoadingUI.instance.gameObject.SetActive(true);
         UpdateUserTitleDisplayNameRequest req = new UpdateUserTitleDisplayNameRequest { DisplayName = name };
         PlayFabClientAPI.UpdateUserTitleDisplayName(req, result => {
             Debug.Log($"Name updated to -> {name}");
