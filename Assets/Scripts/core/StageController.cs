@@ -88,6 +88,8 @@ public class StageController : MonoBehaviour {
         // Subscribe to the list of events
         GameEventManager.instance.onObstacleRecycle += OnObstacleRecycle;
         GameEventManager.instance.onPlayerDied += OnPlayerDied;
+        GameEventManager.instance.onContinueGame += OnContinueGame;
+        GameEventManager.instance.onFinishGame += OnFinishGame;
     }
 
     // Update is called once per frame
@@ -138,13 +140,24 @@ public class StageController : MonoBehaviour {
         }
     }
 
-    private void ActivateMainMenu() {
-        Debug.Log("=== MAIN MENU ===");
-        currentState = GAME_STATE.MENU;
-        StartCoroutine(ResetGame());
+    private void OnContinueGame() {
+        // TODO!!
     }
 
-    private IEnumerator ResetGame() {
+    private void OnFinishGame() {
+        // No delay if we're coming from a popup
+        ActivateMainMenu(0f);
+    }
+
+    private void ActivateMainMenu(float delay = 1.2f) {
+        Debug.Log("=== MAIN MENU ===");
+        currentState = GAME_STATE.MENU;
+        StartCoroutine(ResetGame(delay));
+    }
+
+    private IEnumerator ResetGame(float delayTime) {
+        if (PlayfabManager.instance.hasUsername) {
+
         PlayfabManager.instance.SendHighScore(score, result => {
             JsonObject jsonResult = (JsonObject)result.FunctionResult;
             object messageValue;
@@ -154,7 +167,8 @@ public class StageController : MonoBehaviour {
             // TODO Retry?
             Debug.Log(error.GenerateErrorReport());
         });
-        yield return new WaitForSeconds(1.5f);
+        }
+        yield return new WaitForSeconds(delayTime);
         //AdManager.instance.PlayVideoAd();
         GameEventManager.instance.OnReset();
         spawnTimer = DEFAULT_SPAWN_TIME;

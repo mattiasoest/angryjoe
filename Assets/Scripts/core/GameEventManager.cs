@@ -8,6 +8,8 @@ public class GameEventManager : MonoBehaviour {
     public event Action onPlayerDied;
     public event Action onReset;
     public event Action<Obstacle> onObstacleRecycle;
+    public event Action onFinishGame;
+    public event Action onContinueGame;
     // Use this for initialization
     void Awake() {
         instance = this;
@@ -22,6 +24,14 @@ public class GameEventManager : MonoBehaviour {
 
     public void OnReset() {
         onReset();
+    }
+
+    public void OnFinishGame() {
+        onFinishGame();
+    }
+
+    public void OnContinueGame() {
+        onContinueGame();
     }
 
 

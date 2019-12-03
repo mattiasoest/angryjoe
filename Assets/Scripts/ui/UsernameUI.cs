@@ -18,11 +18,13 @@ public class UsernameUI : MonoBehaviour
 
     public void CloseButton() {
         gameObject.SetActive(false);
-
+        GameEventManager.instance.OnFinishGame();
     }
 
     public void ConfirmButton() {
+        // TODO parse name
         Debug.Log("Confirm");
         gameObject.SetActive(false);
+        GameEventManager.instance.OnFinishGame();
     }
 }
