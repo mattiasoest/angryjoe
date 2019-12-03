@@ -26,6 +26,10 @@ public class UsernameUI : MonoBehaviour {
         } else if (newName.Length > 22) {
             invalidText.text = "Max 22 characters!";
             invalidText.enabled = true;
+
+        } else if (newName.Length < 3) {
+            invalidText.text = "Min 3 characters!";
+            invalidText.enabled = true;
         } else {
 
             PlayfabManager.instance.SetDisplayName(newName,
