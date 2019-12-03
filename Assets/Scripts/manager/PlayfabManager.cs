@@ -39,12 +39,18 @@ public class PlayfabManager : MonoBehaviour {
         PlayfabLogin();
     }
 
-    public void SetDisplayName(string name) {
+    public void SetDisplayName(string name, Action<UpdateUserTitleDisplayNameResult> onSucess, Action<PlayFabError> onError) {
         UpdateUserTitleDisplayNameRequest req = new UpdateUserTitleDisplayNameRequest { DisplayName = name };
         PlayFabClientAPI.UpdateUserTitleDisplayName(req, result => {
             Debug.Log($"Name updated to -> {name}");
+            hasUsername = true;
+            playerName = name;
+            nameText.enabled = true;
+            nameText.text = $"Logged in as: {playerName}";
+            onSucess(result);
         }, error => {
             Debug.LogError(error.GenerateErrorReport());
+            onError(error);
         });
     }
 
