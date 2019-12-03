@@ -15,4 +15,14 @@ public class UsernameUI : MonoBehaviour
     {
         
     }
+
+    public void CloseButton() {
+        gameObject.SetActive(false);
+
+    }
+
+    public void ConfirmButton() {
+        Debug.Log("Confirm");
+        gameObject.SetActive(false);
+    }
 }
