@@ -119,7 +119,7 @@ public class PlayfabManager : MonoBehaviour {
             };
             PlayFabClientAPI.LoginWithCustomID(request, result => {
                 string username = result.InfoResultPayload.PlayerProfile.DisplayName;
-                if (string.IsNullOrEmpty(username)) {
+                if (string.IsNullOrWhiteSpace(username)) {
                     hasUsername = false;
                 } else {
                     hasUsername = true;
@@ -137,7 +137,7 @@ public class PlayfabManager : MonoBehaviour {
 
     private void OnLoginMobileSuccess(LoginResult result) {
         string username = result.InfoResultPayload.PlayerProfile.DisplayName;
-        if (string.IsNullOrEmpty(username)) {
+        if (string.IsNullOrWhiteSpace(username)) {
             hasUsername = false;
         } else {
             hasUsername = true;
