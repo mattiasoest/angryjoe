@@ -40,6 +40,7 @@ public class StageController : MonoBehaviour {
     //MENU HANDLING
 
     public void PlayButton() {
+        AudioManager.instance.PlayNormalButton();
         mainMenu.SetActive(false);
         scoreLabel.enabled = true;
         // Only play it in some cases
@@ -51,10 +52,12 @@ public class StageController : MonoBehaviour {
     }
 
     public void LeaderBoardButton() {
+        AudioManager.instance.PlayNormalButton();
         PopupManager.instance.ShowPopup(PopupManager.POPUP.LEADERBOARD);
     }
 
     public void UsernameButton() {
+        AudioManager.instance.PlayNormalButton();
         PopupManager.instance.ShowPopup(PopupManager.POPUP.USERNAME);
     }
 

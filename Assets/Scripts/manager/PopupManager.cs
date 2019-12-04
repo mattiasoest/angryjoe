@@ -34,9 +34,11 @@ public class PopupManager : MonoBehaviour {
                 // TODO ?
                 break;
             case POPUP.LEADERBOARD:
+                AudioManager.instance.PlayLeaderboard();
                 ShowLeaderboardUI();
                 break;
             case POPUP.USERNAME:
+                AudioManager.instance.PlayPopup();
                 ShowUsernameUI();
                 break;
             default:

@@ -14,6 +14,7 @@ public class UsernameUI : MonoBehaviour {
     }
 
     public void CloseButton() {
+        AudioManager.instance.PlayCloseButton();
         PopupManager.instance.CloseAction(gameObject, () => {
             invalidText.enabled = false;
             gameObject.SetActive(false);
@@ -23,7 +24,7 @@ public class UsernameUI : MonoBehaviour {
     }
 
     public void ConfirmButton() {
-        Debug.Log("Confirm");
+        AudioManager.instance.PlayNormalButton();
         string newName = inputField.text.Trim();
         newName = regex.Replace(newName, @" ");
         if (string.IsNullOrWhiteSpace(newName)) {

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour {
@@ -46,6 +46,26 @@ public class AudioManager : MonoBehaviour {
 
     public void PlayHit() {
         Play("hit0");
+    }
+
+    public void PlayLeaderboard() {
+        Play("leaderboard");
+    }
+
+    public void PlayPopup() {
+        Play("regular_popup");
+    }
+
+    public void PlayToggle() {
+        Play("toggle0");
+    }
+
+    public void PlayNormalButton() {
+        Play("click0");
+    }
+
+    public void PlayCloseButton() {
+        Play("click1");
     }
 
     private void Play(string clipName) {

@@ -51,6 +51,7 @@ public class LeaderboardUI : MonoBehaviour {
     }
 
     public void CloseButton() {
+        AudioManager.instance.PlayCloseButton();
         PopupManager.instance.CloseAction(gameObject, () => {
             while (activeEntries.Count > 0) {
                 LeaderboardEntryUI entry = activeEntries.Pop();
@@ -71,6 +72,7 @@ public class LeaderboardUI : MonoBehaviour {
             //Dont refresh leaderboard
             return;
         }
+        AudioManager.instance.PlayToggle();
         Debug.Log("global");
         prevToggleName = GLOBAL_NAME;
         LoadingUI.instance.gameObject.SetActive(true);
@@ -85,6 +87,7 @@ public class LeaderboardUI : MonoBehaviour {
             //Dont refresh leaderboard
             return;
         }
+        AudioManager.instance.PlayToggle();
         Debug.Log("weekly");
         prevToggleName = WEEKLY_NAME;
         LoadingUI.instance.gameObject.SetActive(true);
