@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 
 public class GameEventManager : MonoBehaviour {
 
@@ -16,12 +16,9 @@ public class GameEventManager : MonoBehaviour {
         instance = this;
     }
 
-
     public void OnPlayerDied() {
         onPlayerDied();
     }
-
-
 
     public void OnReset() {
         onReset();
@@ -38,7 +35,6 @@ public class GameEventManager : MonoBehaviour {
     public void OnUsernameUIClose() {
         onUsernameUIClose();
     }
-
 
     public void ObstacleRecycle(Obstacle obstacle) {
         if (onObstacleRecycle != null) {

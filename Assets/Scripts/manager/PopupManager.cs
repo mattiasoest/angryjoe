@@ -1,9 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
-
-
 
 public class PopupManager : MonoBehaviour {
     public enum POPUP {
@@ -24,15 +22,14 @@ public class PopupManager : MonoBehaviour {
 
     private Animator overlayAnimator;
 
-    void start() {
-    }
+    void start() { }
     public void ShowPopup(POPUP selectedPopup) {
         overlay.SetActive(true);
         if (overlayAnimator == null) {
             overlayAnimator = overlay.GetComponent<Animator>();
         }
 
-        switch(selectedPopup) {
+        switch (selectedPopup) {
             case POPUP.MAIN:
                 // TODO ?
                 break;
@@ -48,9 +45,9 @@ public class PopupManager : MonoBehaviour {
     }
 
     public void CloseAction(GameObject toBeClosed, Action onCloseFinish) {
-        LeanTween.scale(toBeClosed, zeroScaleVec, CLOSE_TIME).setEaseInSine().setOnComplete(() =>{
-        onCloseFinish();
-        StartCoroutine(FadeOut());
+        LeanTween.scale(toBeClosed, zeroScaleVec, CLOSE_TIME).setEaseInSine().setOnComplete(() => {
+            onCloseFinish();
+            StartCoroutine(FadeOut());
         });
     }
 
@@ -71,9 +68,9 @@ public class PopupManager : MonoBehaviour {
         leaderboardUI.RefreshLeaderboard();
     }
 
-        private void ShowUsernameUI() {
-            usernameUI.gameObject.transform.localScale = zeroScaleVec;
-            usernameUI.gameObject.SetActive(true);
-            LeanTween.scale(usernameUI.gameObject, normalScaleVec, OPEN_TIME).setEaseOutBack();
+    private void ShowUsernameUI() {
+        usernameUI.gameObject.transform.localScale = zeroScaleVec;
+        usernameUI.gameObject.SetActive(true);
+        LeanTween.scale(usernameUI.gameObject, normalScaleVec, OPEN_TIME).setEaseOutBack();
     }
 }

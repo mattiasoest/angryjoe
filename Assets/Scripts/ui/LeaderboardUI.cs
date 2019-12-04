@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using System.Linq;
-using UnityEngine.UI;
-using System;
-using PlayFab.ClientModels;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using PlayFab.ClientModels;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class LeaderboardUI : MonoBehaviour {
 
@@ -16,13 +16,10 @@ public class LeaderboardUI : MonoBehaviour {
 
     private readonly Stack<LeaderboardEntryUI> activeEntries = new Stack<LeaderboardEntryUI>();
 
-
     private const string WEEKLY_NAME = "ToggleWeekly";
     private const string GLOBAL_NAME = "ToggleGlobal";
 
-
     private string prevToggleName;
-
 
     public Toggle currentSelected {
         get {
@@ -54,7 +51,7 @@ public class LeaderboardUI : MonoBehaviour {
     }
 
     public void CloseButton() {
-        PopupManager.instance.CloseAction(gameObject, ()=> {
+        PopupManager.instance.CloseAction(gameObject, () => {
             while (activeEntries.Count > 0) {
                 LeaderboardEntryUI entry = activeEntries.Pop();
                 entry.gameObject.SetActive(false);
@@ -83,7 +80,6 @@ public class LeaderboardUI : MonoBehaviour {
         PopuplateEntries(PlayfabManager.instance.SCORE_WEEKLY);
     }
 
-
     public void WeeklyToggle() {
         if (prevToggleName == WEEKLY_NAME) {
             //Dont refresh leaderboard
@@ -106,7 +102,6 @@ public class LeaderboardUI : MonoBehaviour {
         }
     }
 
-
     private void PopuplateEntries(string id) {
         PlayfabManager.instance.GetLeaderboard(id,
             result => {
@@ -118,7 +113,7 @@ public class LeaderboardUI : MonoBehaviour {
                         newEntry.gameObject.SetActive(true);
                     } else {
                         newEntry =
-                        Instantiate(leaderBoardEntry, contentContainer.transform).GetComponent<LeaderboardEntryUI>();
+                            Instantiate(leaderBoardEntry, contentContainer.transform).GetComponent<LeaderboardEntryUI>();
                     }
                     newEntry.Init(placement, player.DisplayName, player.StatValue);
                     placement++;

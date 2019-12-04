@@ -7,7 +7,6 @@ public class BackgroundRepeat : MonoBehaviour {
     private Rigidbody2D body;
     private Vector2 posVector = new Vector2();
     private Vector2 velVector;
-    
 
     void Start() {
         imageWidth = GetComponent<SpriteRenderer>().bounds.size.x;
@@ -19,7 +18,6 @@ public class BackgroundRepeat : MonoBehaviour {
         GameEventManager.instance.onPlayerDied += StopRepeat;
         GameEventManager.instance.onReset += OnReset;
     }
-
 
     private void StopRepeat() {
         body.velocity = new Vector2(0, 0);

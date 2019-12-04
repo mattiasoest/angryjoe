@@ -9,17 +9,16 @@ public class UsernameUI : MonoBehaviour {
 
     private readonly Regex regex = new Regex(@"[ ]{2,}", RegexOptions.None);
 
-
     void Awake() {
 
     }
 
     public void CloseButton() {
         PopupManager.instance.CloseAction(gameObject, () => {
-        invalidText.enabled = false;
-        gameObject.SetActive(false);
-        inputField.text = "";
-        GameEventManager.instance.OnUsernameUIClose();
+            invalidText.enabled = false;
+            gameObject.SetActive(false);
+            inputField.text = "";
+            GameEventManager.instance.OnUsernameUIClose();
         });
     }
 
@@ -40,12 +39,12 @@ public class UsernameUI : MonoBehaviour {
         } else {
 
             PlayfabManager.instance.SetDisplayName(newName,
-            result => {
-                CloseButton();
-            }, error => {
-                invalidText.text = "Failed to update!";
-                invalidText.enabled = true;
-            });
+                result => {
+                    CloseButton();
+                }, error => {
+                    invalidText.text = "Failed to update!";
+                    invalidText.enabled = true;
+                });
 
         }
     }

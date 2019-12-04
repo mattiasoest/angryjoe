@@ -18,7 +18,7 @@ public class StageController : MonoBehaviour {
     [HideInInspector]
     public int score;
     [HideInInspector]
-    public enum GAME_STATE { GAMEPLAY, MENU };
+    public enum GAME_STATE { GAMEPLAY, MENU }
     [HideInInspector]
     public GAME_STATE currentState = GAME_STATE.MENU;
 
@@ -58,7 +58,6 @@ public class StageController : MonoBehaviour {
         PopupManager.instance.ShowPopup(PopupManager.POPUP.USERNAME);
     }
 
-
     public Sprite GetRandomObstacleSprite() {
         int randomIndex = Random.Range(0, 8);
 
@@ -78,7 +77,6 @@ public class StageController : MonoBehaviour {
         score++;
         scoreLabel.text = $"Score: {score}";
     }
-
 
     private void Awake() {
         instance = this;
@@ -169,15 +167,15 @@ public class StageController : MonoBehaviour {
     private IEnumerator ResetGame(float delayTime) {
         if (PlayfabManager.instance.hasUsername) {
 
-        PlayfabManager.instance.SendHighScore(score, result => {
-            JsonObject jsonResult = (JsonObject)result.FunctionResult;
-            object messageValue;
-            jsonResult.TryGetValue("messageValue", out messageValue); // note how "messageValue" directly corresponds to the JSON values set in Cloud Script
-            Debug.Log((string)messageValue);
-        }, error => {
-            // TODO Retry?
-            Debug.Log(error.GenerateErrorReport());
-        });
+            PlayfabManager.instance.SendHighScore(score, result => {
+                JsonObject jsonResult = (JsonObject)result.FunctionResult;
+                object messageValue;
+                jsonResult.TryGetValue("messageValue", out messageValue); // note how "messageValue" directly corresponds to the JSON values set in Cloud Script
+                Debug.Log((string)messageValue);
+            }, error => {
+                // TODO Retry?
+                Debug.Log(error.GenerateErrorReport());
+            });
         }
         yield return new WaitForSeconds(delayTime);
         //AdManager.instance.PlayVideoAd();
@@ -231,7 +229,6 @@ public class StageController : MonoBehaviour {
         //float defaultWidth = Camera.main.orthographicSize * Camera.main.aspect;
         //Camera.main.orthographicSize = defaultWidth / Camera.main.aspect;
     }
-
 
     // Used to have an extra top blocker for ppl witb basically squared screens
     private void AdjustDynamicTopCollider() {

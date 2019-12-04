@@ -8,7 +8,6 @@ public class Player : MonoBehaviour {
     private const int DEFAULT_JUMPS = 3;
     private const int DIED_FORCE = 2;
 
-
     public float speed;
     public Transform feetCollider;
     public float checkRaduis;
@@ -59,7 +58,6 @@ public class Player : MonoBehaviour {
         scoreTimer -= Time.deltaTime;
         animator.SetBool("isGrounded", isGrounded);
     }
-
 
     void OnTriggerEnter2D(Collider2D collision) {
         if (isAlive) {

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Monetization;
 
-
 public class AdManager : MonoBehaviour {
 
     public static AdManager instance;
@@ -16,7 +15,6 @@ public class AdManager : MonoBehaviour {
     public bool isPlayStore;
 
     public readonly bool isTestAd = true;
-
 
     void Awake() {
         instance = this;
@@ -62,11 +60,10 @@ public class AdManager : MonoBehaviour {
         }
 
         UnityEngine.Advertisements.Advertisement.Banner.
-            SetPosition(UnityEngine.Advertisements.BannerPosition.TOP_CENTER);
+        SetPosition(UnityEngine.Advertisements.BannerPosition.TOP_CENTER);
 
         UnityEngine.Advertisements.Advertisement.Banner.Show(BANNER_ID);
     }
-
 
     private void HandleRewardResult(ShowResult result) {
         switch (result) {
@@ -81,6 +78,5 @@ public class AdManager : MonoBehaviour {
                 break;
         }
     }
-
 
 }

@@ -78,8 +78,8 @@ public class PlayfabManager : MonoBehaviour {
     public void SendHighScore(int score, Action<ExecuteCloudScriptResult> onSucess, Action<PlayFabError> onError) {
         PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest() {
             FunctionName = "sendHighScore",
-            FunctionParameter = new { score },
-            GeneratePlayStreamEvent = true,
+                FunctionParameter = new { score },
+                GeneratePlayStreamEvent = true,
         }, result => {
             onSucess(result);
         }, error => {
@@ -94,24 +94,24 @@ public class PlayfabManager : MonoBehaviour {
                 AndroidDeviceId = GetMobileId(),
                 CreateAccount = true,
                 InfoRequestParameters = new GetPlayerCombinedInfoRequestParams() {
-                    GetPlayerProfile = true,
-                    ProfileConstraints = new PlayerProfileViewConstraints() {
-                        ShowDisplayName = true,
-                    }
+                GetPlayerProfile = true,
+                ProfileConstraints = new PlayerProfileViewConstraints() {
+                ShowDisplayName = true,
+                }
                 }
             };
             PlayFabClientAPI.LoginWithAndroidDeviceID(requestAndroid, OnLoginMobileSuccess, OnLoginMobileFailure);
 #endif
 #if UNITY_IOS
             LoginWithIOSDeviceIDRequest requestIOS = new LoginWithIOSDeviceIDRequest {
-            DeviceId = ReturnMobileID(),
-            CreateAccount = true,
-            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams() {
+                DeviceId = ReturnMobileID(),
+                CreateAccount = true,
+                InfoRequestParameters = new GetPlayerCombinedInfoRequestParams() {
                 GetPlayerProfile = true,
                 ProfileConstraints = new PlayerProfileViewConstraints() {
-                    ShowDisplayName = true,
+                ShowDisplayName = true,
                 }
-            }
+                }
             };
             PlayFabClientAPI.LoginWithIOSDeviceID(requestIOS, OnLoginMobileSuccess, OnLoginMobileFailure);
 #endif
@@ -120,10 +120,10 @@ public class PlayfabManager : MonoBehaviour {
                 CustomId = "GettingStartedGuide",
                 CreateAccount = true,
                 InfoRequestParameters = new GetPlayerCombinedInfoRequestParams() {
-                    GetPlayerProfile = true,
-                    ProfileConstraints = new PlayerProfileViewConstraints() {
-                        ShowDisplayName = true,
-                    }
+                GetPlayerProfile = true,
+                ProfileConstraints = new PlayerProfileViewConstraints() {
+                ShowDisplayName = true,
+                }
                 }
             };
             PlayFabClientAPI.LoginWithCustomID(request, result => {

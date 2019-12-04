@@ -5,7 +5,7 @@ public class Obstacle : MonoBehaviour {
     public float speedEffect;
 
     private Rigidbody2D body;
-	private Vector2 posVector;
+    private Vector2 posVector;
     private Vector2 camPos;
 
     public int point = 1;
@@ -17,9 +17,9 @@ public class Obstacle : MonoBehaviour {
         body.velocity = new Vector2(speedEffect, 0);
         GeneratePosition(yPosition);
         point = 1;
-}
+    }
 
-	void Start() {
+    void Start() {
         camPos = Camera.main.ViewportToWorldPoint(new Vector2(-0.15f, 0.5f));
         GameEventManager.instance.onPlayerDied += StopMovement;
         GameEventManager.instance.onReset += OnReset;
