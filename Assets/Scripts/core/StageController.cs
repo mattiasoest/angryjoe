@@ -42,14 +42,15 @@ public class StageController : MonoBehaviour {
 
     public void PlayButton() {
         AudioManager.instance.PlayNormalButton();
-        mainMenu.SetActive(false);
-        scoreLabel.enabled = true;
         // Only play it in some cases
+        PopupManager.instance.MainMenuCloseAction(() => {
         Debug.Log("=== GAMEPLAY ===");
         currentState = GAME_STATE.GAMEPLAY;
-        if (Random.Range(0, 1f) > 0.65f) {
-            StartCoroutine(DelayedBurp());
-        }
+        scoreLabel.enabled = true;
+            if (Random.Range(0, 1f) > 0.65f) {
+                StartCoroutine(DelayedBurp());
+            }
+        });
     }
 
     private IEnumerator DelayedBurp() {
@@ -191,7 +192,7 @@ public class StageController : MonoBehaviour {
         score = 0;
         scoreLabel.text = $"Score: {score}";
         scoreLabel.enabled = false;
-        mainMenu.SetActive(true);
+        PopupManager.instance.ShowPopup(PopupManager.POPUP.MAIN, false);
     }
 
     private float GenerateRandomYpos() {
