@@ -23,13 +23,14 @@ public class StageController : MonoBehaviour {
     [HideInInspector]
     public GAME_STATE currentState = GAME_STATE.MENU;
 
-    private const float DEFAULT_SPAWN_TIME = 1.28f;
+    private const float START_SPAWN_TIME = 1f;
+    private const float DEFAULT_SPAWN_RATE = 1.28f;
     private const float LOWER_OBSTACLE_BOUND = -5.2f;
     private const float UPPER_OBSTACLE_BOUND = 4.3f;
 
     private readonly Stack<Obstacle> obstaclePool = new Stack<Obstacle>();
 
-    private float spawnTimer = DEFAULT_SPAWN_TIME;
+    private float spawnTimer = START_SPAWN_TIME;
 
     private float lastYpos;
     private bool lastLowPos;
@@ -125,7 +126,7 @@ public class StageController : MonoBehaviour {
                             float randomY = GenerateRandomYpos();
                             obs.GetComponent<Obstacle>().Init(randomY);
                         }
-                        spawnTimer = DEFAULT_SPAWN_TIME;
+                        spawnTimer = DEFAULT_SPAWN_RATE;
                     }
                 }
                 break;
@@ -188,7 +189,7 @@ public class StageController : MonoBehaviour {
         yield return new WaitForSeconds(delayTime);
         //AdManager.instance.PlayVideoAd();
         GameEventManager.instance.OnReset();
-        spawnTimer = DEFAULT_SPAWN_TIME;
+        spawnTimer = START_SPAWN_TIME;
         score = 0;
         scoreLabel.text = $"Score: {score}";
         scoreLabel.enabled = false;
