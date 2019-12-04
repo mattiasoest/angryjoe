@@ -91,6 +91,10 @@ public class PopupManager : MonoBehaviour {
     }
 
     private void ShowUsernameUI() {
+        if (!PlayfabManager.instance.loggedIn) {
+            // Not logged in? Retry here
+            PlayfabManager.instance.PlayfabLogin();
+        }
         usernameUI.gameObject.transform.localScale = zeroScaleVec;
         usernameUI.gameObject.SetActive(true);
         LeanTween.scale(usernameUI.gameObject, normalScaleVec, OPEN_TIME).setEaseOutBack();

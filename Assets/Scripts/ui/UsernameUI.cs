@@ -25,8 +25,17 @@ public class UsernameUI : MonoBehaviour {
 
     public void ConfirmButton() {
         AudioManager.instance.PlayNormalButton();
+
+        // Not logged in, dont do anything
+        if (!PlayfabManager.instance.loggedIn) {
+            invalidText.text = "Failed to update!";
+            invalidText.enabled = true;
+            return;
+        }
+
         string newName = inputField.text.Trim();
         newName = regex.Replace(newName, @" ");
+
         if (string.IsNullOrWhiteSpace(newName)) {
             invalidText.text = "Invalid username!";
             invalidText.enabled = true;
@@ -46,7 +55,6 @@ public class UsernameUI : MonoBehaviour {
                     invalidText.text = "Failed to update!";
                     invalidText.enabled = true;
                 });
-
         }
     }
 }

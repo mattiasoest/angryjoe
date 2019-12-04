@@ -90,7 +90,7 @@ public class PlayfabManager : MonoBehaviour {
         });
     }
 
-    private void PlayfabLogin() {
+    public void PlayfabLogin() {
         if (!debug) {
 #if UNITY_ANDROID
             LoginWithAndroidDeviceIDRequest requestAndroid = new LoginWithAndroidDeviceIDRequest {
