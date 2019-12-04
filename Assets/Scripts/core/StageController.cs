@@ -45,9 +45,9 @@ public class StageController : MonoBehaviour {
         AudioManager.instance.PlayStartButton();
         // Only play it in some cases
         PopupManager.instance.MainMenuCloseAction(() => {
-        Debug.Log("=== GAMEPLAY ===");
-        currentState = GAME_STATE.GAMEPLAY;
-        scoreLabel.enabled = true;
+            Debug.Log("=== GAMEPLAY ===");
+            currentState = GAME_STATE.GAMEPLAY;
+            scoreLabel.enabled = true;
             if (Random.Range(0, 1f) > 0.8f) {
                 StartCoroutine(DelayedBurp());
             }
@@ -63,8 +63,20 @@ public class StageController : MonoBehaviour {
         PopupManager.instance.ShowPopup(PopupManager.POPUP.LEADERBOARD);
     }
 
+    public void ExtraJumpButton() {
+        AudioManager.instance.PlayNormalButton();
+    }
+
+    public void RemoveBannerAdbutton() {
+        AudioManager.instance.PlayNormalButton();
+    }
+
     public void UsernameButton() {
         PopupManager.instance.ShowPopup(PopupManager.POPUP.USERNAME);
+    }
+
+    public void SettingsButton() {
+        AudioManager.instance.PlayNormalButton();
     }
 
     public Sprite GetRandomObstacleSprite() {
