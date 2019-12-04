@@ -84,7 +84,7 @@ public class StageController : MonoBehaviour {
     public void UpdateScore() {
         AudioManager.instance.PlayScore();
         score++;
-        scoreLabel.text = $"Score: {score}";
+        scoreLabel.text = $"{score}";
     }
 
     private void Awake() {
@@ -191,7 +191,7 @@ public class StageController : MonoBehaviour {
         GameEventManager.instance.OnReset();
         spawnTimer = START_SPAWN_TIME;
         score = 0;
-        scoreLabel.text = $"Score: {score}";
+        scoreLabel.text = $"{score}";
         scoreLabel.enabled = false;
         PopupManager.instance.ShowPopup(PopupManager.POPUP.MAIN, false);
     }
