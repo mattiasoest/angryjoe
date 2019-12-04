@@ -19,6 +19,7 @@ public class StageController : MonoBehaviour {
     public int score;
     [HideInInspector]
     public enum GAME_STATE { GAMEPLAY, MENU }
+
     [HideInInspector]
     public GAME_STATE currentState = GAME_STATE.MENU;
 
@@ -44,20 +45,23 @@ public class StageController : MonoBehaviour {
         mainMenu.SetActive(false);
         scoreLabel.enabled = true;
         // Only play it in some cases
-        if (Random.Range(0, 1f) > 0.65f) {
-            AudioManager.instance.PlayStartGame();
-        }
         Debug.Log("=== GAMEPLAY ===");
         currentState = GAME_STATE.GAMEPLAY;
+        if (Random.Range(0, 1f) > 0.65f) {
+            StartCoroutine(DelayedBurp());
+        }
+    }
+
+    private IEnumerator DelayedBurp() {
+        yield return new WaitForSeconds(0.8f);
+        AudioManager.instance.PlayStartGame();
     }
 
     public void LeaderBoardButton() {
-        AudioManager.instance.PlayNormalButton();
         PopupManager.instance.ShowPopup(PopupManager.POPUP.LEADERBOARD);
     }
 
     public void UsernameButton() {
-        AudioManager.instance.PlayNormalButton();
         PopupManager.instance.ShowPopup(PopupManager.POPUP.USERNAME);
     }
 
