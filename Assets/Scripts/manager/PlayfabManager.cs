@@ -12,10 +12,10 @@ public class PlayfabManager : MonoBehaviour {
 
     [HideInInspector]
     public string playerName;
-
     [HideInInspector]
     public bool hasUsername;
-
+    [HideInInspector]
+    public bool loggedIn;
     [HideInInspector]
     public readonly string SCORE_GLOBAL = "highscore";
     [HideInInspector]
@@ -137,8 +137,10 @@ public class PlayfabManager : MonoBehaviour {
                     nameText.text = $"Logged in as: {playerName}";
                     AudioManager.instance.PlayLogin();
                 }
+                loggedIn = true;
                 LoadingUI.instance.gameObject.SetActive(false);
             }, error => {
+                loggedIn = false;
                 Debug.LogError(error.GenerateErrorReport());
                 LoadingUI.instance.gameObject.SetActive(false);
             });
@@ -156,11 +158,12 @@ public class PlayfabManager : MonoBehaviour {
             nameText.text = $"Logged in as: {playerName}";
             AudioManager.instance.PlayLogin();
         }
-
+        loggedIn = true;
         LoadingUI.instance.gameObject.SetActive(false);
     }
 
     private void OnLoginMobileFailure(PlayFabError error) {
+        loggedIn = false;
         LoadingUI.instance.gameObject.SetActive(false);
         Debug.LogError(error.GenerateErrorReport());
     }
