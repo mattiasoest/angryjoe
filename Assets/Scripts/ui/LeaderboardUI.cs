@@ -12,6 +12,8 @@ public class LeaderboardUI : MonoBehaviour {
     public GameObject noEntriesText;
     public GameObject contentContainer;
 
+    public Text subtitle;
+
     private readonly Stack<LeaderboardEntryUI> entryPool = new Stack<LeaderboardEntryUI>();
 
     private readonly Stack<LeaderboardEntryUI> activeEntries = new Stack<LeaderboardEntryUI>();
@@ -33,6 +35,7 @@ public class LeaderboardUI : MonoBehaviour {
             //First time, populate with the global
             PopuplateEntries(PlayfabManager.instance.SCORE_GLOBAL);
             prevToggleName = GLOBAL_NAME;
+            subtitle.text ="GLOBAL";
         } else {
             switch (currentSelected.name) {
                 case GLOBAL_NAME:
@@ -72,6 +75,7 @@ public class LeaderboardUI : MonoBehaviour {
             //Dont refresh leaderboard
             return;
         }
+        subtitle.text ="GLOBAL";
         AudioManager.instance.PlayToggle();
         Debug.Log("global");
         prevToggleName = GLOBAL_NAME;
@@ -87,6 +91,7 @@ public class LeaderboardUI : MonoBehaviour {
             //Dont refresh leaderboard
             return;
         }
+        subtitle.text ="WEEKLY";
         AudioManager.instance.PlayToggle();
         Debug.Log("weekly");
         prevToggleName = WEEKLY_NAME;
