@@ -192,7 +192,7 @@ public class StageController : MonoBehaviour {
         spawnTimer = START_SPAWN_TIME;
         score = 0;
         scoreLabel.text = $"{score}";
-        scoreLabel.enabled = false;
+        // scoreLabel.enabled = false;
         PopupManager.instance.ShowPopup(PopupManager.POPUP.MAIN, false);
     }
 
