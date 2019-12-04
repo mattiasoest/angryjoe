@@ -30,6 +30,13 @@ public class LeaderboardUI : MonoBehaviour {
     }
 
     public void RefreshLeaderboard() {
+        // Dont try to send a request not logged in
+        if (!PlayfabManager.instance.loggedIn) {
+            noEntriesText.SetActive(true);
+            return;
+        }
+
+        noEntriesText.SetActive(false);
         LoadingUI.instance.gameObject.SetActive(true);
         if (entryPool.Count == 0) {
             //First time, populate with the global
