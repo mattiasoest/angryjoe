@@ -54,12 +54,14 @@ public class LeaderboardUI : MonoBehaviour {
     }
 
     public void CloseButton() {
-        while (activeEntries.Count > 0) {
-            LeaderboardEntryUI entry = activeEntries.Pop();
-            entry.gameObject.SetActive(false);
-            entryPool.Push(entry);
-        }
-        gameObject.SetActive(false);
+        PopupManager.instance.CloseAction(gameObject, ()=> {
+            while (activeEntries.Count > 0) {
+                LeaderboardEntryUI entry = activeEntries.Pop();
+                entry.gameObject.SetActive(false);
+                entryPool.Push(entry);
+            }
+            gameObject.SetActive(false);
+        });
     }
 
     public void SelectToggle(int id) {

@@ -13,7 +13,6 @@ public class StageController : MonoBehaviour {
     public GameObject dynamicTopBlocker;
     public GameObject obstacleFab;
     public GameObject mainMenu;
-    public GameObject usernamePopup;
     public LeaderboardUI leaderboardUI;
 
     [HideInInspector]
@@ -52,12 +51,11 @@ public class StageController : MonoBehaviour {
     }
 
     public void LeaderBoardButton() {
-        leaderboardUI.gameObject.SetActive(true);
-        leaderboardUI.RefreshLeaderboard();
+        PopupManager.instance.ShowPopup(PopupManager.POPUP.LEADERBOARD);
     }
 
     public void UsernameButton() {
-        usernamePopup.gameObject.SetActive(true);
+        PopupManager.instance.ShowPopup(PopupManager.POPUP.USERNAME);
     }
 
 
@@ -139,7 +137,7 @@ public class StageController : MonoBehaviour {
         AudioManager.instance.PlayDeath();
         jumpLabel.enabled = false;
         if (string.IsNullOrWhiteSpace(PlayfabManager.instance.playerName)) {
-            usernamePopup.SetActive(true);
+            PopupManager.instance.ShowPopup(PopupManager.POPUP.USERNAME);
         } else {
             ActivateMainMenu();
         }
