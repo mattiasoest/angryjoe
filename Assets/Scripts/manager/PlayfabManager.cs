@@ -46,11 +46,14 @@ public class PlayfabManager : MonoBehaviour {
             Debug.Log($"Name updated to -> {name}");
             hasUsername = true;
             playerName = name;
-            nameText.enabled = true;
+            nameText.gameObject.SetActive(true);
             nameText.text = $"Logged in as: {playerName}";
+            nameText.GetComponent<Animator>().Play("logged_in_anim");
             LoadingUI.instance.gameObject.SetActive(false);
             onSucess(result);
+            AudioManager.instance.PlayLogin();
         }, error => {
+            nameText.gameObject.SetActive(false);
             Debug.LogError(error.GenerateErrorReport());
             LoadingUI.instance.gameObject.SetActive(false);
             onError(error);
@@ -130,11 +133,11 @@ public class PlayfabManager : MonoBehaviour {
                 string username = result.InfoResultPayload.PlayerProfile.DisplayName;
                 if (string.IsNullOrWhiteSpace(username)) {
                     hasUsername = false;
-                    nameText.enabled = false;
+                    nameText.gameObject.SetActive(false);
                 } else {
                     hasUsername = true;
                     playerName = username;
-                    nameText.enabled = true;
+                    nameText.gameObject.SetActive(true);
                     nameText.text = $"Logged in as: {playerName}";
                     AudioManager.instance.PlayLogin();
                 }
@@ -142,6 +145,7 @@ public class PlayfabManager : MonoBehaviour {
                 LoadingUI.instance.gameObject.SetActive(false);
             }, error => {
                 loggedIn = false;
+                nameText.gameObject.SetActive(false);
                 Debug.LogError(error.GenerateErrorReport());
                 LoadingUI.instance.gameObject.SetActive(false);
             });
@@ -152,11 +156,11 @@ public class PlayfabManager : MonoBehaviour {
         string username = result.InfoResultPayload.PlayerProfile.DisplayName;
         if (string.IsNullOrWhiteSpace(username)) {
             hasUsername = false;
-            nameText.enabled = false;
+            nameText.gameObject.SetActive(false);
         } else {
             hasUsername = true;
             playerName = username;
-            nameText.enabled = true;
+            nameText.gameObject.SetActive(true);
             nameText.text = $"Logged in as: {playerName}";
             AudioManager.instance.PlayLogin();
         }
@@ -166,6 +170,7 @@ public class PlayfabManager : MonoBehaviour {
 
     private void OnLoginMobileFailure(PlayFabError error) {
         loggedIn = false;
+        nameText.gameObject.SetActive(false);
         LoadingUI.instance.gameObject.SetActive(false);
         Debug.LogError(error.GenerateErrorReport());
     }
