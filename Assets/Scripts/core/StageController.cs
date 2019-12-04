@@ -48,7 +48,7 @@ public class StageController : MonoBehaviour {
         Debug.Log("=== GAMEPLAY ===");
         currentState = GAME_STATE.GAMEPLAY;
         scoreLabel.enabled = true;
-            if (Random.Range(0, 1f) > 0.68f) {
+            if (Random.Range(0, 1f) > 0.8f) {
                 StartCoroutine(DelayedBurp());
             }
         });
