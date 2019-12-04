@@ -144,7 +144,7 @@ public class StageController : MonoBehaviour {
         AudioManager.instance.PlayDeath();
         jumpLabel.enabled = false;
         if (string.IsNullOrWhiteSpace(PlayfabManager.instance.playerName)) {
-            PopupManager.instance.ShowPopup(PopupManager.POPUP.USERNAME);
+            StartCoroutine(PromptDelayedUsernamePopup());
         } else {
             ActivateMainMenu();
         }
@@ -194,6 +194,11 @@ public class StageController : MonoBehaviour {
         scoreLabel.text = $"Score: {score}";
         scoreLabel.enabled = false;
         PopupManager.instance.ShowPopup(PopupManager.POPUP.MAIN, false);
+    }
+
+    private IEnumerator PromptDelayedUsernamePopup() {
+        yield return new WaitForSeconds(0.7f);
+        PopupManager.instance.ShowPopup(PopupManager.POPUP.USERNAME);
     }
 
     private float GenerateRandomYpos() {

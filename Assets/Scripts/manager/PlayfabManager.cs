@@ -130,6 +130,7 @@ public class PlayfabManager : MonoBehaviour {
                 string username = result.InfoResultPayload.PlayerProfile.DisplayName;
                 if (string.IsNullOrWhiteSpace(username)) {
                     hasUsername = false;
+                    nameText.enabled = false;
                 } else {
                     hasUsername = true;
                     playerName = username;
@@ -151,6 +152,7 @@ public class PlayfabManager : MonoBehaviour {
         string username = result.InfoResultPayload.PlayerProfile.DisplayName;
         if (string.IsNullOrWhiteSpace(username)) {
             hasUsername = false;
+            nameText.enabled = false;
         } else {
             hasUsername = true;
             playerName = username;
