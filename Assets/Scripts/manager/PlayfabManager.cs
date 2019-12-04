@@ -135,6 +135,7 @@ public class PlayfabManager : MonoBehaviour {
                     playerName = username;
                     nameText.enabled = true;
                     nameText.text = $"Logged in as: {playerName}";
+                    AudioManager.instance.PlayLogin();
                 }
                 LoadingUI.instance.gameObject.SetActive(false);
             }, error => {
@@ -153,6 +154,7 @@ public class PlayfabManager : MonoBehaviour {
             playerName = username;
             nameText.enabled = true;
             nameText.text = $"Logged in as: {playerName}";
+            AudioManager.instance.PlayLogin();
         }
 
         LoadingUI.instance.gameObject.SetActive(false);

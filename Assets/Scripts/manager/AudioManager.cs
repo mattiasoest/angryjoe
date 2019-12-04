@@ -68,6 +68,14 @@ public class AudioManager : MonoBehaviour {
         Play("click1");
     }
 
+    public void PlayStartButton() {
+        Play("play_button");
+    }
+
+    public void PlayLogin() {
+        Play("login0");
+    }
+
     private void Play(string clipName) {
         Sound clip = Array.Find(sounds, s => s.name == clipName);
         if (clip == null) {

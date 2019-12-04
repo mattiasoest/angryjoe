@@ -42,7 +42,7 @@ public class StageController : MonoBehaviour {
     //MENU HANDLING
 
     public void PlayButton() {
-        AudioManager.instance.PlayNormalButton();
+        AudioManager.instance.PlayStartButton();
         // Only play it in some cases
         PopupManager.instance.MainMenuCloseAction(() => {
         Debug.Log("=== GAMEPLAY ===");
