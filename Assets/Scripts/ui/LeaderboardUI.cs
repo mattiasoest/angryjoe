@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class LeaderboardUI : MonoBehaviour {
 
+    public Sprite[] trophies;
     public GameObject leaderBoardEntry;
     public ToggleGroup toggleGroup;
     public GameObject noEntriesText;
@@ -42,7 +43,7 @@ public class LeaderboardUI : MonoBehaviour {
             //First time, populate with the global
             PopuplateEntries(PlayfabManager.instance.SCORE_GLOBAL);
             prevToggleName = GLOBAL_NAME;
-            subtitle.text ="GLOBAL";
+            subtitle.text = "GLOBAL";
         } else {
             switch (currentSelected.name) {
                 case GLOBAL_NAME:
@@ -82,13 +83,17 @@ public class LeaderboardUI : MonoBehaviour {
             //Dont refresh leaderboard
             return;
         }
-        subtitle.text ="GLOBAL";
+        subtitle.text = "GLOBAL";
         AudioManager.instance.PlayToggle();
         Debug.Log("global");
         prevToggleName = GLOBAL_NAME;
         LoadingUI.instance.gameObject.SetActive(true);
 
         RecycleEntries();
+        if (!PlayfabManager.instance.loggedIn) {
+            PlayfabManager.instance.PlayfabLogin();
+            return;
+        }
 
         PopuplateEntries(PlayfabManager.instance.SCORE_WEEKLY);
     }
@@ -98,13 +103,17 @@ public class LeaderboardUI : MonoBehaviour {
             //Dont refresh leaderboard
             return;
         }
-        subtitle.text ="WEEKLY";
+        subtitle.text = "WEEKLY";
         AudioManager.instance.PlayToggle();
         Debug.Log("weekly");
         prevToggleName = WEEKLY_NAME;
         LoadingUI.instance.gameObject.SetActive(true);
 
         RecycleEntries();
+        if (!PlayfabManager.instance.loggedIn) {
+            PlayfabManager.instance.PlayfabLogin();
+            return;
+        }
 
         PopuplateEntries(PlayfabManager.instance.SCORE_WEEKLY);
     }
@@ -122,6 +131,7 @@ public class LeaderboardUI : MonoBehaviour {
             result => {
                 int placement = 1;
                 foreach (PlayerLeaderboardEntry player in result.Leaderboard) {
+                    int trophyIndex = placement < 4 ? placement - 1 : 1;
                     LeaderboardEntryUI newEntry;
                     if (entryPool.Count > 0) {
                         newEntry = entryPool.Pop();
@@ -130,7 +140,7 @@ public class LeaderboardUI : MonoBehaviour {
                         newEntry =
                             Instantiate(leaderBoardEntry, contentContainer.transform).GetComponent<LeaderboardEntryUI>();
                     }
-                    newEntry.Init(placement, player.DisplayName, player.StatValue);
+                    newEntry.Init(placement, player.DisplayName, player.StatValue, trophies[trophyIndex]);
                     placement++;
                     activeEntries.Push(newEntry);
 

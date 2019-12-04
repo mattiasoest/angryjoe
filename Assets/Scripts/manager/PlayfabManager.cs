@@ -91,6 +91,7 @@ public class PlayfabManager : MonoBehaviour {
     }
 
     public void PlayfabLogin() {
+        LoadingUI.instance.gameObject.SetActive(true);
         if (!debug) {
 #if UNITY_ANDROID
             LoginWithAndroidDeviceIDRequest requestAndroid = new LoginWithAndroidDeviceIDRequest {
