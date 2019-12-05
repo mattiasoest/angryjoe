@@ -43,6 +43,7 @@ public class StageController : MonoBehaviour {
 
     private int lastRandomSpriteIndex = -1;
 
+    private bool usedRevived;
 
     void Awake() {
         instance = this;
@@ -200,13 +201,29 @@ public class StageController : MonoBehaviour {
         if (string.IsNullOrWhiteSpace(PlayfabManager.instance.playerName)) {
             StartCoroutine(PromptDelayedUsernamePopup());
         } else {
-            // ActivateMainMenu();
-            StartCoroutine(PromptDelayedContinuePopup());
+            if (usedRevived) {
+                ActivateMainMenu();
+            } else {
+                usedRevived = true;
+                StartCoroutine(PromptDelayedContinuePopup());
+            }
         }
     }
 
     private void OnContinueGame() {
-        GameEventManager.instance.OnRevive(1.1f);
+        AdManager.instance.PlayRewardedAd(adResult => {
+            switch (adResult) {
+                case ShowResult.Finished:
+                    GameEventManager.instance.OnRevive(1.1f);
+                    break;
+                case ShowResult.Skipped:
+                    Debug.Log("SKIPPED REVIVE");
+                    break;
+                case ShowResult.Failed:
+                    Debug.Log("FAILED REVIVE");
+                    break;
+            }
+        });
     }
 
     private void OnFinishGame() {
@@ -240,6 +257,7 @@ public class StageController : MonoBehaviour {
         GameEventManager.instance.OnReset();
         spawnTimer = START_SPAWN_TIME;
         score = 0;
+        usedRevived = false;
         scoreLabel.text = $"{score}";
         // scoreLabel.enabled = false;
         PopupManager.instance.ShowPopup(PopupManager.POPUP.MAIN, false);
