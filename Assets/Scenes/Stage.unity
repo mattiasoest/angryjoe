@@ -7443,7 +7443,7 @@ MonoBehaviour:
     volume: 1
     pitch: 1
   - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 5939923b2ddfe4744b438f6afc7b92fd, type: 3}
+    clip: {fileID: 8300000, guid: 7f6aeecba98bb4739baea15fab9124ef, type: 3}
     name: start0
     volume: 0.5
     pitch: 1
@@ -7491,6 +7491,11 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: e565038971d1b41c882a0c77b3f048e4, type: 3}
     name: play_button
     volume: 0.15
+    pitch: 1
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 00375027245084917bee4c8a32dd8953, type: 3}
+    name: reward0
+    volume: 0.552
     pitch: 1
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 20654ad7cb0424869b4b8839c63b5b41, type: 3}
