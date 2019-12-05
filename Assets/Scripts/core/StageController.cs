@@ -14,6 +14,7 @@ public class StageController : MonoBehaviour {
     public GameObject dynamicTopBlocker;
     public GameObject obstacleFab;
     public GameObject mainMenu;
+    public GameObject rewardContainer;
     public LeaderboardUI leaderboardUI;
 
     public Button removeBannerBtn;
@@ -183,15 +184,21 @@ public class StageController : MonoBehaviour {
     }
 
     private IEnumerator GrantBannerReward() {
-        removeBannerBtn.interactable = false;
-        yield return new WaitForSeconds(0.5f);
+        rewardContainer.SetActive(true);
+        rewardContainer.GetComponentInChildren<Text>().text = "REMOVED";
         AdManager.instance.DestroyBannerAd();
+        removeBannerBtn.interactable = false;
+        yield return new WaitForSeconds(1.233f);
+        rewardContainer.SetActive(false);
     }
 
     private IEnumerator GrantJumpReward() {
+        rewardContainer.SetActive(true);
+        rewardContainer.GetComponentInChildren<Text>().text = "SUPER BOOTS";
         getExtraJumpBtn.interactable = false;
-        yield return new WaitForSeconds(0.5f);
         player.GrantJumpReward();
+        yield return new WaitForSeconds(1.233f);
+        rewardContainer.SetActive(false);
     }
 
     private void OnObstacleRecycle(Obstacle obs) {
