@@ -218,7 +218,8 @@ public class StageController : MonoBehaviour {
         AdManager.instance.PlayRewardedAd(adResult => {
             switch (adResult) {
                 case ShowResult.Finished:
-                    GameEventManager.instance.OnRevive(1.1f);
+                    AudioManager.instance.PlayContinueGame();
+                    GameEventManager.instance.OnRevive(1.2f);
                     break;
                 case ShowResult.Skipped:
                     Debug.Log("SKIPPED REVIVE");

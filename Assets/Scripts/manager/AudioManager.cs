@@ -76,6 +76,14 @@ public class AudioManager : MonoBehaviour {
         Play("login0");
     }
 
+    public void PlayGrantItem() {
+        Play("reward0");
+    }
+
+    public void PlayContinueGame() {
+        Play("reward_continue");
+    }
+
     private void Play(string clipName) {
         Sound clip = Array.Find(sounds, s => s.name == clipName);
         if (clip == null) {

@@ -64,7 +64,7 @@ public class Player : MonoBehaviour {
                 setImmune(false);
             }
         }
-    
+
         isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
         if (isAlive && StageController.instance.currentState == GAME_STATE.GAMEPLAY) {
             // TODO IOS!!
@@ -223,15 +223,21 @@ public class Player : MonoBehaviour {
     }
 
     private IEnumerator RevivePlayer(float delay) {
+        Color32 color = new Color32(255, 255, 255, 0);
+        playerRenderer.color = color;
         animator.SetTrigger("resetTrigger");
-
         // Small jump
-        rb.velocity = Vector2.up * jumpForce * 1.56f;
+        rb.velocity = Vector2.up * jumpForce * 1.6f;
         // Special jump params for this case
         jumps = 0;
         isJumping = false;
 
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay / 2);
+        Debug.Log("FIRST");
+        color.a = 155;
+        playerRenderer.color = color;
+        yield return new WaitForSeconds(delay / 2);
+        Debug.Log("SECOND");
         setImmune(true);
         ResetSliding();
         isAlive = true;
@@ -242,7 +248,7 @@ public class Player : MonoBehaviour {
     private void setImmune(bool immune) {
         immuneTimer = 1.9f;
         isImmune = immune;
-        playerRenderer.color = immune ? new Color32(255, 255, 255, 100) : new Color32(255, 255, 255, 255);
+        playerRenderer.color = immune ? new Color32(255, 255, 255, 155) : new Color32(255, 255, 255, 255);
     }
 
     private void ResetSliding() {
