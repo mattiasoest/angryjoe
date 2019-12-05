@@ -44,6 +44,7 @@ public class StageController : MonoBehaviour {
     private int lastRandomSpriteIndex = -1;
 
     private bool usedRevived;
+    private bool playedClicked;
 
     void Awake() {
         instance = this;
@@ -92,16 +93,19 @@ public class StageController : MonoBehaviour {
         }
     }
     public void PlayButton() {
-        AudioManager.instance.PlayStartButton();
-        // Only play it in some cases
-        PopupManager.instance.MainMenuCloseAction(() => {
-            Debug.Log("=== GAMEPLAY ===");
-            currentState = GAME_STATE.GAMEPLAY;
-            scoreLabel.enabled = true;
-            if (Random.Range(0, 1f) > 0.8f) {
-                StartCoroutine(DelayedBurp());
-            }
-        });
+        if (!playedClicked) {
+            playedClicked = true;
+            AudioManager.instance.PlayStartButton();
+            // Only play it in some cases
+            PopupManager.instance.MainMenuCloseAction(() => {
+                Debug.Log("=== GAMEPLAY ===");
+                currentState = GAME_STATE.GAMEPLAY;
+                scoreLabel.enabled = true;
+                if (Random.Range(0, 1f) > 0.8f) {
+                    StartCoroutine(DelayedBurp());
+                }
+            });
+        }
     }
 
     private IEnumerator DelayedBurp() {
@@ -237,6 +241,7 @@ public class StageController : MonoBehaviour {
     private void ActivateMainMenu(float delay = 1.2f) {
         Debug.Log("=== MAIN MENU ===");
         currentState = GAME_STATE.MENU;
+        playedClicked = false;
         StartCoroutine(ResetGame(delay));
     }
 
