@@ -7430,7 +7430,7 @@ MonoBehaviour:
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 5e951303783614bc4b0a41d4614c604e, type: 3}
     name: reward_continue
-    volume: 0.45
+    volume: 0.5
     pitch: 1
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 1a68415af1e7e4bc39d2e514c7e88a74, type: 3}
@@ -7458,7 +7458,7 @@ MonoBehaviour:
     volume: 0.6
     pitch: 1
   - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: a01161b4b76a942438249fb0f3c1c618, type: 3}
+    clip: {fileID: 8300000, guid: d9d224804d2c94ea89e2aac8cf8cc2be, type: 3}
     name: score0
     volume: 0.1
     pitch: 1
@@ -7495,7 +7495,7 @@ MonoBehaviour:
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 00375027245084917bee4c8a32dd8953, type: 3}
     name: reward0
-    volume: 0.552
+    volume: 0.22
     pitch: 1
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 20654ad7cb0424869b4b8839c63b5b41, type: 3}

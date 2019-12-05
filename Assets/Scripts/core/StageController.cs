@@ -115,6 +115,8 @@ public class StageController : MonoBehaviour {
         AdManager.instance.PlayRewardedAd(adResult => {
             switch (adResult) {
                 case ShowResult.Finished:
+                    // TODO animation?
+                    AudioManager.instance.PlayGrantItem();
                     StartCoroutine(GrantJumpReward());
                     break;
                 case ShowResult.Skipped:
@@ -132,6 +134,8 @@ public class StageController : MonoBehaviour {
         AdManager.instance.PlayRewardedAd(adResult => {
             switch (adResult) {
                 case ShowResult.Finished:
+                    // TODO animation?
+                    AudioManager.instance.PlayGrantItem();
                     StartCoroutine(GrantBannerReward());
                     break;
                 case ShowResult.Skipped:
@@ -180,15 +184,13 @@ public class StageController : MonoBehaviour {
 
     private IEnumerator GrantBannerReward() {
         removeBannerBtn.interactable = false;
-        Debug.Log("REWARD BANNER");
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.5f);
         AdManager.instance.DestroyBannerAd();
     }
 
     private IEnumerator GrantJumpReward() {
-        Debug.Log("REWARD JUMP");
         getExtraJumpBtn.interactable = false;
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.5f);
         player.GrantJumpReward();
     }
 
