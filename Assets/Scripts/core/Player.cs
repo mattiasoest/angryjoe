@@ -233,11 +233,9 @@ public class Player : MonoBehaviour {
         isJumping = false;
 
         yield return new WaitForSeconds(delay / 2);
-        Debug.Log("FIRST");
         color.a = 155;
         playerRenderer.color = color;
         yield return new WaitForSeconds(delay / 2);
-        Debug.Log("SECOND");
         setImmune(true);
         ResetSliding();
         isAlive = true;

@@ -85,7 +85,6 @@ public class LeaderboardUI : MonoBehaviour {
         }
         subtitle.text = "GLOBAL";
         AudioManager.instance.PlayToggle();
-        Debug.Log("global");
         prevToggleName = GLOBAL_NAME;
         LoadingUI.instance.gameObject.SetActive(true);
 
@@ -105,7 +104,6 @@ public class LeaderboardUI : MonoBehaviour {
         }
         subtitle.text = "WEEKLY";
         AudioManager.instance.PlayToggle();
-        Debug.Log("weekly");
         prevToggleName = WEEKLY_NAME;
         LoadingUI.instance.gameObject.SetActive(true);
 

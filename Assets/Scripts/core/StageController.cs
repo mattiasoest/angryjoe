@@ -60,7 +60,6 @@ public class StageController : MonoBehaviour {
         GameEventManager.instance.onFinishGame += OnFinishGame;
     }
 
-    // Update is called once per frame
     void Update() {
         switch (currentState) {
             case GAME_STATE.MENU:
@@ -96,7 +95,6 @@ public class StageController : MonoBehaviour {
         if (!playedClicked) {
             playedClicked = true;
             AudioManager.instance.PlayStartButton();
-            // Only play it in some cases
             PopupManager.instance.MainMenuCloseAction(() => {
                 Debug.Log("=== GAMEPLAY ===");
                 currentState = GAME_STATE.GAMEPLAY;
@@ -106,11 +104,6 @@ public class StageController : MonoBehaviour {
                 }
             });
         }
-    }
-
-    private IEnumerator DelayedBurp() {
-        yield return new WaitForSeconds(0.8f);
-        AudioManager.instance.PlayStartGame();
     }
 
     public void LeaderBoardButton() {
@@ -180,6 +173,11 @@ public class StageController : MonoBehaviour {
         scoreLabel.text = $"{score}";
     }
 
+    private IEnumerator DelayedBurp() {
+        yield return new WaitForSeconds(0.8f);
+        AudioManager.instance.PlayStartGame();
+    }
+
     private IEnumerator GrantBannerReward() {
         removeBannerBtn.interactable = false;
         Debug.Log("REWARD BANNER");
@@ -232,7 +230,6 @@ public class StageController : MonoBehaviour {
     }
 
     private void OnFinishGame() {
-        // No delay if we're coming from a popup
         if (currentState == GAME_STATE.GAMEPLAY) {
             // No delay if we're coming from a popup
             ActivateMainMenu(0f);
@@ -285,7 +282,6 @@ public class StageController : MonoBehaviour {
             normalRandomCount = 0;
             lastLowPos = true;
             randomY = LOWER_OBSTACLE_BOUND;
-            //randomY -= Random.Range(1.5f, 3.5f);
         } else if (randomY < -1.94f && randomY > LOWER_OBSTACLE_BOUND) {
             normalRandomCount = 0;
             // Dont have 2 low points in a row
@@ -311,14 +307,10 @@ public class StageController : MonoBehaviour {
     }
 
     private void CameraSetup() {
-        //float cameraHeight = 8; //800 / 100
-        float cameraWidth = 4.8f; //800 / 100
-        float desiredAspect = 0.72f; // 480/800
+        float cameraWidth = 4.8f; // 480 / 100
+        float desiredAspect = 0.72f;
         float ratio = desiredAspect / Camera.main.aspect;
         Camera.main.orthographicSize = cameraWidth * ratio;
-
-        //float defaultWidth = Camera.main.orthographicSize * Camera.main.aspect;
-        //Camera.main.orthographicSize = defaultWidth / Camera.main.aspect;
     }
 
     // Used to have an extra top blocker for ppl witb basically squared screens
