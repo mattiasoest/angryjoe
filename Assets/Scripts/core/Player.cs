@@ -33,6 +33,10 @@ public class Player : MonoBehaviour {
     private float jumpYScreenPos = -2.9f;
     private float jumpForce = 10f;
     private float downForce = 125f;
+    private bool isImmune;
+
+    private float immuneTimer = 2.5f;
+    private SpriteRenderer playerRenderer;
 
     public void ResetJumpTrigger() {
         isDoubleJumpPlaying = false;
@@ -46,11 +50,21 @@ public class Player : MonoBehaviour {
     }
 
     void Start() {
+        playerRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         GameEventManager.instance.onReset += OnReset;
+        GameEventManager.instance.onRevive += OnRevive;
     }
 
     void Update() {
+
+        if (isImmune) {
+            immuneTimer -= Time.deltaTime;
+            if (immuneTimer < 0) {
+                setImmune(false);
+            }
+        }
+    
         isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
         if (isAlive && StageController.instance.currentState == GAME_STATE.GAMEPLAY) {
             // TODO IOS!!
@@ -59,14 +73,18 @@ public class Player : MonoBehaviour {
             } else {
                 KeyBoardInput();
             }
+            scoreTimer -= Time.deltaTime;
         }
-        scoreTimer -= Time.deltaTime;
         animator.SetBool("isGrounded", isGrounded);
     }
 
     void OnTriggerEnter2D(Collider2D collision) {
         if (isAlive) {
             if (collision.gameObject.tag == "Obstacle") {
+                // Player continued and is immune for
+                if (isImmune) {
+                    return;
+                }
                 AudioManager.instance.PlayHit();
                 isAlive = false;
                 //collision.gameObject.SendMessage("ApplyDamage", 10);
@@ -200,11 +218,36 @@ public class Player : MonoBehaviour {
         animator.SetTrigger("resetTrigger");
     }
 
+    private void OnRevive(float delay) {
+        StartCoroutine(RevivePlayer(delay));
+    }
+
+    private IEnumerator RevivePlayer(float delay) {
+        animator.SetTrigger("resetTrigger");
+
+        // Small jump
+        rb.velocity = Vector2.up * jumpForce * 1.56f;
+        // Special jump params for this case
+        jumps = 0;
+        isJumping = false;
+
+        yield return new WaitForSeconds(delay);
+        setImmune(true);
+        ResetSliding();
+        isAlive = true;
+        // Dont get score for the currrent collided obstacle
+        scoreTimer = 1f;
+    }
+
+    private void setImmune(bool immune) {
+        immuneTimer = 1.9f;
+        isImmune = immune;
+        playerRenderer.color = immune ? new Color32(255, 255, 255, 100) : new Color32(255, 255, 255, 255);
+    }
+
     private void ResetSliding() {
         isSliding = false;
         upperCollider.enabled = true;
         animator.SetBool("isSliding", false);
     }
-
-    //private void FixedUpdate() {}
 }

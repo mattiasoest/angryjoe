@@ -28,7 +28,7 @@ public class StageController : MonoBehaviour {
     public GAME_STATE currentState = GAME_STATE.MENU;
 
     private const float START_SPAWN_TIME = 1f;
-    private const float DEFAULT_SPAWN_RATE = 1.28f;
+    private const float DEFAULT_SPAWN_RATE = 1.26f;
     private const float LOWER_OBSTACLE_BOUND = -5.2f;
     private const float UPPER_OBSTACLE_BOUND = 4.3f;
 
@@ -43,8 +43,53 @@ public class StageController : MonoBehaviour {
 
     private int lastRandomSpriteIndex = -1;
 
-    //MENU HANDLING
 
+    void Awake() {
+        instance = this;
+    }
+    // Start is called before the first frame update
+    void Start() {
+        CameraSetup();
+        AdjustDynamicTopCollider();
+        // Subscribe to the list of events
+        GameEventManager.instance.onObstacleRecycle += OnObstacleRecycle;
+        GameEventManager.instance.onPlayerDied += OnPlayerDied;
+        GameEventManager.instance.onContinueGame += OnContinueGame;
+        GameEventManager.instance.onFinishGame += OnFinishGame;
+    }
+
+    // Update is called once per frame
+    void Update() {
+        switch (currentState) {
+            case GAME_STATE.MENU:
+                break;
+            case GAME_STATE.GAMEPLAY:
+                if (player.isAlive) {
+                    jumpLabel.enabled = !player.isGrounded;
+                    if (player.isJumping) {
+                        jumpLabel.text = player.jumps.ToString();
+                    }
+
+                    spawnTimer -= Time.deltaTime;
+                    if (spawnTimer < 0) {
+                        if (obstaclePool.Count > 0) {
+                            Obstacle pooled = obstaclePool.Pop();
+                            pooled.gameObject.SetActive(true);
+                            float randomY = GenerateRandomYpos();
+                            pooled.Init(randomY);
+                        } else {
+                            GameObject obs = Instantiate(obstacleFab);
+                            float randomY = GenerateRandomYpos();
+                            obs.GetComponent<Obstacle>().Init(randomY);
+                        }
+                        spawnTimer = DEFAULT_SPAWN_RATE;
+                    }
+                }
+                break;
+            default:
+                throw new System.Exception("Invalid state");
+        }
+    }
     public void PlayButton() {
         AudioManager.instance.PlayStartButton();
         // Only play it in some cases
@@ -107,6 +152,7 @@ public class StageController : MonoBehaviour {
 
     public void SettingsButton() {
         AudioManager.instance.PlayNormalButton();
+        PopupManager.instance.ShowPopup(PopupManager.POPUP.CONTINUE);
     }
 
     public Sprite GetRandomObstacleSprite() {
@@ -127,54 +173,6 @@ public class StageController : MonoBehaviour {
         AudioManager.instance.PlayScore();
         score++;
         scoreLabel.text = $"{score}";
-    }
-
-    void Awake() {
-        instance = this;
-    }
-    // Start is called before the first frame update
-    void Start() {
-        CameraSetup();
-        AdjustDynamicTopCollider();
-        // Subscribe to the list of events
-        GameEventManager.instance.onObstacleRecycle += OnObstacleRecycle;
-        GameEventManager.instance.onPlayerDied += OnPlayerDied;
-        GameEventManager.instance.onContinueGame += OnContinueGame;
-        GameEventManager.instance.onFinishGame += OnFinishGame;
-        GameEventManager.instance.onUsernameUIClose += OnUsernameUIClose;
-    }
-
-    // Update is called once per frame
-    void Update() {
-        switch (currentState) {
-            case GAME_STATE.MENU:
-                break;
-            case GAME_STATE.GAMEPLAY:
-                if (player.isAlive) {
-                    jumpLabel.enabled = !player.isGrounded;
-                    if (player.isJumping) {
-                        jumpLabel.text = player.jumps.ToString();
-                    }
-
-                    spawnTimer -= Time.deltaTime;
-                    if (spawnTimer < 0) {
-                        if (obstaclePool.Count > 0) {
-                            Obstacle pooled = obstaclePool.Pop();
-                            pooled.gameObject.SetActive(true);
-                            float randomY = GenerateRandomYpos();
-                            pooled.Init(randomY);
-                        } else {
-                            GameObject obs = Instantiate(obstacleFab);
-                            float randomY = GenerateRandomYpos();
-                            obs.GetComponent<Obstacle>().Init(randomY);
-                        }
-                        spawnTimer = DEFAULT_SPAWN_RATE;
-                    }
-                }
-                break;
-            default:
-                throw new System.Exception("Invalid state");
-        }
     }
 
     private IEnumerator GrantBannerReward() {
@@ -202,25 +200,21 @@ public class StageController : MonoBehaviour {
         if (string.IsNullOrWhiteSpace(PlayfabManager.instance.playerName)) {
             StartCoroutine(PromptDelayedUsernamePopup());
         } else {
-            ActivateMainMenu();
+            // ActivateMainMenu();
+            StartCoroutine(PromptDelayedContinuePopup());
         }
     }
 
     private void OnContinueGame() {
-        // TODO!!
-    }
-
-    private void OnUsernameUIClose() {
-        // If its called from the game
-        if (currentState == GAME_STATE.GAMEPLAY) {
-            // No delay if we're coming from a popup
-            ActivateMainMenu(0f);
-        }
+        GameEventManager.instance.OnRevive(1.1f);
     }
 
     private void OnFinishGame() {
         // No delay if we're coming from a popup
-        ActivateMainMenu(0f);
+        if (currentState == GAME_STATE.GAMEPLAY) {
+            // No delay if we're coming from a popup
+            ActivateMainMenu(0f);
+        }
     }
 
     private void ActivateMainMenu(float delay = 1.2f) {
@@ -243,7 +237,6 @@ public class StageController : MonoBehaviour {
             });
         }
         yield return new WaitForSeconds(delayTime);
-        //AdManager.instance.PlayVideoAd();
         GameEventManager.instance.OnReset();
         spawnTimer = START_SPAWN_TIME;
         score = 0;
@@ -255,6 +248,10 @@ public class StageController : MonoBehaviour {
     private IEnumerator PromptDelayedUsernamePopup() {
         yield return new WaitForSeconds(0.7f);
         PopupManager.instance.ShowPopup(PopupManager.POPUP.USERNAME);
+    }
+    private IEnumerator PromptDelayedContinuePopup() {
+        yield return new WaitForSeconds(0.7f);
+        PopupManager.instance.ShowPopup(PopupManager.POPUP.CONTINUE);
     }
 
     private float GenerateRandomYpos() {

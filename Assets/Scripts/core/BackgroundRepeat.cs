@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class BackgroundRepeat : MonoBehaviour {
     public float speedEffect;
+
+    private readonly Vector2 ZERO_VEC = new Vector2(0, 0);
 
     private float imageWidth;
     private Rigidbody2D body;
@@ -17,14 +20,7 @@ public class BackgroundRepeat : MonoBehaviour {
         posVector.y = body.transform.position.y;
         GameEventManager.instance.onPlayerDied += StopRepeat;
         GameEventManager.instance.onReset += OnReset;
-    }
-
-    private void StopRepeat() {
-        body.velocity = new Vector2(0, 0);
-    }
-
-    private void OnReset() {
-        body.velocity = velVector;
+        GameEventManager.instance.onRevive += OnRevive;
     }
 
     void Update() {
@@ -32,5 +28,22 @@ public class BackgroundRepeat : MonoBehaviour {
             posVector.x = transform.position.x + imageWidth * 2f;
             body.transform.position = posVector;
         }
+    }
+
+    private void StopRepeat() {
+        body.velocity = ZERO_VEC;
+    }
+
+    private void OnReset() {
+        body.velocity = velVector;
+    }
+
+    private void OnRevive(float delay) {
+        StartCoroutine(DelayedResume(delay));
+    }
+
+    private IEnumerator DelayedResume(float delay) {
+        yield return new WaitForSeconds(delay);
+        body.velocity = velVector;
     }
 }

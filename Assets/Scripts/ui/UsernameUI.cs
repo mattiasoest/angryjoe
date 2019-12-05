@@ -19,7 +19,7 @@ public class UsernameUI : MonoBehaviour {
             invalidText.enabled = false;
             gameObject.SetActive(false);
             inputField.text = "";
-            GameEventManager.instance.OnUsernameUIClose();
+            GameEventManager.instance.OnFinishGame();
         });
     }
 

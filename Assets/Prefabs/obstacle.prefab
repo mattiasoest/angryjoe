@@ -199,7 +199,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topRenderer: {fileID: 9141824396163190759}
   bottomRenderer: {fileID: 7772550120040067735}
-  speedEffect: -4.6
+  speedEffect: 0
+  point: 1
 --- !u!61 &3629672567184813154
 BoxCollider2D:
   m_ObjectHideFlags: 0
