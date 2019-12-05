@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PlayFab.Json;
 using UnityEngine;
+using UnityEngine.Monetization;
 using UnityEngine.UI;
 
 public class StageController : MonoBehaviour {
@@ -14,6 +15,9 @@ public class StageController : MonoBehaviour {
     public GameObject obstacleFab;
     public GameObject mainMenu;
     public LeaderboardUI leaderboardUI;
+
+    public Button removeBannerBtn;
+    public Button getExtraJumpBtn;
 
     [HideInInspector]
     public int score;
@@ -65,10 +69,36 @@ public class StageController : MonoBehaviour {
 
     public void ExtraJumpButton() {
         AudioManager.instance.PlayNormalButton();
+        AdManager.instance.PlayRewardedAd(adResult => {
+            switch (adResult) {
+                case ShowResult.Finished:
+                    StartCoroutine(GrantJumpReward());
+                    break;
+                case ShowResult.Skipped:
+                    Debug.Log("SKIPPED JUMP");
+                    break;
+                case ShowResult.Failed:
+                    Debug.Log("FAILED JUMP");
+                    break;
+            }
+        });
     }
 
     public void RemoveBannerAdbutton() {
         AudioManager.instance.PlayNormalButton();
+        AdManager.instance.PlayRewardedAd(adResult => {
+            switch (adResult) {
+                case ShowResult.Finished:
+                    StartCoroutine(GrantBannerReward());
+                    break;
+                case ShowResult.Skipped:
+                    Debug.Log("SKIPPED BANNER");
+                    break;
+                case ShowResult.Failed:
+                    Debug.Log("FAILED BANNER");
+                    break;
+            }
+        });
     }
 
     public void UsernameButton() {
@@ -99,7 +129,7 @@ public class StageController : MonoBehaviour {
         scoreLabel.text = $"{score}";
     }
 
-    private void Awake() {
+    void Awake() {
         instance = this;
     }
     // Start is called before the first frame update
@@ -145,6 +175,20 @@ public class StageController : MonoBehaviour {
             default:
                 throw new System.Exception("Invalid state");
         }
+    }
+
+    private IEnumerator GrantBannerReward() {
+        removeBannerBtn.interactable = false;
+        Debug.Log("REWARD BANNER");
+        yield return new WaitForSeconds(0.75f);
+        AdManager.instance.DestroyBannerAd();
+    }
+
+    private IEnumerator GrantJumpReward() {
+        Debug.Log("REWARD JUMP");
+        getExtraJumpBtn.interactable = false;
+        yield return new WaitForSeconds(0.75f);
+        player.GrantJumpReward();
     }
 
     private void OnObstacleRecycle(Obstacle obs) {

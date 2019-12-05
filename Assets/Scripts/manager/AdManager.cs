@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Monetization;
 
 public class AdManager : MonoBehaviour {
@@ -30,19 +31,27 @@ public class AdManager : MonoBehaviour {
             ShowAdPlacementContent videoAd = (ShowAdPlacementContent)Monetization.GetPlacementContent(VIDEO_ID);
 
             if (videoAd != null) {
-                videoAd.Show(HandleRewardResult);
+                videoAd.Show(result => {
+                    // TODO ? Dont care?
+                });
             }
         }
     }
 
-    public void PlayRewardedAd() {
+    public void PlayRewardedAd(Action<ShowResult> resultHandler) {
         if (Monetization.IsReady(REWARDED_VIDEO_ID)) {
             ShowAdPlacementContent rewardedAd = (ShowAdPlacementContent)Monetization.GetPlacementContent(REWARDED_VIDEO_ID);
 
             if (rewardedAd != null) {
-                rewardedAd.Show(HandleRewardResult);
+                rewardedAd.Show((result) => {
+                    resultHandler(result);
+                });
             }
         }
+    }
+
+    public void DestroyBannerAd() {
+        UnityEngine.Advertisements.Advertisement.Banner.Hide(true);
     }
 
     private void InitalizeVideoAds() {
@@ -64,19 +73,4 @@ public class AdManager : MonoBehaviour {
 
         UnityEngine.Advertisements.Advertisement.Banner.Show(BANNER_ID);
     }
-
-    private void HandleRewardResult(ShowResult result) {
-        switch (result) {
-            case ShowResult.Finished:
-                Debug.Log("REWARD");
-                break;
-            case ShowResult.Skipped:
-                Debug.Log("SKIPPED");
-                break;
-            case ShowResult.Failed:
-                Debug.Log("FAILED");
-                break;
-        }
-    }
-
 }

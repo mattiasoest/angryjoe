@@ -5,9 +5,9 @@ using static StageController;
 
 public class Player : MonoBehaviour {
 
-    private const int DEFAULT_JUMPS = 3;
     private const int DIED_FORCE = 2;
 
+    private int defaultJumps = 2;
     public float speed;
     public Transform feetCollider;
     public float checkRaduis;
@@ -19,7 +19,7 @@ public class Player : MonoBehaviour {
 
     public Animator animator;
     [HideInInspector]
-    public int jumps = 3;
+    public int jumps = 2;
     [HideInInspector]
     public bool isJumping;
     [HideInInspector]
@@ -38,6 +38,11 @@ public class Player : MonoBehaviour {
         isDoubleJumpPlaying = false;
         animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
         animator.ResetTrigger("doubleJump");
+    }
+
+    public void GrantJumpReward() {
+        defaultJumps = 3;
+        jumps = 3;
     }
 
     void Start() {
@@ -83,9 +88,9 @@ public class Player : MonoBehaviour {
         if ((jumps > 0 || isGrounded) && Input.GetMouseButtonDown(0) && pointerPos.y > jumpYScreenPos) {
             ResetSliding();
             if (isGrounded) {
-                jumps = DEFAULT_JUMPS;
+                jumps = defaultJumps;
             }
-            if (jumps < DEFAULT_JUMPS) {
+            if (jumps < defaultJumps) {
                 isDoubleJumpPlaying = true;
                 animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
                 animator.SetTrigger("doubleJump");
@@ -137,9 +142,9 @@ public class Player : MonoBehaviour {
 
             ResetSliding();
             if (isGrounded) {
-                jumps = DEFAULT_JUMPS;
+                jumps = defaultJumps;
             }
-            if (jumps < DEFAULT_JUMPS) {
+            if (jumps < defaultJumps) {
                 isDoubleJumpPlaying = true;
                 animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
                 animator.SetTrigger("doubleJump");
