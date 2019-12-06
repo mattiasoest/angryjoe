@@ -7,6 +7,9 @@ public class Player : MonoBehaviour {
 
     private const int DIED_FORCE = 2;
 
+    private readonly Vector2 GLASSES_DEFAULT = new Vector2(0.32f, -0.18f);
+    private readonly Vector2 GLASSES_SLIDING = new Vector2(1.79f, -3.35f);
+
     private int defaultJumps = 2;
     public float speed;
     public Transform feetCollider;
@@ -14,7 +17,9 @@ public class Player : MonoBehaviour {
     public LayerMask whatIsGround;
     public float jumpTime;
     public BoxCollider2D upperCollider;
-
+    public GameObject glasses;
+    [HideInInspector]
+    public bool glassesEquipped;
     public bool isAlive = true;
 
     public Animator animator;
@@ -47,6 +52,9 @@ public class Player : MonoBehaviour {
     public void GrantJumpReward() {
         defaultJumps = 3;
         jumps = 3;
+        // plus bonus glasses for the lulz
+        glasses.SetActive(true);
+        glassesEquipped = true;
     }
 
     void Start() {
@@ -57,7 +65,6 @@ public class Player : MonoBehaviour {
     }
 
     void Update() {
-
         if (isImmune) {
             immuneTimer -= Time.deltaTime;
             if (immuneTimer < 0) {
@@ -92,6 +99,9 @@ public class Player : MonoBehaviour {
                 //rb.velocity = Vector2.up * DIED_FORCE;
                 animator.SetTrigger("diedTrigger");
                 GameEventManager.instance.OnPlayerDied();
+                if (glassesEquipped) {
+                    glasses.SetActive(false);
+                }
             } else if (collision.gameObject.tag == "ScoreTrigger" && scoreTimer < 0) {
                 // Just use the timer to avoid both player colliders getting a point
                 scoreTimer = 0.9f;
@@ -142,6 +152,9 @@ public class Player : MonoBehaviour {
             isSliding = true;
             animator.SetBool("isSliding", true);
             upperCollider.enabled = false;
+            if (glassesEquipped) {
+                glasses.transform.localPosition = GLASSES_SLIDING;
+            }
         }
 
         if (Input.GetMouseButtonDown(0) && pointerPos.y <= jumpYScreenPos) {
@@ -196,6 +209,9 @@ public class Player : MonoBehaviour {
             isSliding = true;
             animator.SetBool("isSliding", true);
             upperCollider.enabled = false;
+            if (glassesEquipped) {
+                glasses.transform.localPosition = GLASSES_SLIDING;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow)) {
@@ -216,6 +232,9 @@ public class Player : MonoBehaviour {
         isAlive = true;
         scoreTimer = 0.9f;
         animator.SetTrigger("resetTrigger");
+        if (glassesEquipped) {
+            glasses.SetActive(true);
+        }
     }
 
     private void OnRevive(float delay) {
@@ -233,6 +252,7 @@ public class Player : MonoBehaviour {
         isJumping = false;
 
         yield return new WaitForSeconds(delay / 2);
+        glasses.SetActive(true);
         color.a = 155;
         playerRenderer.color = color;
         yield return new WaitForSeconds(delay / 2);
@@ -253,5 +273,8 @@ public class Player : MonoBehaviour {
         isSliding = false;
         upperCollider.enabled = true;
         animator.SetBool("isSliding", false);
+        if (glassesEquipped) {
+            glasses.transform.localPosition = GLASSES_DEFAULT;
+        }
     }
 }
