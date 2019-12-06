@@ -4000,6 +4000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 246a97261d9ca476381c3e42118dad39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 519420031}
   player: {fileID: 1786152019}
   obsSprites:
   - {fileID: 21300000, guid: fc3e31f42190143c5a03f5e284c49221, type: 3}

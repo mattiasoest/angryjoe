@@ -115,7 +115,7 @@ public class Player : MonoBehaviour {
     }
 
     private void TouchInput() {
-        Vector3 pointerPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 pointerPos = StageController.instance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
         //Debug.Log(pointerPos.y);
         if ((jumps > 0 || isGrounded) && Input.GetMouseButtonDown(0) && pointerPos.y > controlDivider.position.y) {
             ResetSliding();

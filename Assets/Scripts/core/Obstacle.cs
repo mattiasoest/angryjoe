@@ -15,7 +15,7 @@ public class Obstacle : MonoBehaviour {
     
 
     void Start() {
-        camPos = Camera.main.ViewportToWorldPoint(new Vector2(-0.15f, 0.5f));
+        camPos = StageController.instance.mainCamera.ViewportToWorldPoint(new Vector2(-0.15f, 0.5f));
         GameEventManager.instance.onPlayerDied += StopMovement;
         GameEventManager.instance.onReset += OnReset;
         GameEventManager.instance.onRevive += OnRevive;

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class StageController : MonoBehaviour {
     public static StageController instance;
+    public Camera mainCamera;
     public Player player;
     public Sprite[] obsSprites;
     public Text jumpLabel;
@@ -321,13 +322,13 @@ public class StageController : MonoBehaviour {
     private void CameraSetup() {
         float cameraWidth = 4.8f; // 480 / 100
         float desiredAspect = 0.72f;
-        float ratio = desiredAspect / Camera.main.aspect;
-        Camera.main.orthographicSize = cameraWidth * ratio;
+        float ratio = desiredAspect / mainCamera.aspect;
+        mainCamera.orthographicSize = cameraWidth * ratio;
     }
 
     // Used to have an extra top blocker for ppl witb basically squared screens
     private void AdjustDynamicTopCollider() {
-        Vector3 cameraPosition = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight + 5, 0));
+        Vector3 cameraPosition = mainCamera.ScreenToWorldPoint(new Vector3(0, mainCamera.pixelHeight + 5, 0));
         Vector2 newPos = new Vector3(0f, cameraPosition.y, 0);
         dynamicTopBlocker.transform.position = newPos;
     }
