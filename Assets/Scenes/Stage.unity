@@ -5005,7 +5005,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 290, y: 60}
+  m_SizeDelta: {x: 290, y: 58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1497753843
 MonoBehaviour:
@@ -5038,7 +5038,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SUPER BOOTS
+  m_Text: +1 JUMP (+GIFT)
 --- !u!222 &1497753844
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7134,7 +7134,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 35}
+  m_AnchoredPosition: {x: 0, y: 130}
   m_SizeDelta: {x: 310, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1862755561

@@ -194,7 +194,7 @@ public class StageController : MonoBehaviour {
 
     private IEnumerator GrantJumpReward() {
         rewardContainer.SetActive(true);
-        rewardContainer.GetComponentInChildren<Text>().text = "SUPER BOOTS";
+        rewardContainer.GetComponentInChildren<Text>().text = "+1 JUMP (+GIFT)";
         getExtraJumpBtn.interactable = false;
         player.GrantJumpReward();
         yield return new WaitForSeconds(1.233f);
