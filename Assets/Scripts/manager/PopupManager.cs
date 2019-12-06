@@ -9,6 +9,8 @@ public class PopupManager : MonoBehaviour {
         LEADERBOARD,
         USERNAME,
         CONTINUE,
+        SETTINGS,
+        CONTROLS,
     }
 
     public static PopupManager instance;
@@ -16,6 +18,7 @@ public class PopupManager : MonoBehaviour {
     public LeaderboardUI leaderboardUI;
     public UsernameUI usernameUI;
     public ContinueUI continueUI;
+    public SettingsUI settingsUI;
     public GameObject overlay; // TODO
 
     public GameObject mainMenu; // TODO
@@ -53,6 +56,11 @@ public class PopupManager : MonoBehaviour {
                 AudioManager.instance.PlayPopup();
                 ShowContinueUI();
                 break;
+
+            case POPUP.SETTINGS:
+                AudioManager.instance.PlayPopup();
+                ShowSettingsUI();
+                break;
             default:
                 throw new UnityException($"Invalid popup: {selectedPopup}");
         }
@@ -89,6 +97,12 @@ public class PopupManager : MonoBehaviour {
         leaderboardUI.gameObject.SetActive(true);
         LeanTween.scale(leaderboardUI.gameObject, normalScaleVec, OPEN_TIME).setEaseOutBack();
         leaderboardUI.RefreshLeaderboard();
+    }
+
+    private void ShowSettingsUI() {
+        settingsUI.gameObject.transform.localScale = zeroScaleVec;
+        settingsUI.gameObject.SetActive(true);
+        LeanTween.scale(settingsUI.gameObject, normalScaleVec, OPEN_TIME).setEaseOutBack();
     }
 
     private void ShowMainMenuUI() {
