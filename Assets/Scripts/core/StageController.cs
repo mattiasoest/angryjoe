@@ -14,6 +14,8 @@ public class StageController : MonoBehaviour {
     public GameObject dynamicTopBlocker;
     public GameObject obstacleFab;
     public GameObject mainMenu;
+    public GameObject controlDivider;
+
     public GameObject rewardContainer;
     public LeaderboardUI leaderboardUI;
 
@@ -95,6 +97,7 @@ public class StageController : MonoBehaviour {
     public void PlayButton() {
         if (!playedClicked) {
             playedClicked = true;
+            controlDivider.SetActive(true);
             AudioManager.instance.PlayStartButton();
             PopupManager.instance.MainMenuCloseAction(() => {
                 Debug.Log("=== GAMEPLAY ===");
@@ -245,6 +248,7 @@ public class StageController : MonoBehaviour {
     }
 
     private void ActivateMainMenu(float delay = 1.2f) {
+        controlDivider.SetActive(false);
         Debug.Log("=== MAIN MENU ===");
         currentState = GAME_STATE.MENU;
         playedClicked = false;

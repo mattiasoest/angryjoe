@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
     private int defaultJumps = 2;
     public float speed;
     public Transform feetCollider;
+    public Transform controlDivider;
     public float checkRaduis;
     public LayerMask whatIsGround;
     public float jumpTime;
@@ -36,7 +37,7 @@ public class Player : MonoBehaviour {
     private float counter;
     private bool isDoubleJumpPlaying;
     private float scoreTimer = 0.9f;
-    private float jumpYScreenPos = -2.9f;
+
     private float jumpForce = 10f;
     private float downForce = 125f;
     private bool isImmune;
@@ -78,11 +79,11 @@ public class Player : MonoBehaviour {
         isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
         if (isAlive && StageController.instance.currentState == GAME_STATE.GAMEPLAY) {
             // TODO IOS!!
-            if (Application.platform == RuntimePlatform.Android) {
-                TouchInput();
-            } else {
-                KeyBoardInput();
-            }
+            // if (Application.platform == RuntimePlatform.Android) {
+            TouchInput();
+            // } else {
+            //     KeyBoardInput();
+            // }
             scoreTimer -= Time.deltaTime;
         }
         animator.SetBool("isGrounded", isGrounded);
@@ -116,7 +117,7 @@ public class Player : MonoBehaviour {
     private void TouchInput() {
         Vector3 pointerPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Debug.Log(pointerPos.y);
-        if ((jumps > 0 || isGrounded) && Input.GetMouseButtonDown(0) && pointerPos.y > jumpYScreenPos) {
+        if ((jumps > 0 || isGrounded) && Input.GetMouseButtonDown(0) && pointerPos.y > controlDivider.position.y) {
             ResetSliding();
             if (isGrounded) {
                 jumps = defaultJumps;
@@ -136,21 +137,21 @@ public class Player : MonoBehaviour {
             AudioManager.instance.PlayJump();
         }
 
-        if (Input.GetMouseButton(0) && pointerPos.y > jumpYScreenPos && isJumping) {
+        if (Input.GetMouseButton(0) && pointerPos.y > controlDivider.position.y && isJumping) {
             if (counter > 0f) {
                 rb.velocity = Vector2.up * jumpForce;
                 counter -= Time.deltaTime;
             } else {
                 isJumping = false;
             }
-        } else if (Input.GetMouseButton(0) && pointerPos.y <= jumpYScreenPos && !isGrounded) {
+        } else if (Input.GetMouseButton(0) && pointerPos.y <= controlDivider.position.y && !isGrounded) {
             rb.velocity += Vector2.down * downForce * Time.deltaTime;
             if (rb.velocity.y <= -30) {
                 velVector.y = -30;
                 rb.velocity = velVector;
             }
 
-        } else if (Input.GetMouseButton(0) && pointerPos.y <= jumpYScreenPos && isGrounded && !isSliding) {
+        } else if (Input.GetMouseButton(0) && pointerPos.y <= controlDivider.position.y && isGrounded && !isSliding) {
             //AudioManager.instance.PlaySlide();
             isSliding = true;
             animator.SetBool("isSliding", true);
@@ -160,7 +161,7 @@ public class Player : MonoBehaviour {
             }
         }
 
-        if (Input.GetMouseButtonDown(0) && pointerPos.y <= jumpYScreenPos) {
+        if (Input.GetMouseButtonDown(0) && pointerPos.y <= controlDivider.position.y) {
             AudioManager.instance.PlayDownForce();
         }
 
