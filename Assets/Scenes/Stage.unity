@@ -362,13 +362,14 @@ GameObject:
   m_Component:
   - component: {fileID: 159116714}
   - component: {fileID: 159116713}
+  - component: {fileID: 159116715}
   m_Layer: 0
   m_Name: glasses
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &159116713
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -432,6 +433,25 @@ Transform:
   m_Father: {fileID: 1786152014}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &159116715
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159116712}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3d5602449f8474f73b5a166300235146, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &173289005
 GameObject:
   m_ObjectHideFlags: 0
@@ -6861,6 +6881,7 @@ MonoBehaviour:
   glassesEquipped: 0
   isAlive: 1
   animator: {fileID: 1786152015}
+  glassesAnimator: {fileID: 159116715}
   jumps: 3
   isJumping: 0
   isGrounded: 0

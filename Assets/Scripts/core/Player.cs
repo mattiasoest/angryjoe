@@ -23,6 +23,7 @@ public class Player : MonoBehaviour {
     public bool isAlive = true;
 
     public Animator animator;
+    public Animator glassesAnimator;
     [HideInInspector]
     public int jumps = 2;
     [HideInInspector]
@@ -98,10 +99,10 @@ public class Player : MonoBehaviour {
                 //animator.SetBool("isAlive", true);
                 //rb.velocity = Vector2.up * DIED_FORCE;
                 animator.SetTrigger("diedTrigger");
+                if (glassesEquipped) {
+                    glassesAnimator.SetTrigger("dropTrigger");
+                }
                 GameEventManager.instance.OnPlayerDied();
-                // if (glassesEquipped) {
-                //     glasses.SetActive(false);
-                // }
             } else if (collision.gameObject.tag == "ScoreTrigger" && scoreTimer < 0) {
                 // Just use the timer to avoid both player colliders getting a point
                 scoreTimer = 0.9f;
@@ -153,7 +154,7 @@ public class Player : MonoBehaviour {
             animator.SetBool("isSliding", true);
             upperCollider.enabled = false;
             if (glassesEquipped) {
-                glasses.transform.localPosition = GLASSES_SLIDING;
+                glassesAnimator.SetBool("isSlidingGlasses", true);
             }
         }
 
@@ -210,8 +211,7 @@ public class Player : MonoBehaviour {
             animator.SetBool("isSliding", true);
             upperCollider.enabled = false;
             if (glassesEquipped) {
-                Debug.Log("SLIDING GLASSEESS!");
-                glasses.transform.localPosition = GLASSES_SLIDING;
+                glassesAnimator.SetBool("isSlidingGlasses", true);
             }
         }
 
@@ -234,7 +234,7 @@ public class Player : MonoBehaviour {
         scoreTimer = 0.9f;
         animator.SetTrigger("resetTrigger");
         if (glassesEquipped) {
-            glasses.SetActive(true);
+            glassesAnimator.SetTrigger("resetGlassesTrigger");
         }
     }
 
@@ -254,7 +254,7 @@ public class Player : MonoBehaviour {
 
         yield return new WaitForSeconds(delay / 2);
         if (glassesEquipped) {
-            glasses.SetActive(true);
+            glassesAnimator.SetTrigger("resetGlassesTrigger");
         }
         color.a = 155;
         playerRenderer.color = color;
@@ -277,7 +277,7 @@ public class Player : MonoBehaviour {
         upperCollider.enabled = true;
         animator.SetBool("isSliding", false);
         if (glassesEquipped) {
-            glasses.transform.localPosition = GLASSES_DEFAULT;
+            glassesAnimator.SetBool("isSlidingGlasses", false);
         }
     }
 }
