@@ -155,7 +155,6 @@ public class StageController : MonoBehaviour {
 
     public void SettingsButton() {
         AudioManager.instance.PlayNormalButton();
-        PopupManager.instance.ShowPopup(PopupManager.POPUP.CONTINUE);
     }
 
     public Sprite GetRandomObstacleSprite() {
