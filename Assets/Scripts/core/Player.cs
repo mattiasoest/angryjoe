@@ -43,6 +43,7 @@ public class Player : MonoBehaviour {
 
     private float immuneTimer = 2.5f;
     private SpriteRenderer playerRenderer;
+    private SpriteRenderer glassRenderer;
 
     public void ResetJumpTrigger() {
         isDoubleJumpPlaying = false;
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour {
 
     void Start() {
         playerRenderer = GetComponent<SpriteRenderer>();
+        glassRenderer = glasses.GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         GameEventManager.instance.onReset += OnReset;
         GameEventManager.instance.onRevive += OnRevive;
@@ -245,6 +247,9 @@ public class Player : MonoBehaviour {
     private IEnumerator RevivePlayer(float delay) {
         Color32 color = new Color32(255, 255, 255, 0);
         playerRenderer.color = color;
+        if (glassesEquipped) {
+            glassRenderer.color = color;
+        }
         animator.SetTrigger("resetTrigger");
         // Small jump
         rb.velocity = Vector2.up * jumpForce * 1.6f;
@@ -253,11 +258,12 @@ public class Player : MonoBehaviour {
         isJumping = false;
 
         yield return new WaitForSeconds(delay / 2);
+        color.a = 150;
+        playerRenderer.color = color;
         if (glassesEquipped) {
+            glassRenderer.color = color;
             glassesAnimator.SetTrigger("resetGlassesTrigger");
         }
-        color.a = 155;
-        playerRenderer.color = color;
         yield return new WaitForSeconds(delay / 2);
         setImmune(true);
         ResetSliding();
@@ -269,6 +275,9 @@ public class Player : MonoBehaviour {
     private void setImmune(bool immune) {
         immuneTimer = 1.9f;
         isImmune = immune;
+        if (glassesEquipped) {
+            glassRenderer.color = immune ? new Color32(255, 255, 255, 155) : new Color32(255, 255, 255, 255);
+        }
         playerRenderer.color = immune ? new Color32(255, 255, 255, 155) : new Color32(255, 255, 255, 255);
     }
 
