@@ -99,9 +99,9 @@ public class Player : MonoBehaviour {
                 //rb.velocity = Vector2.up * DIED_FORCE;
                 animator.SetTrigger("diedTrigger");
                 GameEventManager.instance.OnPlayerDied();
-                if (glassesEquipped) {
-                    glasses.SetActive(false);
-                }
+                // if (glassesEquipped) {
+                //     glasses.SetActive(false);
+                // }
             } else if (collision.gameObject.tag == "ScoreTrigger" && scoreTimer < 0) {
                 // Just use the timer to avoid both player colliders getting a point
                 scoreTimer = 0.9f;
@@ -210,6 +210,7 @@ public class Player : MonoBehaviour {
             animator.SetBool("isSliding", true);
             upperCollider.enabled = false;
             if (glassesEquipped) {
+                Debug.Log("SLIDING GLASSEESS!");
                 glasses.transform.localPosition = GLASSES_SLIDING;
             }
         }
@@ -252,7 +253,9 @@ public class Player : MonoBehaviour {
         isJumping = false;
 
         yield return new WaitForSeconds(delay / 2);
-        glasses.SetActive(true);
+        if (glassesEquipped) {
+            glasses.SetActive(true);
+        }
         color.a = 155;
         playerRenderer.color = color;
         yield return new WaitForSeconds(delay / 2);
