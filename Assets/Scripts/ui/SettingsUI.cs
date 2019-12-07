@@ -1,8 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SettingsUI : MonoBehaviour {
+
+    public GameObject generalSoundToggle;
+    // public Toogle jumpToggle;
+    // public Toogle scoreToggle;
 
     public void CloseButton() {
         AudioManager.instance.PlayCloseButton();
@@ -30,5 +35,13 @@ public class SettingsUI : MonoBehaviour {
         // TODO save settings locally
         AudioManager.instance.PlayNormalButton();
         CloseButton();
+    }
+
+    public void AllSFXToggle() {
+        Debug.Log("SOUND - " + generalSoundToggle.GetComponent<Toggle>().isOn);
+    }
+
+        public void ScoreSFXToggle() {
+        Debug.Log("SCORE - " + generalSoundToggle.GetComponent<Toggle>().isOn);
     }
 }
