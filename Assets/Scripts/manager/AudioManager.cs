@@ -6,13 +6,28 @@ public class AudioManager : MonoBehaviour {
 
     public static AudioManager instance;
 
-    public bool isSFXOn = true;
-    public bool isScoreSFXOn = true;
+    [HideInInspector]
+    public bool isSfxOn = true;
+    [HideInInspector]
+    public bool isScoreSfxOn = true;
 
     public Sound[] sounds;
 
     private void Awake() {
+        int sfxVal = PlayerPrefs.GetInt("all_sfx");
+        int scoreSfxVal = PlayerPrefs.GetInt("score_sfx");
+        // 0 is default for playerprefs, we use 1 and -1 to define the val.
+        if (sfxVal != 0) {
+            isSfxOn = sfxVal == 1;
+        }
+        if (scoreSfxVal != 0) {
+            isScoreSfxOn = scoreSfxVal == 1;
+        }
+
         instance = this;
+    }
+
+    void Start() {
         foreach (Sound sound in sounds) {
             sound.source = gameObject.AddComponent<AudioSource>();
             sound.source.clip = sound.clip;
@@ -40,7 +55,7 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void PlayScore() {
-        if (isScoreSFXOn) {
+        if (isScoreSfxOn) {
             Play("score0");
         }
     }
@@ -90,7 +105,7 @@ public class AudioManager : MonoBehaviour {
     }
 
     private void Play(string clipName) {
-        if (isSFXOn) {
+        if (isSfxOn) {
             Sound clip = Array.Find(sounds, s => s.name == clipName);
             if (clip == null) {
                 Debug.Log($"Could not find sound name: {clipName}");

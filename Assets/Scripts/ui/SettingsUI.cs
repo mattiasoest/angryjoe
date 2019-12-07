@@ -8,7 +8,14 @@ public class SettingsUI : MonoBehaviour {
     public GameObject allSfxToggle;
     public GameObject scoreSfxToggle;
 
+
+    void Start() {
+        scoreSfxToggle.GetComponent<Toggle>().isOn = AudioManager.instance.isScoreSfxOn;
+        allSfxToggle.GetComponent<Toggle>().isOn = AudioManager.instance.isSfxOn;
+    }
     public void CloseButton() {
+        PlayerPrefs.SetInt("all_sfx", AudioManager.instance.isSfxOn ? 1 : -1);
+        PlayerPrefs.SetInt("score_sfx", AudioManager.instance.isScoreSfxOn ? 1 : -1);
         AudioManager.instance.PlayCloseButton();
         PopupManager.instance.CloseAction(gameObject, () => {
             gameObject.SetActive(false);
@@ -20,29 +27,22 @@ public class SettingsUI : MonoBehaviour {
         AudioManager.instance.PlayCloseButton();
         PopupManager.instance.CloseAction(gameObject, () => {
             StageController.instance.controlDivider.SetActive(true);
-            // TODO Open FULL UI WITHOUT BUTTONS AND GAMEPLAY
-            // TODO FIX WITH TOUCH INPUT ETC
-            // Debug.Log(StageController.instance.controlDivider.transform.position.y);
-            // StageController.instance.controlDivider.transform.position = new Vector2(StageController.instance.controlDivider.transform.position.x, StageController.instance.controlDivider.transform.position.y * -1.5f);
-            // gameObject.SetActive(false);
-            // Debug.Log(StageController.instance.controlDivider.transform.position.y);
             PopupManager.instance.ShowPopup(PopupManager.POPUP.CONTROLS);
         });
     }
 
     public void ConfirmButton() {
-        // TODO save settings locally
         AudioManager.instance.PlayNormalButton();
         CloseButton();
     }
 
     public void AllSFXToggle() {
         AudioManager.instance.PlayToggle();
-        AudioManager.instance.isSFXOn = allSfxToggle.GetComponent<Toggle>().isOn;
+        AudioManager.instance.isSfxOn = allSfxToggle.GetComponent<Toggle>().isOn;
     }
 
-        public void ScoreSFXToggle() {
+    public void ScoreSFXToggle() {
         AudioManager.instance.PlayToggle();
-        AudioManager.instance.isScoreSFXOn = scoreSfxToggle.GetComponent<Toggle>().isOn;
+        AudioManager.instance.isScoreSfxOn = scoreSfxToggle.GetComponent<Toggle>().isOn;
     }
 }

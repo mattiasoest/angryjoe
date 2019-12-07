@@ -3475,7 +3475,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73acfff212c9a40c19890aa5aff5e4f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generalSoundToggle: {fileID: 372438802}
+  allSfxToggle: {fileID: 372438802}
+  scoreSfxToggle: {fileID: 90116106}
 --- !u!1 &821671170
 GameObject:
   m_ObjectHideFlags: 0
@@ -9900,6 +9901,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaa048cdd0fe34e28a6595a2311bc8aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSFXOn: 1
+  isScoreSFXOn: 1
   sounds:
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 58fc35e04b86e4384b4672e1fecba4a3, type: 3}
