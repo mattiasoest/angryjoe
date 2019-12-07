@@ -6,6 +6,9 @@ public class AudioManager : MonoBehaviour {
 
     public static AudioManager instance;
 
+    public bool isSFXOn = true;
+    public bool isScoreSFXOn = true;
+
     public Sound[] sounds;
 
     private void Awake() {
@@ -37,7 +40,9 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void PlayScore() {
-        Play("score0");
+        if (isScoreSFXOn) {
+            Play("score0");
+        }
     }
 
     public void PlayStartGame() {
@@ -85,11 +90,13 @@ public class AudioManager : MonoBehaviour {
     }
 
     private void Play(string clipName) {
-        Sound clip = Array.Find(sounds, s => s.name == clipName);
-        if (clip == null) {
-            Debug.Log($"Could not find sound name: {clipName}");
-        } else {
-            clip.source.Play();
+        if (isSFXOn) {
+            Sound clip = Array.Find(sounds, s => s.name == clipName);
+            if (clip == null) {
+                Debug.Log($"Could not find sound name: {clipName}");
+            } else {
+                clip.source.Play();
+            }
         }
     }
 }

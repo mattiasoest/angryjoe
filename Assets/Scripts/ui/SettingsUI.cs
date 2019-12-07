@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 public class SettingsUI : MonoBehaviour {
 
-    public GameObject generalSoundToggle;
-    // public Toogle jumpToggle;
-    // public Toogle scoreToggle;
+    public GameObject allSfxToggle;
+    public GameObject scoreSfxToggle;
 
     public void CloseButton() {
         AudioManager.instance.PlayCloseButton();
@@ -38,10 +37,12 @@ public class SettingsUI : MonoBehaviour {
     }
 
     public void AllSFXToggle() {
-        Debug.Log("SOUND - " + generalSoundToggle.GetComponent<Toggle>().isOn);
+        AudioManager.instance.PlayToggle();
+        AudioManager.instance.isSFXOn = allSfxToggle.GetComponent<Toggle>().isOn;
     }
 
         public void ScoreSFXToggle() {
-        Debug.Log("SCORE - " + generalSoundToggle.GetComponent<Toggle>().isOn);
+        AudioManager.instance.PlayToggle();
+        AudioManager.instance.isScoreSFXOn = scoreSfxToggle.GetComponent<Toggle>().isOn;
     }
 }
