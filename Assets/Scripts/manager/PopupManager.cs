@@ -19,6 +19,7 @@ public class PopupManager : MonoBehaviour {
     public UsernameUI usernameUI;
     public ContinueUI continueUI;
     public SettingsUI settingsUI;
+    public ControlPanelUI controlPanelUI;
     public GameObject overlay; // TODO
 
     public GameObject mainMenu; // TODO
@@ -61,6 +62,11 @@ public class PopupManager : MonoBehaviour {
                 AudioManager.instance.PlayPopup();
                 ShowSettingsUI();
                 break;
+
+            case POPUP.CONTROLS:
+                AudioManager.instance.PlayPopup();
+                ShowControlUI();
+                break;
             default:
                 throw new UnityException($"Invalid popup: {selectedPopup}");
         }
@@ -75,10 +81,12 @@ public class PopupManager : MonoBehaviour {
         });
     }
 
-    public void MainMenuCloseAction(Action onCloseFinish) {
+    public void MainMenuCloseAction(Action onCloseFinish = null) {
         LeanTween.moveX(mainMenu, -8f, MAIN_MENU_TIME).setEaseInBack().setOnComplete(() => {
             mainMenu.SetActive(false);
-            onCloseFinish();
+            if (onCloseFinish != null) {
+                onCloseFinish();
+            }
         });
     }
 
@@ -105,7 +113,15 @@ public class PopupManager : MonoBehaviour {
         LeanTween.scale(settingsUI.gameObject, normalScaleVec, OPEN_TIME).setEaseOutBack();
     }
 
+    private void ShowControlUI() {
+        controlPanelUI.gameObject.transform.localScale = zeroScaleVec;
+        controlPanelUI.gameObject.SetActive(true);
+        LeanTween.scale(controlPanelUI.gameObject, normalScaleVec, OPEN_TIME).setEaseOutBack();
+    }
+
     private void ShowMainMenuUI() {
+        // Reset to allow main menu click
+        StageController.instance.playedClicked = false;
         mainMenu.SetActive(true);
         LeanTween.moveX(mainMenu, 0f, MAIN_MENU_TIME).setEaseOutBack();
     }

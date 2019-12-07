@@ -12,10 +12,17 @@ public class SettingsUI : MonoBehaviour {
     }
 
     public void AdjustButton() {
+        PopupManager.instance.MainMenuCloseAction();
         AudioManager.instance.PlayCloseButton();
         PopupManager.instance.CloseAction(gameObject, () => {
+            StageController.instance.controlDivider.SetActive(true);
             // TODO Open FULL UI WITHOUT BUTTONS AND GAMEPLAY
-            gameObject.SetActive(false);
+            // TODO FIX WITH TOUCH INPUT ETC
+            // Debug.Log(StageController.instance.controlDivider.transform.position.y);
+            // StageController.instance.controlDivider.transform.position = new Vector2(StageController.instance.controlDivider.transform.position.x, StageController.instance.controlDivider.transform.position.y * -1.5f);
+            // gameObject.SetActive(false);
+            // Debug.Log(StageController.instance.controlDivider.transform.position.y);
+            PopupManager.instance.ShowPopup(PopupManager.POPUP.CONTROLS);
         });
     }
 

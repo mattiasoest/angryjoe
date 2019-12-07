@@ -30,6 +30,8 @@ public class StageController : MonoBehaviour {
 
     [HideInInspector]
     public GAME_STATE currentState = GAME_STATE.MENU;
+    [HideInInspector]
+    public bool playedClicked;
 
     private const float START_SPAWN_TIME = 1f;
     private const float DEFAULT_SPAWN_RATE = 1.26f;
@@ -48,7 +50,6 @@ public class StageController : MonoBehaviour {
     private int lastRandomSpriteIndex = -1;
 
     private bool usedRevived;
-    private bool playedClicked;
 
     void Awake() {
         instance = this;
@@ -252,7 +253,6 @@ public class StageController : MonoBehaviour {
         controlDivider.SetActive(false);
         Debug.Log("=== MAIN MENU ===");
         currentState = GAME_STATE.MENU;
-        playedClicked = false;
         StartCoroutine(ResetGame(delay));
     }
 
