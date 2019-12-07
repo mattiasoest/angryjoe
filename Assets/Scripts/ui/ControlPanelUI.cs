@@ -44,7 +44,7 @@ public class ControlPanelUI : MonoBehaviour {
             moveButton.transform.position = updateButtonPos;
             if (Input.GetMouseButtonUp(0)) {
                 moveDivider = false;
-                StageController.instance.controlDivider.GetComponent<Image>().color = new Color32(255, 0, 0, 100);
+                StageController.instance.controlDivider.GetComponent<Image>().color = new Color32(20, 255, 0, 125);
             }
         } else {
             Vector3 mvDiv2 = StageController.instance.controlDivider.transform.position;
@@ -68,8 +68,7 @@ public class ControlPanelUI : MonoBehaviour {
 
     public void MoveButton() {
         StageController.instance.controlDivider.GetComponent<Animator>().enabled = false;
-        // LeanTween.color(StageController.instance.controlDivider, new Color(1f, 0f, 0f, 1f), 0.3f);
-        StageController.instance.controlDivider.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
+        StageController.instance.controlDivider.GetComponent<Image>().color = new Color32(20, 255, 0, 255);
         moveDivider = true;
     }
 
