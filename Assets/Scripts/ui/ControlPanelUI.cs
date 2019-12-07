@@ -14,6 +14,13 @@ public class ControlPanelUI : MonoBehaviour {
 
     private Color32 dividerColor;
 
+    private float defaultPos;
+    private Vector3 prevPos;
+
+    public void Init() {
+        defaultPos = StageController.instance.mainCamera.ScreenToWorldPoint(new Vector3(0, Screen.height * 0.21f, 0)).y;
+        prevPos = StageController.instance.controlDivider.transform.position;
+    }
 
     void Update() {
         if (moveDivider) {
@@ -40,8 +47,6 @@ public class ControlPanelUI : MonoBehaviour {
                 StageController.instance.controlDivider.GetComponent<Image>().color = new Color32(255, 0, 0, 100);
             }
         } else {
-            // Cant have this in start without a coroutine and some delay, keep it here 
-            // for now
             Vector3 mvDiv2 = StageController.instance.controlDivider.transform.position;
             updateButtonPos.y = mvDiv2.y;
             updateButtonPos.x = moveButton.transform.position.x;
@@ -51,18 +56,14 @@ public class ControlPanelUI : MonoBehaviour {
 
     public void CloseButton() {
         AudioManager.instance.PlayCloseButton();
-        StageController.instance.controlDivider.SetActive(false);
-        PopupManager.instance.CloseAction(gameObject, () => {
-            StageController.instance.controlDivider.GetComponent<Animator>().enabled = true;
-            gameObject.SetActive(false);
-            PopupManager.instance.ShowPopup(PopupManager.POPUP.MAIN, false);
-        });
+        DiscardChanges();
+        Close();
     }
 
     public void SaveButton() {
-        // TODO save controls locally
         AudioManager.instance.PlayNormalButton();
-        CloseButton();
+        SaveChanges();
+        Close();
     }
 
     public void MoveButton() {
@@ -70,5 +71,33 @@ public class ControlPanelUI : MonoBehaviour {
         // LeanTween.color(StageController.instance.controlDivider, new Color(1f, 0f, 0f, 1f), 0.3f);
         StageController.instance.controlDivider.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
         moveDivider = true;
+    }
+
+    public void ResetButton() {
+        updateButtonPos.x = moveButton.transform.position.x;
+        // StageController.instance.controlDivider.transform.position = prevPos;
+        Vector3 temp = StageController.instance.controlDivider.transform.position;
+        temp.y = defaultPos;
+        StageController.instance.controlDivider.transform.position = temp;
+        moveButton.transform.position = updateButtonPos;
+    }
+
+    private void DiscardChanges() {
+        updateButtonPos.x = moveButton.transform.position.x;
+        StageController.instance.controlDivider.transform.position = prevPos;
+        moveButton.transform.position = updateButtonPos;
+    }
+
+    private void SaveChanges() {
+        PlayerPrefs.SetFloat("control_panel_y", StageController.instance.controlDivider.transform.position.y);
+    }
+
+    private void Close() {
+        StageController.instance.controlDivider.SetActive(false);
+        PopupManager.instance.CloseAction(gameObject, () => {
+            StageController.instance.controlDivider.GetComponent<Animator>().enabled = true;
+            gameObject.SetActive(false);
+            PopupManager.instance.ShowPopup(PopupManager.POPUP.MAIN, false);
+        });
     }
 }

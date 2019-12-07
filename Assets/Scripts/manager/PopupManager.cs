@@ -116,6 +116,7 @@ public class PopupManager : MonoBehaviour {
     private void ShowControlUI() {
         controlPanelUI.gameObject.transform.localScale = zeroScaleVec;
         controlPanelUI.gameObject.SetActive(true);
+        controlPanelUI.Init();
         LeanTween.scale(controlPanelUI.gameObject, normalScaleVec, OPEN_TIME).setEaseOutBack();
     }
 

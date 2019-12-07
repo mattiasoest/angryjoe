@@ -53,6 +53,12 @@ public class StageController : MonoBehaviour {
 
     void Awake() {
         instance = this;
+        float controlY = PlayerPrefs.GetFloat("control_panel_y");
+        if (controlY != 0) {
+            Vector3 divPos = controlDivider.transform.position;
+            divPos.y = controlY;
+            controlDivider.transform.position = divPos;
+        }
     }
     // Start is called before the first frame update
     void Start() {
