@@ -1,6 +1,7 @@
 ﻿using System;
 using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -87,6 +88,21 @@ public class PlayfabManager : MonoBehaviour {
             onSucess(result);
         }, error => {
             onError(error);
+        });
+    }
+
+    public void StartGame() {
+        PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest() {
+            FunctionName = "startGame",
+                FunctionParameter = false,
+                GeneratePlayStreamEvent = true,
+        }, result => {
+            JsonObject jsonResult = (JsonObject)result.FunctionResult;
+            object messageValue;
+            jsonResult.TryGetValue("messageValue", out messageValue);
+            Debug.Log(messageValue);
+        }, error => {
+            Debug.LogError(error.GenerateErrorReport());
         });
     }
 

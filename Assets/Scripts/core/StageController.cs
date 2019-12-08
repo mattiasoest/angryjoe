@@ -108,6 +108,7 @@ public class StageController : MonoBehaviour {
             controlDivider.SetActive(true);
             AudioManager.instance.PlayStartButton();
             PopupManager.instance.MainMenuCloseAction(() => {
+                PlayfabManager.instance.StartGame();
                 Debug.Log("=== GAMEPLAY ===");
                 currentState = GAME_STATE.GAMEPLAY;
                 scoreLabel.enabled = true;
@@ -268,8 +269,8 @@ public class StageController : MonoBehaviour {
             PlayfabManager.instance.SendHighScore(score, result => {
                 JsonObject jsonResult = (JsonObject)result.FunctionResult;
                 object messageValue;
-                jsonResult.TryGetValue("messageValue", out messageValue); // note how "messageValue" directly corresponds to the JSON values set in Cloud Script
-                Debug.Log((string)messageValue);
+                jsonResult.TryGetValue("messageValue", out messageValue);
+                Debug.Log(messageValue);
             }, error => {
                 // TODO Retry?
                 Debug.Log(error.GenerateErrorReport());
