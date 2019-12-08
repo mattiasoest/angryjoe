@@ -92,15 +92,13 @@ public class Player : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D collision) {
         if (isAlive) {
             if (collision.gameObject.tag == "Obstacle") {
-                // Player continued and is immune for
+                // Player continued and is immune
                 if (isImmune) {
                     return;
                 }
                 AudioManager.instance.PlayHit();
                 isAlive = false;
-                //collision.gameObject.SendMessage("ApplyDamage", 10);
-                //animator.SetBool("isAlive", true);
-                //rb.velocity = Vector2.up * DIED_FORCE;
+
                 animator.SetTrigger("diedTrigger");
                 if (glassesEquipped) {
                     glassesAnimator.SetTrigger("dropTrigger");
@@ -116,7 +114,6 @@ public class Player : MonoBehaviour {
 
     private void TouchInput() {
         Vector3 pointerPos = StageController.instance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        //Debug.Log(pointerPos.y);
         if ((jumps > 0 || isGrounded) && Input.GetMouseButtonDown(0) && pointerPos.y > controlDivider.position.y) {
             ResetSliding();
             if (isGrounded) {
@@ -133,7 +130,6 @@ public class Player : MonoBehaviour {
             counter = jumpTime;
             isJumping = true;
 
-            //AudioManager.instance.Play("jump2");
             AudioManager.instance.PlayJump();
         }
 
@@ -152,7 +148,6 @@ public class Player : MonoBehaviour {
             }
 
         } else if (Input.GetMouseButton(0) && pointerPos.y <= controlDivider.position.y && isGrounded && !isSliding) {
-            //AudioManager.instance.PlaySlide();
             isSliding = true;
             animator.SetBool("isSliding", true);
             upperCollider.enabled = false;
