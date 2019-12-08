@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using PlayFab;
 using PlayFab.ClientModels;
 using PlayFab.Json;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class PlayfabManager : MonoBehaviour {
@@ -44,7 +47,11 @@ public class PlayfabManager : MonoBehaviour {
         LoadingUI.instance.gameObject.SetActive(true);
         UpdateUserTitleDisplayNameRequest req = new UpdateUserTitleDisplayNameRequest { DisplayName = name };
         PlayFabClientAPI.UpdateUserTitleDisplayName(req, result => {
-            Debug.Log($"Name updated to -> {name}");
+
+            Analytics.CustomEvent("REGISTER_NAME", new Dictionary<string, object> { { "new_name", name },
+                { "old_name", playerName }
+            });
+
             hasUsername = true;
             playerName = name;
             nameText.gameObject.SetActive(true);
@@ -55,7 +62,11 @@ public class PlayfabManager : MonoBehaviour {
             AudioManager.instance.PlayLogin();
         }, error => {
             nameText.gameObject.SetActive(false);
-            Debug.LogError(error.GenerateErrorReport());
+
+            Analytics.CustomEvent("REGISTER_NAME_FAILED", new Dictionary<string, object> { { "error_message", error.GenerateErrorReport() },
+                { "old_name", playerName }
+            });
+
             LoadingUI.instance.gameObject.SetActive(false);
             onError(error);
         });
@@ -151,6 +162,7 @@ public class PlayfabManager : MonoBehaviour {
                 if (string.IsNullOrWhiteSpace(username)) {
                     hasUsername = false;
                     nameText.gameObject.SetActive(false);
+                    Analytics.CustomEvent("NO_USERNAME");
                 } else {
                     hasUsername = true;
                     playerName = username;
@@ -174,6 +186,7 @@ public class PlayfabManager : MonoBehaviour {
         if (string.IsNullOrWhiteSpace(username)) {
             hasUsername = false;
             nameText.gameObject.SetActive(false);
+            Analytics.CustomEvent("NO_USERNAME");
         } else {
             hasUsername = true;
             playerName = username;
