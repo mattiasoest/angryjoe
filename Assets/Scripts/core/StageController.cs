@@ -233,17 +233,27 @@ public class StageController : MonoBehaviour {
     }
 
     private void OnContinueGame() {
+        long adStartTimeStamp = System.DateTime.Now.Ticks;
         AdManager.instance.PlayRewardedAd(adResult => {
             switch (adResult) {
                 case ShowResult.Finished:
-                    AudioManager.instance.PlayContinueGame();
-                    GameEventManager.instance.OnRevive(1.2f);
+                    // Dont waste a players time if the backend will reject it
+                    // later if they kept stalling in the ad watching state
+                    // Skip extra life.
+                    long nowSecond = System.DateTime.Now.Ticks;
+                    double timeElapsed = System.TimeSpan.FromTicks((nowSecond - adStartTimeStamp)).TotalSeconds;
+                    if (timeElapsed < 110) {
+                        AudioManager.instance.PlayContinueGame();
+                        GameEventManager.instance.OnRevive(1.2f);
+                    } else {
+                        ActivateMainMenu(0f);
+                    }
                     break;
                 case ShowResult.Skipped:
-                    Debug.Log("SKIPPED REVIVE");
+                    ActivateMainMenu(0f);
                     break;
                 case ShowResult.Failed:
-                    Debug.Log("FAILED REVIVE");
+                    ActivateMainMenu(0f);
                     break;
             }
         });
