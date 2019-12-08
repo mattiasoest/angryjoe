@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PlayFab.Json;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Monetization;
 using UnityEngine.UI;
 
@@ -49,7 +50,8 @@ public class StageController : MonoBehaviour {
 
     private int lastRandomSpriteIndex = -1;
 
-    private bool usedRevived;
+    private bool usedRevived = false;
+    private bool showedContinue = false;
 
     void Awake() {
         instance = this;
@@ -124,38 +126,40 @@ public class StageController : MonoBehaviour {
     }
 
     public void ExtraJumpButton() {
+        string id = "extra_jump";
         AudioManager.instance.PlayNormalButton();
         AdManager.instance.PlayRewardedAd(adResult => {
             switch (adResult) {
                 case ShowResult.Finished:
-                    // TODO animation?
+                    trackAd("AD_WATCHED", id);
                     AudioManager.instance.PlayGrantItem();
                     StartCoroutine(GrantJumpReward());
                     break;
                 case ShowResult.Skipped:
-                    Debug.Log("SKIPPED JUMP");
+                    trackAd("AD_SKIPPED", id);
                     break;
                 case ShowResult.Failed:
-                    Debug.Log("FAILED JUMP");
+                    trackAd("AD_FAILED", id);
                     break;
             }
         });
     }
 
     public void RemoveBannerAdbutton() {
+        string id = "remove_banner";
         AudioManager.instance.PlayNormalButton();
         AdManager.instance.PlayRewardedAd(adResult => {
             switch (adResult) {
                 case ShowResult.Finished:
-                    // TODO animation?
+                    trackAd("AD_WATCHED", id);
                     AudioManager.instance.PlayGrantItem();
                     StartCoroutine(GrantBannerReward());
                     break;
                 case ShowResult.Skipped:
-                    Debug.Log("SKIPPED BANNER");
+                    trackAd("AD_SKIPPED", id);
                     break;
                 case ShowResult.Failed:
-                    Debug.Log("FAILED BANNER");
+                    trackAd("AD_FAILED", id);
                     break;
             }
         });
@@ -223,16 +227,19 @@ public class StageController : MonoBehaviour {
         if (string.IsNullOrWhiteSpace(PlayfabManager.instance.playerName)) {
             StartCoroutine(PromptDelayedUsernamePopup());
         } else {
-            if (usedRevived) {
+            if (showedContinue) {
                 ActivateMainMenu();
             } else {
-                usedRevived = true;
+                showedContinue = true;
                 StartCoroutine(PromptDelayedContinuePopup());
             }
         }
     }
 
     private void OnContinueGame() {
+        Analytics.CustomEvent("CONTINUE_GAME", new Dictionary<string, object> { { "score", score },
+        });
+        string id = "continue";
         long adStartTimeStamp = System.DateTime.Now.Ticks;
         AdManager.instance.PlayRewardedAd(adResult => {
             switch (adResult) {
@@ -240,19 +247,25 @@ public class StageController : MonoBehaviour {
                     // Dont waste a players time if the backend will reject it
                     // later if they kept stalling in the ad watching state
                     // Skip extra life.
+                    trackAd("AD_WATCHED", id);
                     long nowSecond = System.DateTime.Now.Ticks;
                     double timeElapsed = System.TimeSpan.FromTicks((nowSecond - adStartTimeStamp)).TotalSeconds;
                     if (timeElapsed < 100) {
                         AudioManager.instance.PlayContinueGame();
                         GameEventManager.instance.OnRevive(1.2f);
+                        usedRevived = true;
                     } else {
+                        Analytics.CustomEvent("SKIPPED_CONTINUE", new Dictionary<string, object> { { "time_elapsed", timeElapsed },
+                        });
                         ActivateMainMenu(0f);
                     }
                     break;
                 case ShowResult.Skipped:
+                    trackAd("AD_SKIPPED", id);
                     ActivateMainMenu(0f);
                     break;
                 case ShowResult.Failed:
+                    trackAd("AD_FAILED", id);
                     ActivateMainMenu(0f);
                     break;
             }
@@ -275,15 +288,21 @@ public class StageController : MonoBehaviour {
 
     private IEnumerator ResetGame(float delayTime) {
         if (PlayfabManager.instance.hasUsername) {
-
+            int scoreBeforeReset = score;
+            bool reviveStatusBeforeReset = usedRevived;
             PlayfabManager.instance.SendHighScore(score, result => {
                 JsonObject jsonResult = (JsonObject)result.FunctionResult;
                 object messageValue;
                 jsonResult.TryGetValue("messageValue", out messageValue);
-                Debug.Log(messageValue);
+                Analytics.CustomEvent("FINISH_GAME", new Dictionary<string, object> { { "score", scoreBeforeReset },
+                    { "revived", reviveStatusBeforeReset },
+                    { "message", messageValue },
+                });
             }, error => {
-                // TODO Retry?
-                Debug.Log(error.GenerateErrorReport());
+                Analytics.CustomEvent("FINISH_GAME_ERROR", new Dictionary<string, object> { { "score", scoreBeforeReset },
+                    { "revived", reviveStatusBeforeReset },
+                    { "error_message", error.GenerateErrorReport() },
+                });
             });
         }
         yield return new WaitForSeconds(delayTime);
@@ -291,6 +310,7 @@ public class StageController : MonoBehaviour {
         spawnTimer = START_SPAWN_TIME;
         score = 0;
         usedRevived = false;
+        showedContinue = false;
         scoreLabel.text = $"{score}";
         // scoreLabel.enabled = false;
         PopupManager.instance.ShowPopup(PopupManager.POPUP.MAIN, false);
@@ -348,5 +368,10 @@ public class StageController : MonoBehaviour {
         Vector3 cameraPosition = mainCamera.ScreenToWorldPoint(new Vector3(0, mainCamera.pixelHeight + 5, 0));
         Vector2 newPos = new Vector3(0f, cameraPosition.y, 0);
         dynamicTopBlocker.transform.position = newPos;
+    }
+
+    private void trackAd(string eventName, string typeID) {
+        Analytics.CustomEvent(eventName, new Dictionary<string, object> { { "type", typeID },
+        });
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class ControlPanelUI : MonoBehaviour {
@@ -73,6 +74,7 @@ public class ControlPanelUI : MonoBehaviour {
     }
 
     public void ResetButton() {
+        Analytics.CustomEvent("RESET_CONTROLS_BUTTON");
         updateButtonPos.x = moveButton.transform.position.x;
         // StageController.instance.controlDivider.transform.position = prevPos;
         Vector3 temp = StageController.instance.controlDivider.transform.position;
@@ -88,6 +90,7 @@ public class ControlPanelUI : MonoBehaviour {
     }
 
     private void SaveChanges() {
+        Analytics.CustomEvent("CONTROLS_ADJUSTED");
         PlayerPrefs.SetFloat("control_panel_y", StageController.instance.controlDivider.transform.position.y);
     }
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class PopupManager : MonoBehaviour {
     public enum POPUP {
@@ -132,6 +133,7 @@ public class PopupManager : MonoBehaviour {
             // Not logged in? Retry here
             PlayfabManager.instance.PlayfabLogin();
         }
+        Analytics.CustomEvent("USERNAME_POPUP");
         usernameUI.gameObject.transform.localScale = zeroScaleVec;
         usernameUI.gameObject.SetActive(true);
         LeanTween.scale(usernameUI.gameObject, normalScaleVec, OPEN_TIME).setEaseOutBack();

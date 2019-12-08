@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PlayFab.ClientModels;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class LeaderboardUI : MonoBehaviour {
@@ -37,6 +38,7 @@ public class LeaderboardUI : MonoBehaviour {
             return;
         }
 
+        Analytics.CustomEvent("LEADERBOARD");
         noEntriesText.SetActive(false);
         LoadingUI.instance.gameObject.SetActive(true);
         if (entryPool.Count == 0) {
