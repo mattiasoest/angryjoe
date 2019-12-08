@@ -27,6 +27,8 @@ public class PlayfabManager : MonoBehaviour {
 
     private bool debug;
 
+    private int sessionAttempts = 0;
+
     public void Awake() {
         instance = this;
     }
@@ -112,8 +114,14 @@ public class PlayfabManager : MonoBehaviour {
             object messageValue;
             jsonResult.TryGetValue("messageValue", out messageValue);
             Debug.Log(messageValue);
+            Analytics.CustomEvent("GAME_START", new Dictionary<string, object> { { "session_attempts", sessionAttempts }
+            });
+            sessionAttempts++;
         }, error => {
-            Debug.LogError(error.GenerateErrorReport());
+            Analytics.CustomEvent("GAME_START_FAILED", new Dictionary<string, object> { { "error_message", error.GenerateErrorReport() },
+                { "session_attempts", sessionAttempts }
+            });
+            sessionAttempts++;
         });
     }
 
