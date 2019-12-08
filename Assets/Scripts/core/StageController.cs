@@ -242,7 +242,7 @@ public class StageController : MonoBehaviour {
                     // Skip extra life.
                     long nowSecond = System.DateTime.Now.Ticks;
                     double timeElapsed = System.TimeSpan.FromTicks((nowSecond - adStartTimeStamp)).TotalSeconds;
-                    if (timeElapsed < 110) {
+                    if (timeElapsed < 100) {
                         AudioManager.instance.PlayContinueGame();
                         GameEventManager.instance.OnRevive(1.2f);
                     } else {
