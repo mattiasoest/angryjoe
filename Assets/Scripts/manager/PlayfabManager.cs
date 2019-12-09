@@ -143,7 +143,7 @@ public class PlayfabManager : MonoBehaviour {
 #endif
 #if UNITY_IOS
             LoginWithIOSDeviceIDRequest requestIOS = new LoginWithIOSDeviceIDRequest {
-                DeviceId = ReturnMobileID(),
+                DeviceId = GetMobileId(),
                 CreateAccount = true,
                 InfoRequestParameters = new GetPlayerCombinedInfoRequestParams() {
                 GetPlayerProfile = true,
