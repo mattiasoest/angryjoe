@@ -31,6 +31,7 @@ public class PlayfabManager : MonoBehaviour {
     private int sessionAttempts = 0;
 
     public void Awake() {
+        Application.targetFrameRate = 60;
         instance = this;
     }
 
@@ -179,17 +180,24 @@ public class PlayfabManager : MonoBehaviour {
                 }
             };
             PlayFabClientAPI.LoginWithCustomID(request, result => {
-                string username = result.InfoResultPayload.PlayerProfile.DisplayName;
-                if (string.IsNullOrWhiteSpace(username)) {
+                // First login will have this as null
+                if (result.InfoResultPayload.PlayerProfile == null) {
                     hasUsername = false;
                     nameText.gameObject.SetActive(false);
                     Analytics.CustomEvent("NO_USERNAME");
                 } else {
-                    hasUsername = true;
-                    playerName = username;
-                    nameText.gameObject.SetActive(true);
-                    nameText.text = $"Logged in as: {playerName}";
-                    AudioManager.instance.PlayLogin();
+                    string username = result.InfoResultPayload.PlayerProfile.DisplayName;
+                    if (string.IsNullOrWhiteSpace(username)) {
+                        hasUsername = false;
+                        nameText.gameObject.SetActive(false);
+                        Analytics.CustomEvent("NO_USERNAME");
+                    } else {
+                        hasUsername = true;
+                        playerName = username;
+                        nameText.gameObject.SetActive(true);
+                        nameText.text = $"Logged in as: {playerName}";
+                        AudioManager.instance.PlayLogin();
+                    }
                 }
                 loggedIn = true;
                 LoadingUI.instance.gameObject.SetActive(false);
