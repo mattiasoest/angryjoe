@@ -1348,7 +1348,7 @@ Canvas:
   m_RenderMode: 1
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
-  m_PixelPerfect: 1
+  m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -9267,7 +9267,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c744d4a5722cc4aeb94c937a8f7f29dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayStore: 1
 --- !u!4 &1818998333
 Transform:
   m_ObjectHideFlags: 0
