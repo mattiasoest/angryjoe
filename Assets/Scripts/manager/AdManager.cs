@@ -13,8 +13,6 @@ public class AdManager : MonoBehaviour {
     private static readonly string REWARDED_VIDEO_ID = "rewardedVideo";
     private static readonly string BANNER_ID = "topBanner";
 
-    public bool isPlayStore;
-
     public readonly bool isTestAd = true;
 
     void Awake() {
@@ -55,12 +53,12 @@ public class AdManager : MonoBehaviour {
     }
 
     private void InitalizeVideoAds() {
-        if (isPlayStore) {
-            Monetization.Initialize(PLAY_STORE_ID, isTestAd);
-
-        } else {
-            Monetization.Initialize(APP_STORE_ID, isTestAd);
-        }
+#if UNITY_ANDROID
+        Monetization.Initialize(PLAY_STORE_ID, isTestAd);
+#endif
+#if UNITY_IOS
+        Monetization.Initialize(APP_STORE_ID, isTestAd);
+#endif
     }
 
     private System.Collections.IEnumerator ShowBannerWhenReady() {
