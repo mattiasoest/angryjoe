@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using PlayFab;
 using PlayFab.ClientModels;
 using PlayFab.Json;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UI;
@@ -46,6 +47,9 @@ public class PlayfabManager : MonoBehaviour {
     }
 
     public void SetDisplayName(string name, Action<UpdateUserTitleDisplayNameResult> onSucess, Action<PlayFabError> onError) {
+        if (!loggedIn) {
+            return;
+        }
         LoadingUI.instance.gameObject.SetActive(true);
         UpdateUserTitleDisplayNameRequest req = new UpdateUserTitleDisplayNameRequest { DisplayName = name };
         PlayFabClientAPI.UpdateUserTitleDisplayName(req, result => {
@@ -75,6 +79,9 @@ public class PlayfabManager : MonoBehaviour {
     }
 
     public void GetLeaderboard(string leaderboardId, Action<GetLeaderboardResult> onSucess, Action<PlayFabError> onError) {
+        if (!loggedIn) {
+            return;
+        }
         if (leaderboardId != SCORE_GLOBAL && leaderboardId != SCORE_WEEKLY) {
             throw new Exception($"Invalid leaderboard: {leaderboardId}");
         }
@@ -93,6 +100,9 @@ public class PlayfabManager : MonoBehaviour {
     }
 
     public void SendHighScore(int score, Action<ExecuteCloudScriptResult> onSucess, Action<PlayFabError> onError) {
+        if (!loggedIn) {
+            return;
+        }
         PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest() {
             FunctionName = "sendHighScore",
                 FunctionParameter = new { score },
@@ -105,6 +115,9 @@ public class PlayfabManager : MonoBehaviour {
     }
 
     public void StartGame() {
+        if (!loggedIn) {
+            return;
+        }
         PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest() {
             FunctionName = "startGame",
                 FunctionParameter = false,
