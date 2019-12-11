@@ -96,7 +96,7 @@ public class LeaderboardUI : MonoBehaviour {
             return;
         }
 
-        PopuplateEntries(PlayfabManager.instance.SCORE_WEEKLY);
+        PopuplateEntries(PlayfabManager.instance.SCORE_GLOBAL);
     }
 
     public void WeeklyToggle() {
