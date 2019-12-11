@@ -140,7 +140,6 @@ public class PlayfabManager : MonoBehaviour {
     }
 
     public void PlayfabLogin() {
-        LoadingUI.instance.gameObject.SetActive(true);
         if (!debug) {
 #if UNITY_ANDROID
             LoginWithAndroidDeviceIDRequest requestAndroid = new LoginWithAndroidDeviceIDRequest {
@@ -153,6 +152,7 @@ public class PlayfabManager : MonoBehaviour {
                 }
                 }
             };
+            LoadingUI.instance.gameObject.SetActive(true);
             PlayFabClientAPI.LoginWithAndroidDeviceID(requestAndroid, OnLoginMobileSuccess, OnLoginMobileFailure);
 #endif
 #if UNITY_IOS
@@ -166,6 +166,7 @@ public class PlayfabManager : MonoBehaviour {
                 }
                 }
             };
+            LoadingUI.instance.gameObject.SetActive(true);
             PlayFabClientAPI.LoginWithIOSDeviceID(requestIOS, OnLoginMobileSuccess, OnLoginMobileFailure);
 #endif
         } else {
@@ -179,6 +180,7 @@ public class PlayfabManager : MonoBehaviour {
                 }
                 }
             };
+            LoadingUI.instance.gameObject.SetActive(true);
             PlayFabClientAPI.LoginWithCustomID(request, result => {
                 // First login will have this as null
                 if (result.InfoResultPayload.PlayerProfile == null) {
@@ -211,17 +213,24 @@ public class PlayfabManager : MonoBehaviour {
     }
 
     private void OnLoginMobileSuccess(LoginResult result) {
-        string username = result.InfoResultPayload.PlayerProfile.DisplayName;
-        if (string.IsNullOrWhiteSpace(username)) {
+        // First login will have this as null
+        if (result.InfoResultPayload.PlayerProfile == null) {
             hasUsername = false;
             nameText.gameObject.SetActive(false);
             Analytics.CustomEvent("NO_USERNAME");
         } else {
-            hasUsername = true;
-            playerName = username;
-            nameText.gameObject.SetActive(true);
-            nameText.text = $"Logged in as: {playerName}";
-            AudioManager.instance.PlayLogin();
+            string username = result.InfoResultPayload.PlayerProfile.DisplayName;
+            if (string.IsNullOrWhiteSpace(username)) {
+                hasUsername = false;
+                nameText.gameObject.SetActive(false);
+                Analytics.CustomEvent("NO_USERNAME");
+            } else {
+                hasUsername = true;
+                playerName = username;
+                nameText.gameObject.SetActive(true);
+                nameText.text = $"Logged in as: {playerName}";
+                AudioManager.instance.PlayLogin();
+            }
         }
         loggedIn = true;
         LoadingUI.instance.gameObject.SetActive(false);
