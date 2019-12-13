@@ -4587,14 +4587,14 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   player: {fileID: 1786152019}
   obsSprites:
-  - {fileID: 21300000, guid: fc3e31f42190143c5a03f5e284c49221, type: 3}
-  - {fileID: 21300000, guid: 6848fb13d90b64f6badade9d7768cb3b, type: 3}
-  - {fileID: 21300000, guid: d45f19099308f44d59c30a30754c4fec, type: 3}
-  - {fileID: 21300000, guid: 352699ccd75af47368b0ec7434f3d82c, type: 3}
-  - {fileID: 21300000, guid: 81c0050c86a3a4c4eb9d87c36b0ba164, type: 3}
-  - {fileID: 21300000, guid: 791e2d24ff5fb429da085d9ce2d1ef81, type: 3}
-  - {fileID: 21300000, guid: f978b64e1177c4eb8881b89584f671f7, type: 3}
-  - {fileID: 21300000, guid: 5d082f74c819b4861ab270730daf1d3e, type: 3}
+  - {fileID: 21300000, guid: 4706f98827c1042bfafec936cb55e273, type: 3}
+  - {fileID: 21300000, guid: 58baa762a9ece4a83bcf1b59d11fedb5, type: 3}
+  - {fileID: 21300000, guid: b2688312ef3254aa79ed1ef94e9b94f0, type: 3}
+  - {fileID: 21300000, guid: a0e5277350f9648058551e45cdcb7d30, type: 3}
+  - {fileID: 21300000, guid: d34ef3f7d66b341dabb33227e076e75d, type: 3}
+  - {fileID: 21300000, guid: 8a69221dddfa64982aef861ac9f091f8, type: 3}
+  - {fileID: 21300000, guid: 7724f3f82e033442d9ace0b22c974b34, type: 3}
+  - {fileID: 21300000, guid: 15ba49c8044b145ba96524c282d5ccbe, type: 3}
   jumpLabel: {fileID: 2095709671}
   scoreLabel: {fileID: 1137430568}
   dynamicTopBlocker: {fileID: 727885198}
@@ -6503,7 +6503,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4c8738782fed34b60b35a438cc63177b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8cf0abb21658e4684ba8bf6f9f1f2cc1, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
