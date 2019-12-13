@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: buttonAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: iPhone
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 65
+      m_TextureCompression: 1
+      m_CompressionQuality: 100
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: Android
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 65
+      m_TextureCompression: 1
+      m_CompressionQuality: 100
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 0697180caa0e64655879aa719d4176bd, type: 3}
+    totalSpriteSurfaceArea: 948242
+    bindAsDefault: 1
+    storedHash:
+      serializedVersion: 2
+      Hash: 00000000000000000000000000000000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: dfb033d2c49b34a09bc81e85becec472, type: 3}
+  - {fileID: 21300000, guid: 5fad2f637babc465a850d942d1275cf9, type: 3}
+  - {fileID: 21300000, guid: 98fa050494c4048e9bc57f080b3834a0, type: 3}
+  - {fileID: 21300000, guid: f5d8d5941b37c4dcdb128936326fda21, type: 3}
+  - {fileID: 21300000, guid: 0a50bdc4ffac745dc88719d92f9de82d, type: 3}
+  - {fileID: 21300000, guid: e2c656e6fbfdb4fa9a5f0ed2e3b3271e, type: 3}
+  - {fileID: 21300000, guid: b79443f6744cb4f28a596715af8ae72a, type: 3}
+  - {fileID: 21300000, guid: 62d25337632af43179be200e315dcd3c, type: 3}
+  - {fileID: 21300000, guid: 68b3b677057db40a8be10b47f63f75f0, type: 3}
+  - {fileID: 21300000, guid: 2c9789182ba0c4b1ea94470d69574f61, type: 3}
+  - {fileID: 21300000, guid: e13b3f693939a4a7a81947f637c329e8, type: 3}
+  - {fileID: 21300000, guid: 26e3b41a595e7437fb708fb8fe05e0b2, type: 3}
+  - {fileID: 21300000, guid: 2edcdfcace4944b088b5f730733f9249, type: 3}
+  - {fileID: 21300000, guid: e44df40b146b14027aa48cc0a40a30f3, type: 3}
+  - {fileID: 21300000, guid: c4deb4ebdba874e9290d2313e9c5db2a, type: 3}
+  - {fileID: 21300000, guid: 0ccae72ce3b0041739cddeff6076a90d, type: 3}
+  - {fileID: 21300000, guid: 8fbf9f2cf130b4cdbb871ae42671e6d3, type: 3}
+  - {fileID: 21300000, guid: 4428a7ccb85f34151a99497ef75cdc97, type: 3}
+  - {fileID: 21300000, guid: b7f78b3d3486843d0959a164e7b305be, type: 3}
+  - {fileID: 21300000, guid: dfd6284e24e0c4d36884894b4ccb0e87, type: 3}
+  - {fileID: 21300000, guid: f1e6fb5eebca2466e9163451644d1f6a, type: 3}
+  - {fileID: 21300000, guid: 3b9f08afcd45c4a0b8ac594f99331a62, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Button_16
+  - Button_99
+  - Button_23
+  - Button_84
+  - Button_43
+  - Button_14
+  - Button_98
+  - Button_47
+  - Button_48
+  - Button_90
+  - Button_91
+  - Button_15
+  - Button_100
+  - Button_30
+  - navbuttons_10
+  - navbuttons_11
+  - Button_42
+  - Button_97
+  - Button_31
+  - Button_83
+  - Button_13
+  - Button_22
+  m_Tag: buttonAtlas
+  m_IsVariant: 0
