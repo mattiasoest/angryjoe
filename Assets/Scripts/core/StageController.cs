@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MLAgents;
 using PlayFab.Json;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Monetization;
 using UnityEngine.UI;
 
-public class StageController : MonoBehaviour {
+public class StageController : Area {
     public static StageController instance;
     public Camera mainCamera;
     public Player player;
     public Sprite[] obsSprites;
     public Text jumpLabel;
     public Text scoreLabel;
+    public Text RewardLabel;
     public GameObject dynamicTopBlocker;
     public GameObject obstacleFab;
     public GameObject mainMenu;
@@ -23,6 +25,8 @@ public class StageController : MonoBehaviour {
 
     public Button removeBannerBtn;
     public Button getExtraJumpBtn;
+
+    public bool isAIPlaying = true;
 
     [HideInInspector]
     public int score;
@@ -40,6 +44,8 @@ public class StageController : MonoBehaviour {
     private const float UPPER_OBSTACLE_BOUND = 4.3f;
 
     private readonly Stack<Obstacle> obstaclePool = new Stack<Obstacle>();
+    [HideInInspector]
+    public readonly List<Obstacle> obstacleList = new List<Obstacle>();
 
     private float spawnTimer = START_SPAWN_TIME;
 
@@ -53,6 +59,8 @@ public class StageController : MonoBehaviour {
     private bool usedRevived = false;
     private bool showedContinue = false;
 
+    private Vector2 playerDefaultPos;
+
     void Awake() {
         instance = this;
         float controlY = PlayerPrefs.GetFloat("control_panel_y");
@@ -61,6 +69,18 @@ public class StageController : MonoBehaviour {
             divPos.y = controlY;
             controlDivider.transform.position = divPos;
         }
+        for (int i = 0; i < 2; i++) {
+            GameObject obs = Instantiate(obstacleFab);
+            float randomY = GenerateRandomYpos();
+            Obstacle obsObj = obs.GetComponent<Obstacle>();
+            obsObj.Init(randomY);
+            obs.gameObject.SetActive(false);
+            obstaclePool.Push(obsObj);
+            // Use the list for AI observations
+            obstacleList.Add(obsObj);
+        }
+
+        playerDefaultPos = new Vector2(player.gameObject.transform.position.x, player.gameObject.transform.position.y);
     }
     // Start is called before the first frame update
     void Start() {
@@ -73,7 +93,8 @@ public class StageController : MonoBehaviour {
         GameEventManager.instance.onFinishGame += OnFinishGame;
     }
 
-    void Update() {
+    void FixedUpdate() {
+        // void Update() {
         switch (currentState) {
             case GAME_STATE.MENU:
                 break;
@@ -103,6 +124,8 @@ public class StageController : MonoBehaviour {
             default:
                 throw new System.Exception("Invalid state");
         }
+
+        RewardLabel.text = player.GetCumulativeReward().ToString("0.00");
     }
     public void PlayButton() {
         if (!playedClicked) {
@@ -111,13 +134,17 @@ public class StageController : MonoBehaviour {
             AudioManager.instance.PlayStartButton();
             PopupManager.instance.MainMenuCloseAction(() => {
                 PlayfabManager.instance.StartGame();
-                Debug.Log("=== GAMEPLAY ===");
-                currentState = GAME_STATE.GAMEPLAY;
-                scoreLabel.enabled = true;
-                if (Random.Range(0, 1f) > 0.8f) {
-                    StartCoroutine(DelayedBurp());
-                }
+                FastStartGame();
             });
+        }
+    }
+
+    public void FastStartGame() {
+        Debug.Log("=== GAMEPLAY ===");
+        currentState = GAME_STATE.GAMEPLAY;
+        scoreLabel.enabled = true;
+        if (Random.Range(0, 1f) > 0.8f) {
+            StartCoroutine(DelayedBurp());
         }
     }
 
@@ -224,6 +251,11 @@ public class StageController : MonoBehaviour {
     private void OnPlayerDied() {
         AudioManager.instance.PlayDeath();
         jumpLabel.enabled = false;
+        if (isAIPlaying) {
+            player.gameObject.transform.position = playerDefaultPos;
+            StartCoroutine(ResetGame(0f));
+            return;
+        }
         if (string.IsNullOrWhiteSpace(PlayfabManager.instance.playerName)) {
             StartCoroutine(PromptDelayedUsernamePopup());
         } else {
@@ -287,23 +319,26 @@ public class StageController : MonoBehaviour {
     }
 
     private IEnumerator ResetGame(float delayTime) {
-        if (PlayfabManager.instance.hasUsername) {
-            int scoreBeforeReset = score;
-            bool reviveStatusBeforeReset = usedRevived;
-            PlayfabManager.instance.SendHighScore(score, result => {
-                JsonObject jsonResult = (JsonObject)result.FunctionResult;
-                object messageValue;
-                jsonResult.TryGetValue("messageValue", out messageValue);
-                Analytics.CustomEvent("FINISH_GAME", new Dictionary<string, object> { { "score", scoreBeforeReset },
-                    { "revived", reviveStatusBeforeReset },
-                    { "message", messageValue },
+        if (!isAIPlaying) {
+
+            if (PlayfabManager.instance.hasUsername) {
+                int scoreBeforeReset = score;
+                bool reviveStatusBeforeReset = usedRevived;
+                PlayfabManager.instance.SendHighScore(score, result => {
+                    JsonObject jsonResult = (JsonObject)result.FunctionResult;
+                    object messageValue;
+                    jsonResult.TryGetValue("messageValue", out messageValue);
+                    Analytics.CustomEvent("FINISH_GAME", new Dictionary<string, object> { { "score", scoreBeforeReset },
+                        { "revived", reviveStatusBeforeReset },
+                        { "message", messageValue },
+                    });
+                }, error => {
+                    Analytics.CustomEvent("FINISH_GAME_ERROR", new Dictionary<string, object> { { "score", scoreBeforeReset },
+                        { "revived", reviveStatusBeforeReset },
+                        { "error_message", error.GenerateErrorReport() },
+                    });
                 });
-            }, error => {
-                Analytics.CustomEvent("FINISH_GAME_ERROR", new Dictionary<string, object> { { "score", scoreBeforeReset },
-                    { "revived", reviveStatusBeforeReset },
-                    { "error_message", error.GenerateErrorReport() },
-                });
-            });
+            }
         }
         yield return new WaitForSeconds(delayTime);
         GameEventManager.instance.OnReset();
@@ -313,7 +348,11 @@ public class StageController : MonoBehaviour {
         showedContinue = false;
         scoreLabel.text = $"{score}";
         // scoreLabel.enabled = false;
-        PopupManager.instance.ShowPopup(PopupManager.POPUP.MAIN, false);
+        if (!isAIPlaying) {
+            PopupManager.instance.ShowPopup(PopupManager.POPUP.MAIN, false);
+        } else {
+            currentState = GAME_STATE.GAMEPLAY;
+        }
     }
 
     private IEnumerator PromptDelayedUsernamePopup() {
@@ -373,5 +412,12 @@ public class StageController : MonoBehaviour {
     private void trackAd(string eventName, string typeID) {
         Analytics.CustomEvent(eventName, new Dictionary<string, object> { { "type", typeID },
         });
+    }
+
+    // ================ AI
+
+    public override void ResetArea() {
+        // StartCoroutine(ResetGame(1.2f));
+        StartCoroutine(ResetGame(0f));
     }
 }

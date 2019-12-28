@@ -105,6 +105,9 @@ public class AudioManager : MonoBehaviour {
     }
 
     private void Play(string clipName) {
+        if (StageController.instance.isAIPlaying) {
+            return;
+        }
         if (isSfxOn) {
             Sound clip = Array.Find(sounds, s => s.name == clipName);
             if (clip == null) {

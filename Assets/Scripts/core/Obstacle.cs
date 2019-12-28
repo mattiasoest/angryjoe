@@ -21,7 +21,7 @@ public class Obstacle : MonoBehaviour {
         GameEventManager.instance.onRevive += OnRevive;
     }
 
-    void Update() {
+    void FixedUpdate() {
         if (body.transform.position.x <= camPos.x) {
             GameEventManager.instance.ObstacleRecycle(this);
         }
