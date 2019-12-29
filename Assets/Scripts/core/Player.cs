@@ -4,7 +4,8 @@ using UnityEngine;
 using static StageController;
 using MLAgents;
 
-public class Player : Agent {
+public class Player : Agent
+{
 
     private const int DIED_FORCE = 2;
 
@@ -38,6 +39,7 @@ public class Player : Agent {
     private float counter;
     private bool isDoubleJumpPlaying;
     private float scoreTimer = 0.9f;
+    private float triggerTimer = 0.9f;
 
     private float jumpForce = 10f;
     private float downForce = 125f;
@@ -47,13 +49,15 @@ public class Player : Agent {
     private SpriteRenderer playerRenderer;
     private SpriteRenderer glassRenderer;
 
-    public void ResetJumpTrigger() {
+    public void ResetJumpTrigger()
+    {
         isDoubleJumpPlaying = false;
         animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
         animator.ResetTrigger("doubleJump");
     }
 
-    public void GrantJumpReward() {
+    public void GrantJumpReward()
+    {
         defaultJumps = 3;
         jumps = 3;
         // plus bonus glasses for the lulz
@@ -61,7 +65,8 @@ public class Player : Agent {
         glassesEquipped = true;
     }
 
-    void Start() {
+    void Start()
+    {
         playerRenderer = GetComponent<SpriteRenderer>();
         glassRenderer = glasses.GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
@@ -69,17 +74,21 @@ public class Player : Agent {
         GameEventManager.instance.onRevive += OnRevive;
     }
 
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
         // void Update() {
-        if (isImmune) {
+        if (isImmune)
+        {
             immuneTimer -= Time.deltaTime;
-            if (immuneTimer < 0) {
+            if (immuneTimer < 0)
+            {
                 setImmune(false);
             }
         }
 
         isGrounded = Physics2D.OverlapCircle(feetCollider.position, 0.1f, whatIsGround);
-        if (isAlive && StageController.instance.currentState == GAME_STATE.GAMEPLAY) {
+        if (isAlive && StageController.instance.currentState == GAME_STATE.GAMEPLAY)
+        {
             // TODO IOS!!
             // if (Application.platform == RuntimePlatform.Android) {
             // TouchInput();
@@ -87,31 +96,48 @@ public class Player : Agent {
             //     KeyBoardInput();
             // }
             scoreTimer -= Time.deltaTime;
+            triggerTimer -= Time.deltaTime;
         }
         animator.SetBool("isGrounded", isGrounded);
     }
 
-    void OnTriggerEnter2D(Collider2D collision) {
-        if (isAlive) {
-            if (collision.gameObject.tag == "Obstacle") {
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isAlive && !IsDone())
+        {
+            if (collision.gameObject.tag == "Obstacle")
+            {
                 // Player continued and is immune
-                if (isImmune) {
+                if (isImmune)
+                {
                     return;
                 }
                 AudioManager.instance.PlayHit();
                 isAlive = false;
 
                 animator.SetTrigger("diedTrigger");
-                if (glassesEquipped) {
+                if (glassesEquipped)
+                {
                     glassesAnimator.SetTrigger("dropTrigger");
                 }
-                if (StageController.instance.isAIPlaying) {
+                if (StageController.instance.isAIPlaying)
+                {
                     AddReward(-1f);
                     Done();
-                } else {
+                }
+                else
+                {
                     GameEventManager.instance.OnPlayerDied();
                 }
-            } else if (collision.gameObject.tag == "ScoreTrigger" && scoreTimer < 0) {
+            }
+
+            //    else if (collision.gameObject.tag == "AiTargetTrigger" && triggerTimer < 0)
+            //     {
+            //         triggerTimer = 0.9f;
+            //         AddReward(0.5f);
+            //     }
+            else if (collision.gameObject.tag == "ScoreTrigger" && scoreTimer < 0)
+            {
                 // Just use the timer to avoid both player colliders getting a point
                 scoreTimer = 0.9f;
                 StageController.instance.UpdateScore();
@@ -120,14 +146,19 @@ public class Player : Agent {
         }
     }
 
-    private void TouchInput() {
+
+    private void TouchInput()
+    {
         Vector3 pointerPos = StageController.instance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        if ((jumps > 0 || isGrounded) && Input.GetMouseButtonDown(0) && pointerPos.y > controlDivider.position.y) {
+        if ((jumps > 0 || isGrounded) && Input.GetMouseButtonDown(0) && pointerPos.y > controlDivider.position.y)
+        {
             ResetSliding();
-            if (isGrounded) {
+            if (isGrounded)
+            {
                 jumps = defaultJumps;
             }
-            if (jumps < defaultJumps) {
+            if (jumps < defaultJumps)
+            {
                 isDoubleJumpPlaying = true;
                 animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
                 animator.SetTrigger("doubleJump");
@@ -141,48 +172,63 @@ public class Player : Agent {
             AudioManager.instance.PlayJump();
         }
 
-        if (Input.GetMouseButton(0) && pointerPos.y > controlDivider.position.y && isJumping) {
-            if (counter > 0f) {
+        if (Input.GetMouseButton(0) && pointerPos.y > controlDivider.position.y && isJumping)
+        {
+            if (counter > 0f)
+            {
                 rb.velocity = Vector2.up * jumpForce;
                 counter -= Time.deltaTime;
-            } else {
+            }
+            else
+            {
                 isJumping = false;
             }
-        } else if (Input.GetMouseButton(0) && pointerPos.y <= controlDivider.position.y && !isGrounded) {
+        }
+        else if (Input.GetMouseButton(0) && pointerPos.y <= controlDivider.position.y && !isGrounded)
+        {
             rb.velocity += Vector2.down * downForce * Time.deltaTime;
-            if (rb.velocity.y <= -30) {
+            if (rb.velocity.y <= -30)
+            {
                 velVector.y = -30;
                 rb.velocity = velVector;
             }
 
-        } else if (Input.GetMouseButton(0) && pointerPos.y <= controlDivider.position.y && isGrounded && !isSliding) {
+        }
+        else if (Input.GetMouseButton(0) && pointerPos.y <= controlDivider.position.y && isGrounded && !isSliding)
+        {
             isSliding = true;
             animator.SetBool("isSliding", true);
             upperCollider.enabled = false;
-            if (glassesEquipped) {
+            if (glassesEquipped)
+            {
                 glassesAnimator.SetBool("isSlidingGlasses", true);
             }
         }
 
-        if (Input.GetMouseButtonDown(0) && pointerPos.y <= controlDivider.position.y) {
+        if (Input.GetMouseButtonDown(0) && pointerPos.y <= controlDivider.position.y)
+        {
             AudioManager.instance.PlayDownForce();
         }
 
-        if (Input.GetMouseButtonUp(0)) {
+        if (Input.GetMouseButtonUp(0))
+        {
             isJumping = false;
             ResetSliding();
         }
-
     }
 
-    private void KeyBoardInput() {
-        if ((jumps > 0 || isGrounded) && Input.GetKeyDown(KeyCode.Space)) {
+    private void KeyBoardInput()
+    {
+        if ((jumps > 0 || isGrounded) && Input.GetKeyDown(KeyCode.Space))
+        {
 
             ResetSliding();
-            if (isGrounded) {
+            if (isGrounded)
+            {
                 jumps = defaultJumps;
             }
-            if (jumps < defaultJumps) {
+            if (jumps < defaultJumps)
+            {
                 isDoubleJumpPlaying = true;
                 animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
                 animator.SetTrigger("doubleJump");
@@ -197,61 +243,79 @@ public class Player : Agent {
             AudioManager.instance.PlayJump();
         }
 
-        if (Input.GetKey(KeyCode.Space) && isJumping) {
-            if (counter > 0f) {
+        if (Input.GetKey(KeyCode.Space) && isJumping)
+        {
+            if (counter > 0f)
+            {
                 rb.velocity = Vector2.up * jumpForce;
                 counter -= Time.deltaTime;
-            } else {
+            }
+            else
+            {
                 isJumping = false;
             }
-        } else if (Input.GetKey(KeyCode.DownArrow) && !isGrounded) {
+        }
+        else if (Input.GetKey(KeyCode.DownArrow) && !isGrounded)
+        {
             rb.velocity += Vector2.down * downForce * Time.deltaTime;
-            if (rb.velocity.y <= -30) {
+            if (rb.velocity.y <= -30)
+            {
                 velVector.y = -30;
                 rb.velocity = velVector;
             }
 
-        } else if (Input.GetKey(KeyCode.DownArrow) && isGrounded && !isSliding) {
+        }
+        else if (Input.GetKey(KeyCode.DownArrow) && isGrounded && !isSliding)
+        {
             //AudioManager.instance.PlaySlide();
             isSliding = true;
             animator.SetBool("isSliding", true);
             upperCollider.enabled = false;
-            if (glassesEquipped) {
+            if (glassesEquipped)
+            {
                 glassesAnimator.SetBool("isSlidingGlasses", true);
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow)) {
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
             AudioManager.instance.PlayDownForce();
         }
 
-        if (Input.GetKeyUp(KeyCode.Space)) {
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
             isJumping = false;
         }
 
-        if (Input.GetKeyUp(KeyCode.DownArrow)) {
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
             ResetSliding();
         }
     }
 
-    private void OnReset() {
+    private void OnReset()
+    {
         ResetSliding();
         isAlive = true;
         scoreTimer = 0.9f;
         animator.SetTrigger("resetTrigger");
-        if (glassesEquipped) {
+        if (glassesEquipped)
+        {
             glassesAnimator.SetTrigger("resetGlassesTrigger");
         }
     }
 
-    private void OnRevive(float delay) {
+    private void OnRevive(float delay)
+    {
         StartCoroutine(RevivePlayer(delay));
     }
 
-    private IEnumerator RevivePlayer(float delay) {
+    private IEnumerator RevivePlayer(float delay)
+    {
         Color32 color = new Color32(255, 255, 255, 0);
         playerRenderer.color = color;
-        if (glassesEquipped) {
+        if (glassesEquipped)
+        {
             glassRenderer.color = color;
         }
         animator.SetTrigger("resetTrigger");
@@ -264,7 +328,8 @@ public class Player : Agent {
         yield return new WaitForSeconds(delay / 2);
         color.a = 150;
         playerRenderer.color = color;
-        if (glassesEquipped) {
+        if (glassesEquipped)
+        {
             glassRenderer.color = color;
             glassesAnimator.SetTrigger("resetGlassesTrigger");
         }
@@ -276,27 +341,32 @@ public class Player : Agent {
         scoreTimer = 1f;
     }
 
-    private void setImmune(bool immune) {
+    private void setImmune(bool immune)
+    {
         immuneTimer = 1.9f;
         isImmune = immune;
-        if (glassesEquipped) {
+        if (glassesEquipped)
+        {
             glassRenderer.color = immune ? new Color32(255, 255, 255, 155) : new Color32(255, 255, 255, 255);
         }
         playerRenderer.color = immune ? new Color32(255, 255, 255, 155) : new Color32(255, 255, 255, 255);
     }
 
-    private void ResetSliding() {
+    private void ResetSliding()
+    {
         isSliding = false;
         upperCollider.enabled = true;
         animator.SetBool("isSliding", false);
-        if (glassesEquipped) {
+        if (glassesEquipped)
+        {
             glassesAnimator.SetBool("isSlidingGlasses", false);
         }
     }
 
     // ====================== AI ======================
 
-    public override void AgentAction(float[] vectorAction) {
+    public override void AgentAction(float[] vectorAction)
+    {
         // Convert actions to axis values
         float jumpButtonState = vectorAction[0]; // Jump/slide
         float slideButtonState = vectorAction[1]; // hold/not hold
@@ -305,62 +375,122 @@ public class Player : Agent {
         AddReward(0.01f);
     }
 
-    public override void AgentReset() {
+    public override void AgentReset()
+    {
         StageController.instance.ResetArea();
     }
 
-    public override void CollectObservations() {
+    public override void CollectObservations()
+    {
         AddVectorObs(transform.position.x);
         AddVectorObs(transform.position.y);
+
+        AddVectorObs(rb.velocity.y);
+        AddVectorObs(isJumping);
+        AddVectorObs(jumps);
+        AddVectorObs(isSliding);
+
         var obs = StageController.instance.obstacleList;
-        if (obs.Count != 2) {
+        if (obs.Count != 2)
+        {
             throw new System.Exception("Invalid amount of obstacles");
         }
         // float prevDist = 9999f;
         // GameObject prevObj = null;
-        foreach (Obstacle obj in obs) {
-            // float current = (obj.transform.position.x - transform.position.x);
-            // if (current < prevDist && current > transform.position.x) {
-            //     prevObj = obj;
-            //     prevDist = current;
-            // }
-            AddVectorObs(obj.transform.position.x);
-            AddVectorObs(obj.transform.position.y);
 
-            AddVectorObs(Vector2.Distance(obj.transform.position, transform.position));
-            // Debug.Log(obj.transform.position.x);
-            // Debug.Log("========================");
+        var goal = GetClosestTarget(obs.ToArray());
+        if (goal != null)
+        {
+            // Debug.Log(goal.position.x - transform.position.x);
+            // Debug.Log(goal.position.y - transform.position.y);
+            // Debug.Log("================================");
+            // Debug.Log(transform.position.x);
+            // Debug.Log(transform.position.y);
+            // Debug.Log("-----------------------------");
+            AddVectorObs(goal.position.x - transform.position.x);
+            AddVectorObs(goal.position.y - transform.position.y);
         }
+        else
+        {
+                        // Debug.Log("0");
+            AddVectorObs(0);
+            AddVectorObs(0);
+        }
+        // foreach (Obstacle obj in obs)
+        // {
+        //     // float current = (obj.transform.position.x - transform.position.x);
+        //     // if (current < prevDist && current > transform.position.x) {
+        //     //     prevObj = obj;
+        //     //     prevDist = current;
+        //     // }
+        //     AddVectorObs(obj.transform.position.x);
+        //     AddVectorObs(obj.transform.position.y);
+
+        //     AddVectorObs(Vector2.Distance(obj.transform.position, transform.position));
+        //     // Debug.Log(obj.transform.position.x);
+        //     // Debug.Log("========================");
+        // }
     }
 
-    public override float[] Heuristic() {
+    public override float[] Heuristic()
+    {
 
         // GetKeyUp == 0
         float[] playerInput = { 0f, 0f };
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
             playerInput[0] = 2;
-        } else if (Input.GetKey(KeyCode.Space)) {
+        }
+        else if (Input.GetKey(KeyCode.Space))
+        {
             playerInput[0] = 1;
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow)) {
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
             playerInput[1] = 2;
-        } else if (Input.GetKey(KeyCode.DownArrow)) {
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
             playerInput[1] = 1;
         }
 
         return playerInput;
     }
 
-    private void AiInput(float jumpButtonState, float slideButtonState) {
-        if ((jumps > 0 || isGrounded) && jumpButtonState == 2) {
+    Transform GetClosestTarget(Obstacle[] targets)
+    {
+        Transform bestTarget = null;
+        float closestDistanceSqr = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+        foreach (Obstacle potentialTarget in targets)
+        {
+            Vector3 directionToTarget = potentialTarget.aiTrigger.transform.position - currentPosition;
+            float sqrLength = directionToTarget.sqrMagnitude;
+
+            if (sqrLength < closestDistanceSqr && potentialTarget.aiTrigger.transform.position.x > currentPosition.x)
+            {
+                closestDistanceSqr = sqrLength;
+                bestTarget = potentialTarget.aiTrigger.transform;
+            }
+        }
+
+        return bestTarget;
+    }
+
+    private void AiInput(float jumpButtonState, float slideButtonState)
+    {
+        if ((jumps > 0 || isGrounded) && jumpButtonState == 2)
+        {
 
             ResetSliding();
-            if (isGrounded) {
+            if (isGrounded)
+            {
                 jumps = defaultJumps;
             }
-            if (jumps < defaultJumps) {
+            if (jumps < defaultJumps)
+            {
                 isDoubleJumpPlaying = true;
                 animator.SetBool("shouldPlayDoubleJump", isDoubleJumpPlaying);
                 animator.SetTrigger("doubleJump");
@@ -375,39 +505,52 @@ public class Player : Agent {
             AudioManager.instance.PlayJump();
         }
 
-        if (jumpButtonState == 1 && isJumping) {
-            if (counter > 0f) {
+        if (jumpButtonState == 1 && isJumping)
+        {
+            if (counter > 0f)
+            {
                 rb.velocity = Vector2.up * jumpForce;
                 counter -= Time.deltaTime;
-            } else {
+            }
+            else
+            {
                 isJumping = false;
             }
-        } else if (slideButtonState == 1 && !isGrounded) {
+        }
+        else if (slideButtonState == 1 && !isGrounded)
+        {
             rb.velocity += Vector2.down * downForce * Time.deltaTime;
-            if (rb.velocity.y <= -30) {
+            if (rb.velocity.y <= -30)
+            {
                 velVector.y = -30;
                 rb.velocity = velVector;
             }
 
-        } else if (slideButtonState == 1 && isGrounded && !isSliding) {
+        }
+        else if (slideButtonState == 1 && isGrounded && !isSliding)
+        {
             //AudioManager.instance.PlaySlide();
             isSliding = true;
             animator.SetBool("isSliding", true);
             upperCollider.enabled = false;
-            if (glassesEquipped) {
+            if (glassesEquipped)
+            {
                 glassesAnimator.SetBool("isSlidingGlasses", true);
             }
         }
 
-        if (slideButtonState == 2) {
+        if (slideButtonState == 2)
+        {
             AudioManager.instance.PlayDownForce();
         }
 
-        if (jumpButtonState == 0) {
+        if (jumpButtonState == 0)
+        {
             isJumping = false;
         }
 
-        if (slideButtonState == 0) {
+        if (slideButtonState == 0)
+        {
             ResetSliding();
         }
     }

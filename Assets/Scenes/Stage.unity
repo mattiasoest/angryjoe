@@ -7170,8 +7170,8 @@ MonoBehaviour:
     width: 1280
     height: 720
     qualityLevel: 5
-    timeScale: 12.7
-    targetFrameRate: 60
+    timeScale: 1
+    targetFrameRate: -1
   resetParameters:
     m_ResetParameters: []
 --- !u!1 &1550750301
@@ -9214,7 +9214,7 @@ MonoBehaviour:
     maxStep: 5000
     resetOnDone: 1
     onDemandDecision: 0
-    numberOfActionsBetweenDecisions: 100
+    numberOfActionsBetweenDecisions: 10
   speed: 5
   feetCollider: {fileID: 472947253}
   controlDivider: {fileID: 407831370}

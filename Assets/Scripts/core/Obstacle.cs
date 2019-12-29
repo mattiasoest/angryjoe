@@ -4,6 +4,7 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour {
     public SpriteRenderer topRenderer, bottomRenderer;
 
+    public GameObject aiTrigger;
     [HideInInspector]
     public int point = 1;
     private const float SPEED = -4.6f;
