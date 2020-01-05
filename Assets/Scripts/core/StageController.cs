@@ -125,7 +125,7 @@ public class StageController : Area {
                 throw new System.Exception("Invalid state");
         }
 
-        RewardLabel.text = player.GetCumulativeReward().ToString("0.00");
+        // RewardLabel.text = player.GetCumulativeReward().ToString("0.00");
     }
     public void PlayButton() {
         if (!playedClicked) {

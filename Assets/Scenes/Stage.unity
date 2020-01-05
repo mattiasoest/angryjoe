@@ -3030,7 +3030,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &593649312
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7163,15 +7163,15 @@ MonoBehaviour:
   m_TrainingConfiguration:
     width: 1
     height: 1
-    qualityLevel: 1
+    qualityLevel: 0
     timeScale: 100
     targetFrameRate: -1
   m_InferenceConfiguration:
     width: 1280
     height: 720
-    qualityLevel: 5
+    qualityLevel: 0
     timeScale: 1
-    targetFrameRate: -1
+    targetFrameRate: 60
   resetParameters:
     m_ResetParameters: []
 --- !u!1 &1550750301
@@ -9173,7 +9173,7 @@ MonoBehaviour:
     vectorActionSize: 0300000003000000
     vectorActionDescriptions: []
     vectorActionSpaceType: 0
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: eff2ce2657a071e409427c05cb347bda, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: BruceLearning
@@ -9211,10 +9211,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agentParameters:
-    maxStep: 5000
+    maxStep: 0
     resetOnDone: 1
     onDemandDecision: 0
-    numberOfActionsBetweenDecisions: 10
+    numberOfActionsBetweenDecisions: 3
   speed: 5
   feetCollider: {fileID: 472947253}
   controlDivider: {fileID: 407831370}

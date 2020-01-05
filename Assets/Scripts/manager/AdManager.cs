@@ -17,7 +17,7 @@ public class AdManager : MonoBehaviour {
 
     void Awake() {
         instance = this;
-        InitalizeVideoAds();
+        // InitalizeVideoAds();
     }
 
     void Start() {
